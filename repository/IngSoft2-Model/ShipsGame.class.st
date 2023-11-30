@@ -24,14 +24,14 @@ ShipsGame >> applyChosenCard [
 
 { #category : #assignments }
 ShipsGame >> cardDirectedTo: aNumberOfShip [ 
-	chosenCard selected: (gameboard player: aNumberOfShip) 
+	chosenCard selected: (gameboard shipWithNumber: aNumberOfShip) 
 ]
 
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
 	| aShip |
-	aShip := gameboard player: aNumberOfShip.
+	aShip := gameboard shipWithNumber: aNumberOfShip.
 	(aShip shipCards )  fillRedoWith: lastUsedCard.
 
 	aCard permanent: self verify: aNumberOfShip .
@@ -120,7 +120,7 @@ ShipsGame >> throwNextPlayer [
 ShipsGame >> verify: aCard IsInHand: aNumberOfShip [
 
 	| anArrayOfCards aShipCards |
-	aShipCards := (gameboard player: aNumberOfShip) shipCards.
+	aShipCards := (gameboard shipWithNumber: aNumberOfShip) shipCards.
 
 	anArrayOfCards := aShipCards cardsInHand.
 

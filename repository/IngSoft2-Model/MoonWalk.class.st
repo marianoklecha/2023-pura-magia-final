@@ -14,14 +14,14 @@ MoonWalk class >> with: anAmountOfCells [
 
 { #category : #action }
 MoonWalk >> applyTo: aGameBoard for: aChosenShip [
-
 	| newCell shipPosition newShipPosition |
-	1 to: aGameBoard amountOfPlayers do: [ :index | 
-		(aGameBoard player: index) = aChosenShip ifFalse: [ 
-			newCell := (aGameBoard player: index) shipPosition isAtPosition + amountOfCells.
-			shipPosition := (aGameBoard player: index) shipPosition.
+	
+	1 to: aGameBoard amountOfShipsPlaying do: [ :index | 
+		(aGameBoard shipWithNumber: index) = aChosenShip ifFalse: [ 
+			newCell := (aGameBoard shipWithNumber: index) shipPosition currentCell + amountOfCells.
+			shipPosition := (aGameBoard shipWithNumber: index) shipPosition.
 			newShipPosition := aGameBoard verifyCellsOf: shipPosition at: newCell.
-			(aGameBoard player: index) changePosition: newShipPosition ] ].
+			(aGameBoard shipWithNumber: index) changePosition: newShipPosition ] ].
 	^self.
 ]
 
