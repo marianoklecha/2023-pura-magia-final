@@ -5,11 +5,11 @@ Class {
 }
 
 { #category : #action }
-SpeedUp >> applyTo: aGameBoard for: aShip [  
+SpeedUp >> applyTo: aGameBoard for: aChosenShip [  
 	|newCell newShipPosition shipPosition|
-	newCell := (((aShip shipPosition ) isAtPosition)+4).
-	shipPosition := aShip shipPosition .
+	newCell := (((aChosenShip shipPosition ) currentCell)+4).
+	shipPosition := aChosenShip shipPosition .
 	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
-	aShip  changePosition: newShipPosition.
+	aChosenShip  changePosition: newShipPosition.
 	^self.
 ]

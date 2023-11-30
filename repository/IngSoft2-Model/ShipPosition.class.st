@@ -19,6 +19,21 @@ ShipPosition class >> createWith: aNumberOfCell at: aNumberOfLap and: aParsec [
 	 ^(self new) initializeWith: aNumberOfCell and: aNumberOfLap and: aParsec. 
 ]
 
+{ #category : #validation }
+ShipPosition >> currentCell [
+	^ cellNumber 
+]
+
+{ #category : #validation }
+ShipPosition >> currentLap [
+	^actualLap.
+]
+
+{ #category : #validation }
+ShipPosition >> currentParsec [
+	^parsecs .
+]
+
 { #category : #initialization }
 ShipPosition >> initializeNew [
 	cellNumber := 0 .
@@ -31,19 +46,4 @@ ShipPosition >> initializeWith: aNumberOfCell and: aNumberOfLap and: aParsec [
 	cellNumber := aNumberOfCell .
 	actualLap := aNumberOfLap .
 	parsecs := aParsec .
-]
-
-{ #category : #validation }
-ShipPosition >> isAtLap [
-	^actualLap.
-]
-
-{ #category : #validation }
-ShipPosition >> isAtParsec [
-	^parsecs .
-]
-
-{ #category : #validation }
-ShipPosition >> isAtPosition [
-	^ cellNumber 
 ]

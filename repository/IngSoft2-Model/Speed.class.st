@@ -20,7 +20,7 @@ Speed >> amountToChange [
 
 { #category : #action }
 Speed >> apply: aGameBoard [ 
-	((aGameBoard player: (chosenPlayer numberOfShip))shipCards ) store: (self). 
+	((aGameBoard shipWithNumber: (chosenPlayer numberOfShip))shipCards ) store: (self). 
 	^(self)
 ]
 

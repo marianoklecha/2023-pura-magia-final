@@ -34,8 +34,8 @@ Cancellation >> applyForAccelerationTo: aGameBoard [
 Cancellation >> applyForOtherCardsTo: aGameBoard [
 
 	| collectionCards |
-	1 to: aGameBoard amountOfPlayers do: [ :counter | 
-		collectionCards := (aGameBoard player: counter) shipCards cardsForMe.
+	1 to: aGameBoard amountOfShipsPlaying do: [ :counter | 
+		collectionCards := (aGameBoard shipWithNumber: counter) shipCards cardsForMe.
 		self removeFrom: collectionCards ]
 ]
 

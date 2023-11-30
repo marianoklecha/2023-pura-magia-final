@@ -14,8 +14,8 @@ Cell class >> with: aSpecialEffect and: aNumberOfCell [
 ]
 
 { #category : #initialization }
-Cell >> initializeWith: aSpeedUp and: aNumberOfCell [ 
-	effect := aSpeedUp.
+Cell >> initializeWith: anEffect and: aNumberOfCell [ 
+	effect := anEffect.
 	numberCell := aNumberOfCell. 
 	 
 ]
