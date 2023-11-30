@@ -39,7 +39,7 @@ HyperJump >> applyTo: aGameBoard for: aChosenShip [
 		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
 	parsecs := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
-	newPosition := aGameBoard  positionWith: parsecs andPrevious: (aChosenShip shipPosition).
+	newPosition := (aGameBoard positionManager) manageParsecsOf: (aChosenShip shipPosition) at: parsecs.
 	aChosenShip changePosition: newPosition.
 	^self.
 ]

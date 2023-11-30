@@ -11,7 +11,8 @@ Class {
 		'aCollectionOfUsedCards',
 		'lastEffectUsed',
 		'aCollectionOfAccelerations',
-		'collectionOfShips'
+		'collectionOfShips',
+		'positionManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -112,72 +113,8 @@ GameBoard >> amountOfShipsPlaying [
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
+	positionManager := PositionManager with: cells and: anAmountOfParsecs .
 	dieCollection := aCollectionOfDice .
-]
-
-{ #category : #action }
-GameBoard >> change: aShipPosition changingLap: aResult [ 
-	 |result position newLap parsec newShipPosition|
-	result := aResult .
-		[ result   > cells ] whileTrue: [ 
-		position:=result-cells.
-		newLap:= ((aShipPosition currentLap)+1) .
-		parsec := aShipPosition currentParsec .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
-		result := result - cells ].
-	^newShipPosition .
-]
-
-{ #category : #action }
-GameBoard >> change: aShipPosition withMoreParsecsThanMax: aResult [ 
-	|result position newShipPosition newLap parsecs|
-	result:= aResult .
-	[ result   > parsecsByCell  ] whileTrue: [ 
-		
-		position:=aShipPosition currentCell +1.
-		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
-		position := newShipPosition currentCell .
-		newLap := newShipPosition currentLap .
-		parsecs := Parsecs with: (result-parsecsByCell) .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs  .
-		result := result - parsecsByCell ].
-	^newShipPosition .
-]
-
-{ #category : #action }
-GameBoard >> change: aShipPosition withNegative: aResult [ 
-	|newShipPosition result position newLap parsec|
-	result := aResult .
-	[ result   < 0 ] whileTrue: [ 
-		(aShipPosition currentLap = 1) ifTrue: [ 
-				newShipPosition := ShipPosition createNew.
-				result :=0 .
-			] ifFalse: [  
-				position:=cells + result.
-				newLap:= ((aShipPosition currentLap)-1) .
-				parsec := aShipPosition currentParsec .
-				newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
-				result := cells + result ] ].
-		
-		^newShipPosition 
-		
-]
-
-{ #category : #action }
-GameBoard >> change: aShipPosition withNegativeParsecs: aResult [ 
-	|newShipPosition  result  position newLap parsecs |
-	result := aResult .
-	[ result   < 0 ] whileTrue: [ 
-		
-		position:=aShipPosition currentCell -1.
-		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
-		position := newShipPosition currentCell .
-		newLap := newShipPosition currentLap .
-		parsecs := Parsecs with: (result+parsecsByCell ) .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs .
-		result :=result +parsecsByCell . 
-		  ].
-	^newShipPosition 
 ]
 
 { #category : #validation }
@@ -207,11 +144,6 @@ GameBoard >> createCollectionFrom: aCollection [
 
 
 	^ newCollection
-]
-
-{ #category : #action }
-GameBoard >> createPositionIn: aResult with: aShipPosition [ 
-	^(self verifyCellsOf: aShipPosition at: aResult).
 ]
 
 { #category : #action }
@@ -271,17 +203,10 @@ GameBoard >> move: aShip [
 { #category : #action }
 GameBoard >> move: aShip using: specialEffect and: result [ 
 	|newPosition turnShip|
-	newPosition := (self createPositionIn: result with:(aShip shipPosition)).
+	newPosition := positionManager manageCellsOf: aShip shipPosition at: result.
 	aShip changePosition: newPosition.
 	turnShip:= self shipWithNumber:  (self turn) .
 	lastEffectUsed:= specialEffect applyTo:  self  for: turnShip  . 
-]
-
-{ #category : #validation }
-GameBoard >> numberOfParsecs: aShip [ 
-	| anotherShip |
-	anotherShip := self positionAtCollectionOf: aShip.
-	^ ((anotherShip shipPosition ) currentParsec)
 ]
 
 { #category : #validation }
@@ -296,9 +221,9 @@ GameBoard >> positionAtCollectionOf: aShip [
 	^ anotherShip
 ]
 
-{ #category : #creation }
-GameBoard >> positionWith: aResult andPrevious: aShipPosition [ 
-	^(self verifyParsecsOf: aShipPosition at: aResult).
+{ #category : #actions }
+GameBoard >> positionManager [
+	^ positionManager
 ]
 
 { #category : #validation }
@@ -372,45 +297,6 @@ GameBoard >> updateResult: aResult [
 	 ].
 
 	^ auxResult .
-]
-
-{ #category : #action }
-GameBoard >> verifyCellsOf: aShipPosition at: aResult [ 
-	|newShipPosition  result playerPosition  newLap parsec|
-	playerPosition := aShipPosition currentCell .
-	result := aResult. 
-	(result   <= cells) ifTrue: [ 
-		newLap:=aShipPosition currentLap.
-		parsec := aShipPosition currentParsec .
-		newShipPosition := ShipPosition createWith: result  at: newLap and: parsec .] .
-	(result < 0 )ifTrue: [
-		newShipPosition := self change: aShipPosition withNegative: result].
-	(result > cells)ifTrue:[
-		newShipPosition := self change: aShipPosition changingLap: result.
-		].
-
-	
-	^ newShipPosition 
-
-
-]
-
-{ #category : #action }
-GameBoard >> verifyParsecsOf: aShipPosition at: aNewParsec [
-	|newShipPosition  result  position newLap |
-	result := aNewParsec + (aShipPosition currentParsec )nominalValue . 
-	(result   <= parsecsByCell ) ifTrue: [ 
-		newLap:=aShipPosition currentLap.
-		position := aShipPosition currentCell . 
-		newShipPosition := ShipPosition createWith: position   at: newLap and: (Parsecs with: aNewParsec)   .] .
-	(result <0)ifTrue:[
-		newShipPosition := self change: aShipPosition  withNegativeParsecs: result  .
-		].
-	(result   > parsecsByCell) ifTrue:[
-		newShipPosition := self change: aShipPosition  withMoreParsecsThanMax: result  .
-		].
-	
-	^ newShipPosition 
 ]
 
 { #category : #validation }
