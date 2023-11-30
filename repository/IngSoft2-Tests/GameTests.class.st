@@ -824,11 +824,11 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
 aShip:=((aGameBoard shipWithNumber: 1)).
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)  )nominalValue)  equals: 3  .
+self assert: ((((aGameBoard shipWithNumber: 1) shipPosition) currentParsec )nominalValue)  equals: 3  .
 self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
 
 aGame throwNextPlayer.
-self assert: ((aGameBoard numberOfParsecs: aShip )nominalValue)  equals: 2  .
+self assert: ((aShip shipPosition currentParsec)nominalValue)  equals: 2  .
 self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
 
 
@@ -868,6 +868,38 @@ aGame throwNextPlayer. "P1: 3 LAP2 P2: 3 LAP1  --> Ship 1 has won"
 
 self assert: aGame winner equals: 1. 
 self should:  [aGame throwNextPlayer] raise: Error withMessage: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw'.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test059PositionManagerThatSolvesInconsistentPositionStates [
+|newCell newShipPosition shipPosition aChosenShip cellsToSum parsecs parsecsToSum aPositionManager|
+
+self setUpLoadedDiceWith: #(1 1 ) and: #(5 0).
+self setUpGameWith: 1 andGameboardWith: 4 and: 4.
+
+parsecs := 4. 
+cellsToSum := 9.
+parsecsToSum := 6.
+aGameBoard cellsWith: parsecs and: arrayOfDie .
+
+aPositionManager := PositionManager with: 4 and: 4.
+aChosenShip:= aGameBoard shipWithNumber: 1 .
+newCell := (((aChosenShip shipPosition ) currentCell) + cellsToSum).
+shipPosition := aChosenShip shipPosition .
+
+newShipPosition := aPositionManager manageCellsOf: shipPosition at: newCell.
+newShipPosition := aPositionManager manageParsecsOf: newShipPosition at: parsecsToSum.
+
+aChosenShip changePosition: newShipPosition.
+self assert: aChosenShip shipPosition currentLap equals: 2.
+self assert: aChosenShip shipPosition currentCell equals: 2.
+self assert: aChosenShip shipPosition currentParsec nominalValue equals: 2.
 
 
 

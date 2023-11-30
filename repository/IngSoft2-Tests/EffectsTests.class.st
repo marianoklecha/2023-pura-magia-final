@@ -362,7 +362,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 parsecs := Parsecs with: 4.
 
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)) nominalValue ) equals: 0  .
+self assert: (((aGameBoard shipWithNumber: 1) shipPosition currentParsec ) nominalValue ) equals: 0  .
 
 
 
@@ -398,8 +398,8 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)) nominalValue ) equals: 4  .
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 2)) nominalValue ) equals: 3  .
+self assert: (((aGameBoard shipWithNumber: 1) shipPosition currentParsec) nominalValue ) equals: 4  .
+self assert: (((aGameBoard shipWithNumber: 2) shipPosition currentParsec) nominalValue ) equals: 3  .
 
 
 
@@ -435,7 +435,7 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
 
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)) nominalValue ) equals: 3  .
+self assert: (((aGameBoard shipWithNumber: 1)shipPosition currentParsec) nominalValue ) equals: 3  .
 self assert: ((aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1))) equals: 4  .
 
 
@@ -472,7 +472,7 @@ aGameBoard add: hyperJump  at: 8 .
 aGame throwNextPlayer.
 
 
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)) nominalValue ) equals: 3  .
+self assert: (((aGameBoard shipWithNumber: 1)shipPosition currentParsec) nominalValue ) equals: 3  .
 self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 1  .
 self assert: (aGameBoard checkLapOf:   (aGameBoard shipWithNumber: 1)) equals: 2  .
 
@@ -510,7 +510,7 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
 
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard shipWithNumber: 1)) nominalValue ) equals: 3  .
+self assert: (((aGameBoard shipWithNumber: 1)shipPosition currentParsec) nominalValue ) equals: 3  .
 self assert: ((aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1))) equals: 2  .
 
 
