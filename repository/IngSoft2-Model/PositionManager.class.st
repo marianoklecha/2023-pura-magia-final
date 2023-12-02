@@ -119,3 +119,14 @@ PositionManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 	
 	^ newShipPosition 
 ]
+
+{ #category : #action }
+PositionManager >> updateResult: aResult [
+	|auxResult|
+	auxResult := aResult.
+	[ auxResult  > cells ] whileTrue: [ 
+		auxResult := auxResult - cells . 
+	 ].
+
+	^ auxResult .
+]

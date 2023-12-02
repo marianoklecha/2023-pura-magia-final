@@ -7,7 +7,8 @@ Class {
 		'numberOfPlayer',
 		'amountOfPlayers',
 		'chosenCard',
-		'lastUsedCard'
+		'lastUsedCard',
+		'aCollectionOfUsedCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -22,9 +23,9 @@ ShipsGame >> applyChosenCard [
 	lastUsedCard := chosenCard apply: gameboard .
 ]
 
-{ #category : #assignments }
+{ #category : #action }
 ShipsGame >> cardDirectedTo: aNumberOfShip [ 
-	chosenCard selected: (gameboard shipWithNumber: aNumberOfShip) 
+	chosenCard selected: (gameboard shipWithNumber: aNumberOfShip)
 ]
 
 { #category : #validation }
@@ -67,6 +68,7 @@ ShipsGame >> initializeWith: aResult [
 	gameboard := nil.
 	numberOfPlayer := 1.
 	amountOfPlayers := 0.
+	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #action }
@@ -117,17 +119,20 @@ ShipsGame >> throwNextPlayer [
 ]
 
 { #category : #validation }
-ShipsGame >> verify: aCard IsInHand: aNumberOfShip [
+ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 
 	| anArrayOfCards aShipCards |
 	aShipCards := (gameboard shipWithNumber: aNumberOfShip) shipCards.
-
 	anArrayOfCards := aShipCards cardsInHand.
 
-	(anArrayOfCards includes: aCard) ifTrue: [ 
-		anArrayOfCards remove: aCard.
-		^ true ].
-	^ false
+	(anArrayOfCards includes: aCard)
+		ifTrue: [ 
+			anArrayOfCards remove: aCard.
+			aCollectionOfUsedCards add: aCard.
+			^ true ]
+		ifFalse: [ 
+			Error signal: 'The card you want to use is not in your ships hand'.
+			^ false ]
 ]
 
 { #category : #validation }

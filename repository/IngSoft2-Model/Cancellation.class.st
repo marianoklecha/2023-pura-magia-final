@@ -16,27 +16,25 @@ Cancellation class >> with: aShipsGame [
 
 { #category : #action }
 Cancellation >> apply: aGameBoard [ 
-	self applyForAccelerationTo: aGameBoard .
-	self applyForOtherCardsTo: aGameBoard .
+	| collectionCards|
+	collectionCards := chosenShip shipCards cardsForMe.
+	(collectionCards includes: cardToRemove)
+		ifTrue: [ collectionCards remove: cardToRemove ]
+		ifFalse: [ self applyForCardsForAllTo: aGameBoard].
 	
 	^(self)
 	
 ]
 
 { #category : #action }
-Cancellation >> applyForAccelerationTo: aGameBoard [ 
-	(aGameBoard accelerations includes: cardToRemove) ifTrue: [
-		self removeAcceleration: aGameBoard.
-		 ].
-]
+Cancellation >> applyForCardsForAllTo: aGameBoard [
 
-{ #category : #action }
-Cancellation >> applyForOtherCardsTo: aGameBoard [
-
-	| collectionCards |
-	1 to: aGameBoard amountOfShipsPlaying do: [ :counter | 
-		collectionCards := (aGameBoard shipWithNumber: counter) shipCards cardsForMe.
-		self removeFrom: collectionCards ]
+	| cardsForAllShips |
+	cardsForAllShips := aGameBoard cardsForAllShips.
+	(cardsForAllShips includes: cardToRemove) ifTrue: [ 
+		cardsForAllShips remove: cardToRemove.
+		] ifFalse: [Error signal: 'The card you want to cancel is not affecting the ship'].
+	
 ]
 
 { #category : #initialization }
@@ -46,6 +44,7 @@ Cancellation >> canceled: aCardToRemove [
 
 { #category : #action }
 Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard [ 
+
 	shipsGame  chosen: self from: aNumberOfShip.
 	self  canceled: aCard .
 	shipsGame cardDirectedTo: aChosenNumberOfShip.
@@ -65,27 +64,17 @@ Cancellation >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #action }
+Cancellation >> permanent [
+	^false.
+]
+
 { #category : #validation }
 Cancellation >> permanent: aShipsGame verify: aNumberOfShip [
 
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifFalse: [ ^ self ].
+	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifFalse: [ ^ self ].
 	aShipsGame chosenCard: self.
 	aShipsGame cardDirectedTo: aNumberOfShip
-]
-
-{ #category : #action }
-Cancellation >> removeAcceleration: aGameBoard [ 
-	|collectionOfAccelerations|
-	collectionOfAccelerations := aGameBoard accelerations.
-	collectionOfAccelerations remove: cardToRemove .
-]
-
-{ #category : #action }
-Cancellation >> removeFrom: collectionCards [
-
-	(collectionCards includes: cardToRemove) ifTrue: [ 
-		collectionCards remove: cardToRemove ]
-	
 ]
 
 { #category : #instance }

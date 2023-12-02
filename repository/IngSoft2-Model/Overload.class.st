@@ -44,7 +44,7 @@ Overload >> permanent [
 { #category : #validation }
 Overload >> permanent: aShipsGame verify: aNumberOfShip [ 
 	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
 			aShipsGame chosenCard: self ]. ] .
 ]
 

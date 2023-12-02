@@ -634,3 +634,184 @@ CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
 	
 	self assert: (aGameBoard shipWithNumber: aNumberOfShip)shipCards cardsInHand size equals: 2+1 "Two are random"
 ]
+
+{ #category : #tests }
+CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
+	|player player2  repeat wormHole redo|
+	self setUpLoadedDiceWith: #(6 1) and: #(2 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	wormHole := WormHole  new.
+	repeat  := Repeat with: aGame .
+	redo:= Redo with: aGame .
+	aGameBoard add: wormHole at: 8.
+	
+	player:= 1.
+	player2:=2.
+
+	aGameBoard add: repeat to: player.
+	aGameBoard add: redo to: player2. 
+	
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	
+	repeat from: player  to: player2  . 
+	redo from: player2  to: player .
+	
+	self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 2)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 1)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
+	| redo overload  player player2  cancellation|
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	cancellation:= Cancellation with: aGame .
+	overload := Overload with: aGame .
+	redo:= Redo with: aGame.
+	
+	player:= 1.
+	player2:=2.
+	
+	aGameBoard add: overload to: player.
+	aGameBoard add: cancellation to: player.
+	aGameBoard add: redo to: player2.
+
+	overload  from: player  applyTo: player2 .
+	aGame throwNextPlayer .
+	
+	redo from: player2 to: player .
+	cancellation from: player applyTo: player canceled: overload  .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 6 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
+	| speed redo player player2 cancellation|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	speed := Speed with: aGame .
+	redo:= Redo with: aGame .
+	cancellation := Cancellation with: aGame .
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: redo to: player2.
+	aGameBoard add: cancellation to: player.
+
+	speed from: player applyTo: player . 
+	aGame throwNextPlayer . 
+	redo from: player2 to: player2 . 
+	cancellation from: player applyTo: player2 canceled: speed. 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 2 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
+	| player player2  cancellation acceleration redo|
+
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	cancellation:= Cancellation with: aGame .
+	acceleration := Acceleration  with: aGame .
+	redo := Redo with: aGame.	
+	player:= 1.
+	player2:= 2.
+
+	aGameBoard add: acceleration  to: player.
+	aGameBoard add: cancellation to: player.
+	aGameBoard add: redo to: player2 .
+
+	acceleration applyToAllFrom: player . 
+	aGame throwNextPlayer .
+	redo from: player2.
+	aGame throwNextPlayer .
+	cancellation from: player canceled: acceleration .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
+]
+
+{ #category : #tests }
+CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
+
+	| redo overload player player2 cancellation |
+	self setUpLoadedDiceWith: #( 1 1 ) and: #( 2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+
+	cancellation := Cancellation with: aGame.
+	overload := Overload with: aGame.
+	redo := Redo with: aGame.
+
+	player := 1.
+	player2 := 2.
+
+	aGameBoard add: overload to: player.
+	aGameBoard add: cancellation to: player.
+	aGameBoard add: redo to: player2.
+
+	overload from: player applyTo: player2.
+	aGame throwNextPlayer.
+	redo from: player2 to: player.
+	self
+		should: [ 
+		cancellation from: player applyTo: player canceled: redo ]
+		raise: Error
+		withMessage:
+		'The card you want to cancel is not affecting the ship'
+]
+
+{ #category : #tests }
+CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
+	| speed redo player player2 cancellation|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	speed := Speed with: aGame .
+	redo:= Redo with: aGame .
+	cancellation := Cancellation with: aGame .
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: redo to: player2.
+
+	speed from: player applyTo: player . 
+	aGame throwNextPlayer . 
+	redo from: player2 to: player2 . 
+	self
+		should: [ 
+		cancellation from: player applyTo: player2 canceled: speed ]
+		raise: Error
+		withMessage:
+		'The card you want to use is not in your ships hand'
+		
+	
+	
+	
+]

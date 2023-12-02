@@ -16,22 +16,30 @@ Redo class >> with: aShipsGame [
 
 { #category : #action }
 Redo >> apply: aGameBoard [
-
-	(cardToRedo isKindOf: Acceleration)
-		ifTrue: [  ]
-		ifFalse: [ cardToRedo selected: chosenShip ].
+	cardToRedo selected: chosenShip .
 	cardToRedo apply: aGameBoard.
 	^ cardToRedo
 ]
 
 { #category : #action }
-Redo >> cancellationFrom: aNumberOfPlayer to: aChosenNumberOfPlayer canceled: aCard [
-	|lastCardUsedInGame aGameboard|
+Redo >> behaveInstantaneousWith: aNumberOfShip [
+
+	shipsGame chosenCard: self.
+	shipsGame cardDirectedTo: aNumberOfShip
+]
+
+{ #category : #action }
+Redo >> behavePermanentWith: aNumberOfShip [ 
+	(shipsGame playerTurn: aNumberOfShip) ifTrue:[
+			shipsGame chosenCard: self  ].
+]
+
+{ #category : #action }
+Redo >> cancellationFrom: aNumberOfShip to: aChosenNumberOfShip canceled: aCard [
+	|lastCardUsedInGame|
 	lastCardUsedInGame := shipsGame lastUsedCard.
-	aGameboard := shipsGame gameboard.
-	lastCardUsedInGame selected: aChosenNumberOfPlayer .
 	lastCardUsedInGame  canceled: aCard.
-	lastCardUsedInGame apply: aGameboard .
+	self from: aNumberOfShip to: aChosenNumberOfShip 
 ]
 
 { #category : #action }
@@ -54,16 +62,10 @@ Redo >> initializeWith: aShipsGame [
 
 { #category : #validation }
 Redo >> permanent: aShipsGame verify: aNumberOfShip [
-	(cardToRedo permanent) ifFalse: [ 
-		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self.
-			aShipsGame cardDirectedTo: aNumberOfShip.
-			 ] ].
-
-	(cardToRedo permanent) ifTrue: [
-		(aShipsGame playerTurn: aNumberOfShip) ifTrue:[
-		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self ] ] ].
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
+	cardToRedo permanent
+		ifFalse: [ self behaveInstantaneousWith: aNumberOfShip ]
+		ifTrue: [ self behavePermanentWith: aNumberOfShip ]
 ]
 
 { #category : #action }
