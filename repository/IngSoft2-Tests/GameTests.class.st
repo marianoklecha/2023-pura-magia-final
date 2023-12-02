@@ -427,9 +427,9 @@ arrayOfDie add: die2 .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices . ""OBSOLETO"
 
-self deny: (aGame winner) equals: (aGameBoard shipWithNumber: 1) .
-self deny: (aGame winner) equals: (aGameBoard shipWithNumber: 2) .
-self deny: (aGame winner) equals: (aGameBoard shipWithNumber: 3) .
+self deny: (aGame winner) equals: (aGameBoard shipWith: 1) .
+self deny: (aGame winner) equals: (aGameBoard shipWith: 2) .
+self deny: (aGame winner) equals: (aGameBoard shipWith: 3) .
 "self assert: (aGame winner) equals: (4) ."
 
 
@@ -576,9 +576,9 @@ GameTests >> test023PlayerThrowWithTurns [
 self setUpLoadedDiceWith: #(1 1 1 1) and: #(2 2 2 4) .
 self setUpGameWith:4 andGameboardWith: cells and:1 .
 
-aGame throwNextPlayer.
+aGame throwNextShip.
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 1) ) equals: 3 .
+self assert: (aGameBoard cellOfShip: 1)  equals: 3 .
 
 
 
@@ -592,10 +592,10 @@ GameTests >> test024PlayWithLoadedDiceTwoTurnsThenCheckPositionOfTheSecondPlayer
 self setUpLoadedDiceWith: #(1 1 1 1) and: #(2 7 2 4) .
 self setUpGameWith:4 andGameboardWith: 8 and: 1 .
 
-aGame throwNextPlayer .
-aGame throwNextPlayer .
+aGame throwNextShip .
+aGame throwNextShip .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 2) ) equals: 8 .
+self assert: (aGameBoard cellOfShip: 2) equals: 8 .
 
 
 
@@ -609,11 +609,11 @@ GameTests >> test025PlayThreeTurnsWithLoadedDiceAndTwoPlayersThenCheckPositionCh
 self setUpLoadedDiceWith: #(1 1) and: #(2 2) .
 self setUpGameWith: 2 andGameboardWith: 8 and: 1 .
 
-aGame throwNextPlayer .
-aGame throwNextPlayer .
-aGame throwNextPlayer .
+aGame throwNextShip .
+aGame throwNextShip .
+aGame throwNextShip .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 1) ) equals: 6 .
+self assert: (aGameBoard cellOfShip: 1) equals: 6 .
 
 
 
@@ -633,18 +633,18 @@ GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 
 	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
 
-	aGame throwNextPlayer.
+	aGame throwNextShip.
 	self deny: aGameBoard winner equals: 0
 ]
 
 { #category : #tests }
 GameTests >> test027GameBoardCircularWithXLaps [
 
-self setUpGameWith: 1 andGameboardWith: 8 and: 2.
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+self setUpLoadedDiceWith: #(3 1 ) and: #(3 4 ).
+self setUpGameWith: 1 andGameboardWith: 5 and: 2.
 
-numberOfLaps:= 3.
-self assert: (aGameBoard laps >=1).
+aGame throwNextShip .
+self assert: (aGameBoard shipWith: 1) actualPosition currentLap equals:2.
 
 
 
@@ -658,7 +658,7 @@ GameTests >> test028GameBoardCircularWithXLapsAndPlayerWithLaps [
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipWithNumber: 1) ) equals: 1 .
+self assert: (aGameBoard lapOfShip: 1) equals: 1 .
 
 
 
@@ -672,10 +672,10 @@ GameTests >> test029GameBoardCircularWithXLapsAndPlayerChangeAcualLap [
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
-aGame throwNextPlayer .
-aGame throwNextPlayer.
+aGame throwNextShip .
+aGame throwNextShip.
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipWithNumber: 1) ) equals: 2 .
+self assert: (aGameBoard lapOfShip: 1) equals: 2 .
 
 
 
@@ -690,12 +690,12 @@ GameTests >> test030GameBoardCircularWithXLapsAndPlayerCheckPositionInNewLap [
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
-aGame throwNextPlayer .
-aGame throwNextPlayer.
+aGame throwNextShip .
+aGame throwNextShip.
 
 
-self assert: (aGameBoard checkPositionOf:(aGameBoard shipWithNumber: 1) ) equals: 1 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipWithNumber: 1)) equals: 2.
+self assert: (aGameBoard cellOfShip: 1)   equals: 1 .
+self assert: (aGameBoard lapOfShip:  1)  equals: 2.
 
 
 
@@ -714,9 +714,9 @@ amountOfParsecsToMove:= #(7 3 2 1).
 parsecs := 4. 
 aGameBoard cellsWith: parsecs and: arrayOfDie .
 
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
+aGame throwNextShip.
+aGame throwNextShip.
+aGame throwNextShip.
 aRanking := aGame ranking.
 
 self assert: (aRanking at: 1) numberOfShip  equals: 3 .
@@ -754,9 +754,9 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 anSpecialCard := CardAssignation withDeck.
 aGameBoard add: anSpecialCard at: 4.
 
-aGame throwNextPlayer .
+aGame throwNextShip .
 
-self assert: (((aGameBoard shipWithNumber: 1)shipCards) cardsInHand size) equals: 3.
+self assert: (((aGameBoard shipWith: 1)shipCards) cardsInHand size) equals: 3.
 
 ]
 
@@ -770,10 +770,10 @@ self setUpGameWith: 1 andGameboardWith: 4 and: 2.
 
 aGameBoard add: wormHole at: 3.
 
-aGame throwNextPlayer.
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipWithNumber: 1) ) equals: 2 .
-aGame throwNextPlayer.
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipWithNumber: 1) ) equals: 1 .
+aGame throwNextShip.
+self assert: (aGameBoard lapOfShip: 1)  equals: 2 .
+aGame throwNextShip.
+self assert: (aGameBoard lapOfShip:  1) equals: 1 .
 
 
 
@@ -821,15 +821,15 @@ parsecs := 4.
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
-aGame throwNextPlayer.
+aGame throwNextShip.
 
-aShip:=((aGameBoard shipWithNumber: 1)).
-self assert: ((((aGameBoard shipWithNumber: 1) shipPosition) currentParsec )nominalValue)  equals: 3  .
-self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
+aShip:=((aGameBoard shipWith: 1)).
+self assert: ((((aGameBoard shipWith: 1) actualPosition) currentParsec )nominalValue)  equals: 3  .
+self assert: (aGameBoard cellOfShip:  1 ) equals: 4  .
 
-aGame throwNextPlayer.
-self assert: ((aShip shipPosition currentParsec)nominalValue)  equals: 2  .
-self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
+aGame throwNextShip.
+self assert: ((aShip actualPosition currentParsec)nominalValue)  equals: 2  .
+self assert: (aGameBoard cellOfShip:  1 ) equals: 4  .
 
 
 
@@ -843,7 +843,7 @@ GameTests >> test057GamePlayersWithShipPositionShipCards [
 
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
 
-self assert: (((aGameBoard shipWithNumber: 1)shipPosition)currentCell ) equals: 0
+self assert: (((aGameBoard shipWith: 1)actualPosition)currentCell ) equals: 0
 
 
 
@@ -862,12 +862,12 @@ amountOfParsecsToMove:= #(7 3 2 1).
 parsecs := 4. 
 aGameBoard cellsWith: parsecs and: arrayOfDie .
 
-aGame throwNextPlayer. "P1: 4 LAP1 P2: 0 LAP1"
-aGame throwNextPlayer. "P1: 4 LAP1 P2: 3 LAP1"
-aGame throwNextPlayer. "P1: 3 LAP2 P2: 3 LAP1  --> Ship 1 has won"
+aGame throwNextShip. "P1: 4 LAP1 P2: 0 LAP1"
+aGame throwNextShip. "P1: 4 LAP1 P2: 3 LAP1"
+aGame throwNextShip. "P1: 3 LAP2 P2: 3 LAP1  --> Ship 1 has won"
 
 self assert: aGame winner equals: 1. 
-self should:  [aGame throwNextPlayer] raise: Error withMessage: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw'.
+self should:  [aGame throwNextShip] raise: Error withMessage: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw'.
 
 
 
@@ -889,17 +889,17 @@ parsecsToSum := 6.
 aGameBoard cellsWith: parsecs and: arrayOfDie .
 
 aPositionManager := PositionManager with: 4 and: 4.
-aChosenShip:= aGameBoard shipWithNumber: 1 .
-newCell := (((aChosenShip shipPosition ) currentCell) + cellsToSum).
-shipPosition := aChosenShip shipPosition .
+aChosenShip:= aGameBoard shipWith: 1 .
+newCell := (((aChosenShip actualPosition ) currentCell) + cellsToSum).
+shipPosition := aChosenShip actualPosition .
 
 newShipPosition := aPositionManager manageCellsOf: shipPosition at: newCell.
 newShipPosition := aPositionManager manageParsecsOf: newShipPosition at: parsecsToSum.
 
 aChosenShip changePosition: newShipPosition.
-self assert: aChosenShip shipPosition currentLap equals: 2.
-self assert: aChosenShip shipPosition currentCell equals: 2.
-self assert: aChosenShip shipPosition currentParsec nominalValue equals: 2.
+self assert: aChosenShip actualPosition currentLap equals: 2.
+self assert: aChosenShip actualPosition currentCell equals: 2.
+self assert: aChosenShip actualPosition currentParsec nominalValue equals: 2.
 
 
 

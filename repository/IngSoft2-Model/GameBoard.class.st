@@ -40,19 +40,20 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> add: aCard to: numberOfPlayer [ 
+GameBoard >> add: aCard to: numberOfShip [
 	| aShip |
-	aShip :=(self shipWithNumber: numberOfPlayer). 
+	aShip :=(self shipWith: numberOfShip). 
 	aShip add: aCard.
 	
 	
 ]
 
 { #category : #action }
-GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
+GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aCollectionOfDifferentParsecs [ 
 	|randomNumber probabilities|
-		
-	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
+	
+	
+	probabilities := (ProbabilityOfEffects new) createCollectionFrom: aCollectionOfProbabilities .
 	
 	0 to: cells do: [ :index | randomNumber:= 100 atRandom.
 		
@@ -89,13 +90,8 @@ GameBoard >> amountOf: typeOfSpecialEffect [
 	^ count
 ]
 
-{ #category : #validation }
-GameBoard >> amountOfCells [
-	^cells 
-]
-
 { #category : #counter }
-GameBoard >> amountOfNormalCells [
+GameBoard >> amountOfEmptyCells [
 	^ cells - (aCollectionOfSpecialCells size) 
 ]
 
@@ -109,6 +105,11 @@ GameBoard >> cardsForAllShips [
 	^collectionOfCardsForAllShips .
 ]
 
+{ #category : #validation }
+GameBoard >> cellOfShip: aNumber [
+	^((self shipWith: aNumber) actualPosition) currentCell
+]
+
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
@@ -116,42 +117,13 @@ GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	dieCollection := aCollectionOfDice .
 ]
 
-{ #category : #validation }
-GameBoard >> checkLapOf: aShip [ 
-	| anotherShip |
-	anotherShip := self positionAtCollectionOf: aShip.
-	^ (anotherShip shipPosition ) currentLap.
-]
-
-{ #category : #validation }
-GameBoard >> checkPositionOf: aShip [
-
-	| anotherShip |
-	anotherShip := self positionAtCollectionOf: aShip.
-	^ ((anotherShip shipPosition ) currentCell)
-]
-
-{ #category : #action }
-GameBoard >> createCollectionFrom: aCollection [
-
-	| newCollection |
-	newCollection := OrderedCollection new.
-	newCollection add: (aCollection at: 1).
-	2 to: aCollection size do: [ :index | 
-		newCollection add:
-			(newCollection at: index - 1) + (aCollection at: index) ].
-
-
-	^ newCollection
-]
-
 { #category : #action }
 GameBoard >> diceResultOf: aShip [
-	|dieResult|
+	|dieResult finalResult|
 	dieResult  := 0.
-	dieResult  := self throwVariousDices: dieCollection .
-	dieResult := dieResult + (aShip resultOfCards) + (self resultOfCardsForAll).
-	^dieResult .
+	dieResult  := aShip throw: dieCollection .
+	finalResult := dieResult + (aShip resultOfCards) + (self resultOfCardsForAll).
+	^finalResult .
 ]
 
 { #category : #creating }
@@ -159,7 +131,7 @@ GameBoard >> fillWith: players [
 	|aDeckOfCards|
 	aDeckOfCards := DeckOfCards new.
 
-	players do: [ :each | collectionOfShips add: each ].
+	collectionOfShips := players collect: [ :each | each ].
 
 	1 to: collectionOfShips size do: [ :counter | 
 		aDeckOfCards designateRandomCardTo: counter from: self.
@@ -176,12 +148,12 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 ]
 
 { #category : #validation }
-GameBoard >> laps [
-	^ laps
+GameBoard >> lapOfShip: aNumber [
+	^ ((self shipWith: aNumber) actualPosition ) currentLap.
 ]
 
 { #category : #action }
-GameBoard >> lastEffect [
+GameBoard >> lastEffectUsed [
 	^lastEffectUsed.
 ]
 
@@ -191,7 +163,7 @@ GameBoard >> move: aShip [
 
 	aDieResult := self diceResultOf: aShip .
 	aNumberOfShip := aShip numberOfShip.
-	actualShipPosition := ((collectionOfShips at: aNumberOfShip)shipPosition) currentCell.
+	actualShipPosition := ((collectionOfShips at: aNumberOfShip)actualPosition) currentCell.
 	result := actualShipPosition + aDieResult .
 	auxResult := positionManager updateResult: result.
 	specialEffect := self specialEffectAtCell: auxResult.
@@ -201,22 +173,10 @@ GameBoard >> move: aShip [
 { #category : #action }
 GameBoard >> move: aShip using: specialEffect and: result [ 
 	|newPosition turnShip|
-	newPosition := positionManager manageCellsOf: aShip shipPosition at: result.
+	newPosition := positionManager manageCellsOf: aShip actualPosition at: result.
 	aShip changePosition: newPosition.
-	turnShip:= self shipWithNumber:  (self turn) .
+	turnShip:= self shipWith: turn .
 	lastEffectUsed:= specialEffect applyTo:  self  for: turnShip  . 
-]
-
-{ #category : #validation }
-GameBoard >> positionAtCollectionOf: aShip [
-
-	| anotherShip counter |
-	counter := 1.
-	anotherShip := collectionOfShips  at: counter.
-	[ anotherShip isTheSameAs: aShip ] whileFalse: [ 
-		counter := counter + 1.
-		anotherShip := collectionOfShips  at: counter ].
-	^ anotherShip
 ]
 
 { #category : #actions }
@@ -228,9 +188,9 @@ GameBoard >> positionManager [
 GameBoard >> ranking [
 	| array sortedArray |
 	array := collectionOfShips .
-	sortedArray := array sorted: [:player1 :player2 | (player1 shipPosition ) currentLap    < (player2 shipPosition ) currentLap  ].
-	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 shipPosition )currentCell  < (player2 shipPosition )  currentCell ].
-	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 shipPosition) currentParsec )nominalValue  < ((player2 shipPosition ) currentParsec)nominalValue  ].
+	sortedArray := array sorted: [:player1 :player2 | (player1 actualPosition ) currentLap    < (player2 actualPosition ) currentLap  ].
+	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 actualPosition )currentCell  < (player2 actualPosition )  currentCell ].
+	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 actualPosition) currentParsec )nominalValue  < ((player2 actualPosition ) currentParsec)nominalValue  ].
 	^sortedArray 
 	 
 ]
@@ -247,8 +207,8 @@ GameBoard >> resultOfCardsForAll [
 ]
 
 { #category : #positioning }
-GameBoard >> shipWithNumber: index [ 
-	^ (collectionOfShips  at: index )
+GameBoard >> shipWith: aNumber [ 
+	^ (collectionOfShips at: aNumber )
 ]
 
 { #category : #validation }
@@ -269,21 +229,6 @@ GameBoard >> store: aCard [
 ]
 
 { #category : #action }
-GameBoard >> throwVariousDices: aCollectionOfDices [
-
-	| result |
-	result := 0.
-	aCollectionOfDices do: [ :each | result := result + each throw ].
-
-	^ result
-]
-
-{ #category : #action }
-GameBoard >> turn [
-	^ turn
-]
-
-{ #category : #action }
 GameBoard >> turnOf: numberOfShip [
 
 	turn := numberOfShip.
@@ -297,10 +242,10 @@ GameBoard >> winner [
 
 	| counter shipLap |
 	counter := 1.
-	shipLap := (collectionOfShips at: counter) shipPosition currentLap.
+	shipLap := (collectionOfShips at: counter) actualPosition currentLap.
 	[ counter >= collectionOfShips size or: shipLap >= (laps + 1) ] 
 		whileFalse: [ counter := counter + 1. 
-			shipLap := (collectionOfShips at: counter) shipPosition currentLap.].
+			shipLap := (collectionOfShips at: counter) actualPosition currentLap.].
 
 	(counter <= collectionOfShips size and: shipLap >= (laps + 1))
 		ifTrue: [ ^ (collectionOfShips at: counter) numberOfShip ]

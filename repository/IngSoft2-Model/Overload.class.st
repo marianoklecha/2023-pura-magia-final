@@ -20,7 +20,7 @@ Overload >> amountToChange [
 
 { #category : #action }
 Overload >> apply: aGameBoard [ 
-	((aGameBoard shipWithNumber: (chosenPlayer numberOfShip))shipCards ) store: self.
+	((aGameBoard shipWith: (chosenPlayer numberOfShip))shipCards ) store: self.
 	^(self)
 ]
 
@@ -43,9 +43,9 @@ Overload >> permanent [
 
 { #category : #validation }
 Overload >> permanent: aShipsGame verify: aNumberOfShip [ 
-	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self ]. ] .
+	aShipsGame verifyIsTurnOf: aNumberOfShip.	
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
+	aShipsGame chosenCard: self .
 ]
 
 { #category : #instance }

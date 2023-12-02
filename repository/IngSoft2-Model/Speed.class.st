@@ -20,7 +20,7 @@ Speed >> amountToChange [
 
 { #category : #action }
 Speed >> apply: aGameBoard [ 
-	((aGameBoard shipWithNumber: (chosenShip numberOfShip))shipCards ) store: (self). 
+	((aGameBoard shipWith: (chosenShip numberOfShip))shipCards ) store: (self). 
 	^(self)
 ]
 
@@ -43,9 +43,9 @@ Speed >> permanent [
 
 { #category : #validation }
 Speed >> permanent: aShipsGame verify: aNumberOfShip [ 
-	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self ]. ] .
+	aShipsGame verifyIsTurnOf: aNumberOfShip.
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
+	aShipsGame chosenCard: self.
 ]
 
 { #category : #selection }

@@ -30,8 +30,8 @@ Redo >> behaveInstantaneousWith: aNumberOfShip [
 
 { #category : #action }
 Redo >> behavePermanentWith: aNumberOfShip [ 
-	(shipsGame playerTurn: aNumberOfShip) ifTrue:[
-			shipsGame chosenCard: self  ].
+	shipsGame verifyIsTurnOf: aNumberOfShip.
+	shipsGame chosenCard: self.
 ]
 
 { #category : #action }
@@ -63,14 +63,10 @@ Redo >> initializeWith: aShipsGame [
 { #category : #validation }
 Redo >> permanent: aShipsGame verify: aNumberOfShip [
 	aShipsGame verify: self IsInHandOf: aNumberOfShip.
+	cardToRedo := aShipsGame lastUsedCard .
 	cardToRedo permanent
 		ifFalse: [ self behaveInstantaneousWith: aNumberOfShip ]
 		ifTrue: [ self behavePermanentWith: aNumberOfShip ]
-]
-
-{ #category : #action }
-Redo >> redo: lastUsedCard [ 
-	cardToRedo := lastUsedCard .
 ]
 
 { #category : #instance }
