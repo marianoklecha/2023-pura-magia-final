@@ -37,11 +37,6 @@ Ship >> initializeWith: aNumberOfShip [
 ]
 
 { #category : #validation }
-Ship >> isTheSameAs: aShip [ 
-	^ aShip numberOfShip = numberOfShip.
-]
-
-{ #category : #validation }
 Ship >> numberOfShip [
 	^ numberOfShip
 ]

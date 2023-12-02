@@ -69,11 +69,6 @@ Redo >> permanent: aShipsGame verify: aNumberOfShip [
 		ifTrue: [ self behavePermanentWith: aNumberOfShip ]
 ]
 
-{ #category : #action }
-Redo >> redo: lastUsedCard [ 
-	cardToRedo := lastUsedCard .
-]
-
 { #category : #instance }
 Redo >> selected: aShipPosition [ 
 	chosenShip := aShipPosition .
