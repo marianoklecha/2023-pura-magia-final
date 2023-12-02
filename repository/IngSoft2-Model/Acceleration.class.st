@@ -18,6 +18,11 @@ Acceleration class >> with: aShipsGame [
 ]
 
 { #category : #action }
+Acceleration >> amountToChange [
+	^1.
+]
+
+{ #category : #action }
 Acceleration >> apply: aGameBoard [
 	aGameBoard store: self.
 	^(self)
@@ -42,6 +47,11 @@ Acceleration >> permanent [
 { #category : #validation }
 Acceleration >> permanent: aShipsGame verify: aNumberOfShip [ 
 	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
 			aShipsGame chosenCard: self ]. ] .
+]
+
+{ #category : #action }
+Acceleration >> selected: aShip [ 
+	^self.
 ]

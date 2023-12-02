@@ -2,8 +2,8 @@ Class {
 	#name : #Speed,
 	#superclass : #Object,
 	#instVars : [
-		'chosenPlayer',
-		'shipsGame'
+		'shipsGame',
+		'chosenShip'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,7 +20,7 @@ Speed >> amountToChange [
 
 { #category : #action }
 Speed >> apply: aGameBoard [ 
-	((aGameBoard shipWithNumber: (chosenPlayer numberOfShip))shipCards ) store: (self). 
+	((aGameBoard shipWithNumber: (chosenShip numberOfShip))shipCards ) store: (self). 
 	^(self)
 ]
 
@@ -44,11 +44,11 @@ Speed >> permanent [
 { #category : #validation }
 Speed >> permanent: aShipsGame verify: aNumberOfShip [ 
 	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
 			aShipsGame chosenCard: self ]. ] .
 ]
 
 { #category : #selection }
-Speed >> selected: aShipPosition [ 
-	chosenPlayer := aShipPosition .
+Speed >> selected: aShip [ 
+	chosenShip := aShip .
 ]

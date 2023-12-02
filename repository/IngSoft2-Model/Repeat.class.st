@@ -40,10 +40,15 @@ Repeat >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #action }
+Repeat >> permanent [
+	^false.
+]
+
 { #category : #validation }
 Repeat >> permanent: aShipsGame verify: aNumberOfShip [
 
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifFalse: [ ^ self ].
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
 	aShipsGame chosenCard: self.
 	aShipsGame cardDirectedTo: aNumberOfShip
 ]
