@@ -9,7 +9,7 @@ ProbabilityTests >> test001CheckDistributionOfEffectsIn1000GameboardsWithHyperJu
 | parsecs aProbability effectsProbabilities amountOfParsecsToMove collection1 parsc1 light1 parsc2 light2 |
 
 parsecs := 4. 
-aProbability := ProbabilityOfEffects new.
+aProbability := ProbabilityOfEffects with: 100.
 "array:=#(#(6 5 2) #(9 9 8 6 5 4 -5) #(2 1 -9) #(6 6 4 2 1) #(3 2 1) #(9 2) #(4 1) #(9 5))."
 parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.
@@ -43,7 +43,7 @@ ProbabilityTests >> test002CheckDifferentDistributionOfEffectsIn1000GameboardsWi
 | parsecs aProbability effectsProbabilities parsc1 light1 parsc2 light2 amountOfParsecsToMove collection1 |
 
 parsecs := 4. 
-aProbability := ProbabilityOfEffects new.
+aProbability := ProbabilityOfEffects with: 100.
 "array:=#(#(6 5 2) #(9 9 8 6 5 4 -5) #(2 1 -9) #(6 6 4 2 1) #(3 2 1) #(9 2) #(4 1) #(9 5))."
 parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.
@@ -77,7 +77,7 @@ ProbabilityTests >> test003CheckDifferentDistributionOfEffectsIn1000GameboardsWi
 | parsecs aProbability effectsProbabilities array parsc1 light1 parsc2 light2 amountOfParsecsToMove collection1 |
 
 parsecs := 4. 
-aProbability := ProbabilityOfEffects new.
+aProbability := ProbabilityOfEffects with: 100.
 "array:=#(#(6 5 2) #(9 9 8 6 5 4 -5) #(2 1 -9) #(6 6 4 2 1) #(3 2 1) #(9 2) #(4 1) #(9 5))."
 parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.

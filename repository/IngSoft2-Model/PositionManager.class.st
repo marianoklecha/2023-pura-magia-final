@@ -16,8 +16,9 @@ PositionManager class >> with: amountOfCells and: amountOfParsecs [
 { #category : #'manage move' }
 PositionManager >> change: aShipPosition changingLap: aResult [
 |result position newLap parsec newShipPosition|
-	result := aResult .
-		[ result   > cells ] whileTrue: [ 
+	result := aResult. position := 0. newLap := 0. parsec := 0. newShipPosition := nil.
+
+	[ result   > cells ] whileTrue: [ 
 		position:=result-cells.
 		newLap:= ((aShipPosition currentLap)+1) .
 		parsec := aShipPosition currentParsec .
@@ -29,7 +30,8 @@ PositionManager >> change: aShipPosition changingLap: aResult [
 { #category : #'manage action' }
 PositionManager >> change: aShipPosition withMoreParsecsThanMax: aResult [ 
 	|result position newShipPosition newLap parsecsVar|
-	result:= aResult .
+	result := aResult. position := 0. newLap := 0. parsecsVar := 0. newShipPosition := nil.
+	
 	[ result   > parsecs  ] whileTrue: [ 
 		position:=aShipPosition currentCell +1.
 		newShipPosition := self manageCellsOf: aShipPosition  at: position.
@@ -44,7 +46,8 @@ PositionManager >> change: aShipPosition withMoreParsecsThanMax: aResult [
 { #category : #'manage action' }
 PositionManager >> change: aShipPosition withNegative: aResult [ 
 	|newShipPosition result position newLap parsec|
-	result := aResult .
+	result := aResult. position := 0. newLap := 0. parsec := 0. newShipPosition := nil.
+	
 	[ result   < 0 ] whileTrue: [ 
 		(aShipPosition currentLap = 1) ifTrue: [ 
 				newShipPosition := ShipPosition createNew.
@@ -62,7 +65,7 @@ PositionManager >> change: aShipPosition withNegative: aResult [
 { #category : #'manage action' }
 PositionManager >> change: aShipPosition withNegativeParsecs: aResult [ 
 	|newShipPosition  result  position newLap parsecsVar |
-	result := aResult .
+	result := aResult. position := 0. newLap := 0. parsecsVar := 0. newShipPosition := nil.
 	[ result   < 0 ] whileTrue: [ 
 		
 		position:=aShipPosition currentCell -1.
@@ -85,8 +88,9 @@ PositionManager >> initializeWith: anAmountOfCells and: anAmountOfParsecs [
 { #category : #'manage move' }
 PositionManager >> manageCellsOf: aShipPosition at: newCell [
 	|newShipPosition  result playerPosition  newLap parsec|
+	result := newCell. newLap := 0. parsec := 0. newShipPosition := nil.
 	playerPosition := aShipPosition currentCell .
-	result := newCell. 
+	
 	(result   <= cells) ifTrue: [ 
 		newLap:=aShipPosition currentLap.
 		parsec := aShipPosition currentParsec .
@@ -105,6 +109,7 @@ PositionManager >> manageCellsOf: aShipPosition at: newCell [
 { #category : #'manage move' }
 PositionManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 |newShipPosition  result  position newLap |
+	newLap := 0. newShipPosition := nil. position :=0.
 	result := aNewParsec + (aShipPosition currentParsec )nominalValue . 
 	(result   <= parsecs ) ifTrue: [ 
 		newLap:=aShipPosition currentLap.

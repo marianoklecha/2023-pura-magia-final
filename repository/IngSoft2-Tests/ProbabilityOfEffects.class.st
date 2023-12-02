@@ -1,8 +1,16 @@
 Class {
 	#name : #ProbabilityOfEffects,
 	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#instVars : [
+		'amountOfCells'
+	],
+	#category : #'IngSoft2-Tests'
 }
+
+{ #category : #initialization }
+ProbabilityOfEffects class >> with: aNumber [ 
+	^(self new) initializeWith: aNumber.
+]
 
 { #category : #calculating }
 ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
@@ -21,7 +29,7 @@ ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
 
 { #category : #calculating }
 ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
-	|gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
+	|gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalEmptyCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
 	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs .
 	
 		totalWormHoles := 0.
@@ -29,7 +37,7 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalMoonWalks := 0. 
 		totalHyperJumps := 0. 
 		totalAtomicBombs := 0. 
-		totalNormalCells := 0.
+		totalEmptyCells := 0.
 		totalSpecialCardsCells := 0.
 		totalCells:= 0.
 		
@@ -40,14 +48,14 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalHyperJumps := totalHyperJumps + (each amountOf: HyperJump). 
 		totalAtomicBombs := totalAtomicBombs + (each amountOf: AtomicBomb).
 		totalSpecialCardsCells := totalSpecialCardsCells + (each amountOf: CardAssignation).
-		totalNormalCells := totalNormalCells + (each amountOfNormalCells).
+		totalEmptyCells := totalEmptyCells + (each amountOfEmptyCells).
 		
 		
-		totalCells:= each amountOfCells + totalCells.].
+		totalCells:= amountOfCells + totalCells.].
 		
 	
 	arrayWithTemporalVariables := OrderedCollection new.
-	arrayWithTemporalVariables add: totalNormalCells.
+	arrayWithTemporalVariables add: totalEmptyCells.
 	arrayWithTemporalVariables add: totalWormHoles.
 	arrayWithTemporalVariables add: totalSpeedUps.
 	arrayWithTemporalVariables add: totalMoonWalks.
@@ -68,8 +76,27 @@ ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites forH
 	| array |
 	array := OrderedCollection new.
 	1 to: 5000 do: [ :index | 
-		array add: ((GameBoard with: 100 and: 1) addEffects: arrayOfEffectsProbabilites
-		forHyperJump: aCollectionOfDifferentParsecs) ].
+		array add: ((GameBoard with: 100 and: 1) addEffectsUsing: arrayOfEffectsProbabilites
+		andForHyperJump: aCollectionOfDifferentParsecs) ].
 
 	^ array
+]
+
+{ #category : #creation }
+ProbabilityOfEffects >> createCollectionFrom: aCollection [
+
+	| newCollection |
+	newCollection := OrderedCollection new.
+	newCollection add: (aCollection at: 1).
+	2 to: aCollection size do: [ :index | 
+		newCollection add:
+			(newCollection at: index - 1) + (aCollection at: index) ].
+
+
+	^ newCollection
+]
+
+{ #category : #creation }
+ProbabilityOfEffects >> initializeWith: aNumber [ 
+	amountOfCells := aNumber
 ]

@@ -8,11 +8,6 @@ Class {
 }
 
 { #category : #initialization }
-Acceleration class >> amountToChange [
-	^1.
-]
-
-{ #category : #initialization }
 Acceleration class >> with: aShipsGame [ 
  ^(self new) initializeWith: aShipsGame.
 ]
@@ -25,7 +20,7 @@ Acceleration >> amountToChange [
 { #category : #action }
 Acceleration >> apply: aGameBoard [
 	aGameBoard store: self.
-	^(self)
+	^self
 ]
 
 { #category : #action }
@@ -46,9 +41,9 @@ Acceleration >> permanent [
 
 { #category : #validation }
 Acceleration >> permanent: aShipsGame verify: aNumberOfShip [ 
-	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
-	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self ]. ] .
+	aShipsGame verifyIsTurnOf: aNumberOfShip.
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
+	aShipsGame chosenCard: self.
 ]
 
 { #category : #action }

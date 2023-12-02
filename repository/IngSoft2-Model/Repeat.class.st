@@ -17,7 +17,7 @@ Repeat class >> with: aShipsGame [
 Repeat >> apply: aGameBoard [ 
 	|lastEffectUsed counter|
 	counter:=1.
-	lastEffectUsed:= aGameBoard lastEffect  .
+	lastEffectUsed:= aGameBoard lastEffectUsed  .
 	lastEffectUsed applyTo: aGameBoard  for: chosenShip  .
 	^(self)
 ]

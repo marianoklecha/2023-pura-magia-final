@@ -14,6 +14,11 @@ Ship class >> with: aNumberOfShip [
 	^(self new) initializeWith: aNumberOfShip.
 ]
 
+{ #category : #action }
+Ship >> actualPosition [
+	^aShipPosition.
+]
+
 { #category : #adding }
 Ship >> add: aCard [ 
 	aShipCards add: aCard.
@@ -52,6 +57,10 @@ Ship >> shipCards [
 ]
 
 { #category : #action }
-Ship >> shipPosition [
-	^aShipPosition.
+Ship >> throw: aCollectionOfDices [
+	| result |
+	result := 0.
+	aCollectionOfDices do: [ :each | result := result + each throw ].
+
+	^ result
 ]

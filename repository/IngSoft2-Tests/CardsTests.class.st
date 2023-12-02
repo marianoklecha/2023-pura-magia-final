@@ -107,8 +107,8 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	aGameBoard add: overload1 to: player.
 	aGameBoard add: overload2 to: player.
 
-	self assert: (((((aGameBoard shipWithNumber: 1)shipCards ) cardsInHand ) at: 3) isKindOf: Overload).
-	self assert: (((((aGameBoard shipWithNumber: 1)shipCards ) cardsInHand ) at: 4) isKindOf: Overload).
+	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 3) isKindOf: Overload).
+	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 4) isKindOf: Overload).
 	
 	
 ]
@@ -131,12 +131,12 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 
 	overload1 from: player applyTo: player2. 
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
 	
 	
 	
@@ -159,14 +159,14 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	aGameBoard add: speed1 to: player.
 	aGameBoard add: speed2 to: player2.
 
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
 	speed1 from: player applyTo: player.
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 7 .
+	self assert: (aGameBoard cellOfShip:  1) equals: 7 .
 	
 	
 	
@@ -189,17 +189,17 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	aGameBoard add: acceleration1 to: player.
 	aGameBoard add: acceleration2 to: player2.
 		
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
 	acceleration1 applyToAllFrom: player.
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 7 .
-	self assert: (aGameBoard checkLapOf:   (aGameBoard shipWithNumber: 1)) equals: 1 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 3 .
-	self assert: (aGameBoard checkLapOf:   (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
+	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
+	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
 	
 	
 	
@@ -225,12 +225,12 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	overload  from: player  applyTo: player2 .
 	cancellation from: player2 applyTo: player2 canceled: overload .
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
 	
 	
 	
@@ -253,13 +253,13 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	aGameBoard add: cancellation to: player2.
 	
 	speed from: player applyTo: player . 
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	cancellation from: player2  applyTo: player  canceled: speed .	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 7 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
 ]
 
 { #category : #tests }
@@ -279,13 +279,13 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	aGameBoard add: cancellation to: player2.
 
 	acceleration applyToAllFrom: player . 
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	cancellation from: player2 canceled: acceleration .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 7 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
 ]
 
 { #category : #tests }
@@ -303,11 +303,11 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 
 	aGameBoard add: repeat   to: player.
 
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	repeat from: player to: player . 
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 3 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 3 .
 ]
 
 { #category : #tests }
@@ -325,11 +325,11 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 
 	aGameBoard add: repeat   to: player.
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	repeat from: player  to: player2  . 
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 1 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 1 .
 ]
 
 { #category : #tests }
@@ -346,11 +346,11 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	player2:=2.
 	aGameBoard add: repeat   to: player.
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	repeat from: player. 
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
 ]
 
 { #category : #tests }
@@ -367,11 +367,11 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	player2:=2.
 
 	aGameBoard add: repeat   to: player.	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	repeat from: player. 
 	
-	self assert: (aGameBoard checkPositionOf:  ((aGameBoard shipWithNumber: 2)) ) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
 ]
 
 { #category : #tests }
@@ -404,12 +404,12 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	player2:=2.
 	aGameBoard add: repeat   to: player.
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	repeat  from: player  to: player .
 		
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 5 .
-	self assert: (aGameBoard checkLapOf:  (aGameBoard shipWithNumber: 1)) equals: 1 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
+	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
 ]
 
 { #category : #tests }
@@ -427,14 +427,14 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	aGameBoard add: redo to: player2.
 	
 	overload from: player applyTo: player2 . 
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo  from: player2 to: player .
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer .
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 4 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
 		
 	
 	
@@ -458,16 +458,16 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	aGameBoard add: acceleration to: player2.
 
 	acceleration applyToAllFrom:  player . 
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo from: player2 . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer .
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 1 .
-	self assert: (aGameBoard checkLapOf:   (aGameBoard shipWithNumber: 1)) equals: 2 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
-	self assert: (aGameBoard checkLapOf:   (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 1 .
+	self assert: (aGameBoard lapOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
 		
 	
 	
@@ -489,14 +489,14 @@ CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	aGameBoard add: redo to: player2.
 
 	speed from: player applyTo: player . 
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo from: player2 to: player2 . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer .
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
 		
 	
 	
@@ -522,18 +522,18 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	aGameBoard add: speed2 to: player2.
 	
 	speed1 from: player applyTo: player. 
-	aGame throwNextPlayer . "1-P4 2-P0"
+	aGame throwNextShip . "1-P4 2-P0"
 	speed2 from: player2  applyTo: player2. 
-	aGame throwNextPlayer . "1-P4 2-P6"
+	aGame throwNextShip . "1-P4 2-P6"
 	cancellation  from: player applyTo: player2  canceled: speed2 . 
 	redo cancellationFrom: player2 to: player canceled: speed1.
-	aGame throwNextPlayer . "1-P7 2-P6"
-	aGame throwNextPlayer . "1-P7L1 2-P3L2"
+	aGame throwNextShip . "1-P7 2-P6"
+	aGame throwNextShip . "1-P7L1 2-P3L2"
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 7 .
-	self assert: (aGameBoard checkLapOf:  (aGameBoard shipWithNumber: 1)) equals: 1 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 3 .
-	self assert: (aGameBoard checkLapOf:  (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
+	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
+	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
 		
 	
 	
@@ -559,15 +559,15 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	aGameBoard add: redo2 to: player2.
 
 	speed  from: player applyTo: player .
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo1 from: player2  to: player2 .
 	redo2 from: player2  to: player2 .
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer .
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
 		
 	
 	
@@ -611,15 +611,15 @@ CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 	ship2:=2.
 	aGameBoard add: repeat to: ship2.
 	
-	aGame throwNextPlayer . "P1 3 LAP1 P2 0 LAP1 "
-	aGame throwNextPlayer . "P1 3 LAP1 P2 1 LAP1 "
-	aGame throwNextPlayer . "P1 6 LAP1 P2 1 LAP1 "
-	aGame throwNextPlayer . "P1 6 LAP1 P2 6 LAP1 "
-	aGame throwNextPlayer . "P1 0 LAP2 P2 6 LAP1 "
+	aGame throwNextShip . "P1 3 LAP1 P2 0 LAP1 "
+	aGame throwNextShip . "P1 3 LAP1 P2 1 LAP1 "
+	aGame throwNextShip . "P1 6 LAP1 P2 1 LAP1 "
+	aGame throwNextShip . "P1 6 LAP1 P2 6 LAP1 "
+	aGame throwNextShip . "P1 0 LAP2 P2 6 LAP1 "
 	
 	self assert: aGame winner equals: 1. "Ship 1 has won"
 	repeat from: ship2 to: ship. "P1 5 LAP1 P2 6 LAP1 "
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	self assert: aGame winner equals: 2. "Ship 2 has finally won"
 ]
 
@@ -632,7 +632,7 @@ CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
 	aNumberOfShip := 1.
 	aDeckOfCards designateRandomCardTo: aNumberOfShip from: aGameBoard .
 	
-	self assert: (aGameBoard shipWithNumber: aNumberOfShip)shipCards cardsInHand size equals: 2+1 "Two are random"
+	self assert: (aGameBoard shipWith: aNumberOfShip)shipCards cardsInHand size equals: 2+1 "Two are random"
 ]
 
 { #category : #tests }
@@ -652,14 +652,14 @@ CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	aGameBoard add: repeat to: player.
 	aGameBoard add: redo to: player2. 
 	
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
 	repeat from: player  to: player2  . 
 	redo from: player2  to: player .
 	
-	self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 2)) equals: 1 .
-	self assert: (aGameBoard checkPositionOf: (aGameBoard shipWithNumber: 1)) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 1 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
 ]
 
 { #category : #tests }
@@ -681,16 +681,16 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 	aGameBoard add: redo to: player2.
 
 	overload  from: player  applyTo: player2 .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	
 	redo from: player2 to: player .
 	cancellation from: player applyTo: player canceled: overload  .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 6 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 1)	 equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2)	 equals: 6 .
 	
 	
 	
@@ -714,15 +714,15 @@ CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 	aGameBoard add: cancellation to: player.
 
 	speed from: player applyTo: player . 
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo from: player2 to: player2 . 
 	cancellation from: player applyTo: player2 canceled: speed. 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer . 
-	aGame throwNextPlayer .
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 2)) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
 		
 	
 	
@@ -747,14 +747,14 @@ CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
 	aGameBoard add: redo to: player2 .
 
 	acceleration applyToAllFrom: player . 
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	redo from: player2.
-	aGame throwNextPlayer .
+	aGame throwNextShip .
 	cancellation from: player canceled: acceleration .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextShip .
+	aGame throwNextShip .
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard shipWithNumber: 1)) equals: 8 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
 ]
 
 { #category : #tests }
@@ -776,7 +776,7 @@ CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 	aGameBoard add: redo to: player2.
 
 	overload from: player applyTo: player2.
-	aGame throwNextPlayer.
+	aGame throwNextShip.
 	redo from: player2 to: player.
 	self
 		should: [ 
@@ -802,7 +802,7 @@ CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
 	aGameBoard add: redo to: player2.
 
 	speed from: player applyTo: player . 
-	aGame throwNextPlayer . 
+	aGame throwNextShip . 
 	redo from: player2 to: player2 . 
 	self
 		should: [ 

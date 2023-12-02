@@ -28,14 +28,6 @@ ShipCards >> cardsInHand [
 	^aCollectionOfCards
 ]
 
-{ #category : #action }
-ShipCards >> fillRedoWith: lastUsedCard [
-
-	aCollectionOfCards do: [ :each | 
-		(each isKindOf: Redo) ifTrue: [ 
-			each redo: lastUsedCard ] ]
-]
-
 { #category : #initialization }
 ShipCards >> initializeNew [
 	aCollectionOfCards := OrderedCollection new.
@@ -56,4 +48,14 @@ ShipCards >> resultOfCards [
 { #category : #action }
 ShipCards >> store: aCardChosenForMe [ 
 	aCollectionOfCardsForMe add: aCardChosenForMe.
+]
+
+{ #category : #action }
+ShipCards >> verifyThatIncludes: aCard [
+
+	| anArrayOfCards |
+	anArrayOfCards := self cardsInHand.
+
+	(anArrayOfCards includes: aCard) ifFalse: [ 
+		Error signal: 'The card you want to use is not in your ships hand' ]
 ]

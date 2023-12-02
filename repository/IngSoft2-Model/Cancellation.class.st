@@ -72,7 +72,7 @@ Cancellation >> permanent [
 { #category : #validation }
 Cancellation >> permanent: aShipsGame verify: aNumberOfShip [
 
-	(aShipsGame verify: self IsInHandOf: aNumberOfShip) ifFalse: [ ^ self ].
+	aShipsGame verify: self IsInHandOf: aNumberOfShip.
 	aShipsGame chosenCard: self.
 	aShipsGame cardDirectedTo: aNumberOfShip
 ]

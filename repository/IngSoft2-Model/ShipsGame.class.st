@@ -4,11 +4,11 @@ Class {
 	#instVars : [
 		'result',
 		'gameboard',
-		'numberOfPlayer',
-		'amountOfPlayers',
 		'chosenCard',
 		'lastUsedCard',
-		'aCollectionOfUsedCards'
+		'aCollectionOfUsedCards',
+		'numberOfShip',
+		'amountOfShips'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,18 +25,15 @@ ShipsGame >> applyChosenCard [
 
 { #category : #action }
 ShipsGame >> cardDirectedTo: aNumberOfShip [ 
-	chosenCard selected: (gameboard shipWithNumber: aNumberOfShip)
+	chosenCard selected: (gameboard shipWith: aNumberOfShip)
 ]
 
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
 	| aShip |
-	aShip := gameboard shipWithNumber: aNumberOfShip.
-	(aShip shipCards )  fillRedoWith: lastUsedCard.
-
+	aShip := gameboard shipWith: aNumberOfShip.
 	aCard permanent: self verify: aNumberOfShip .
-	
 ]
 
 { #category : #instance }
@@ -45,20 +42,15 @@ ShipsGame >> chosenCard: aCard [
 ]
 
 { #category : #creation }
-ShipsGame >> create: anAmountOfPlayers [
+ShipsGame >> create: anAmountOfShips [
 
-	| playersCollection |
-	playersCollection := OrderedCollection new.
+	| shipsCollection |
+	shipsCollection := OrderedCollection new.
 
-	1 to: anAmountOfPlayers do: [ :count | 
-	playersCollection add: (Ship with: count) ].
+	1 to: anAmountOfShips do: [ :count | 
+	shipsCollection add: (Ship with: count) ].
 
-	^ playersCollection
-]
-
-{ #category : #action }
-ShipsGame >> gameboard [
-	^ gameboard
+	^ shipsCollection
 ]
 
 { #category : #intialization }
@@ -66,22 +58,14 @@ ShipsGame >> initializeWith: aResult [
 
 	result := aResult.
 	gameboard := nil.
-	numberOfPlayer := 1.
-	amountOfPlayers := 0.
+	numberOfShip := 1.
+	amountOfShips := 0.
 	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #action }
 ShipsGame >> lastUsedCard [
 	^ lastUsedCard
-]
-
-{ #category : #validation }
-ShipsGame >> playerTurn: aNumberOfShip [
-	aNumberOfShip = numberOfPlayer
-		ifFalse: [ 
-		Error signal: 'Cannot use permanent card when its not their turn' ]
-		ifTrue: [ ^ true ]
 ]
 
 { #category : #validation }
@@ -95,44 +79,46 @@ ShipsGame >> result [
 ]
 
 { #category : #starting }
-ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
+ShipsGame >> startwith: anAmountOfShips and: aGameboard [
 
-	| players |
+	| ships |
 	gameboard := aGameboard.
-	players := self create: anAmountOfPlayers .
-	amountOfPlayers := anAmountOfPlayers. 
-	aGameboard fillWith: players
+	ships := self create: anAmountOfShips .
+	amountOfShips := anAmountOfShips. 
+	aGameboard fillWith: ships
 ]
 
 { #category : #action }
-ShipsGame >> throwNextPlayer [
-	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
-		gameboard turnOf: numberOfPlayer.
-		((numberOfPlayer := numberOfPlayer + 1)> amountOfPlayers )ifTrue: [ 
-			numberOfPlayer := 1.
+ShipsGame >> throwNextShip [
+	numberOfShip <= amountOfShips ifTrue:  [ 
+		gameboard turnOf: numberOfShip.
+		((numberOfShip := numberOfShip + 1)> amountOfShips )ifTrue: [ 
+			numberOfShip := 1.
 			 ].
 		 ]ifFalse: [ 
-			numberOfPlayer := 1.
-			gameboard turnOf: numberOfPlayer.
-			numberOfPlayer := numberOfPlayer + 1.
+			numberOfShip := 1.
+			gameboard turnOf: numberOfShip.
+			numberOfShip := numberOfShip + 1.
 			 ]
 ]
 
 { #category : #validation }
 ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 
-	| anArrayOfCards aShipCards |
-	aShipCards := (gameboard shipWithNumber: aNumberOfShip) shipCards.
-	anArrayOfCards := aShipCards cardsInHand.
+	| aShipCards aCollectionOfCards|
+	aShipCards := (gameboard shipWith: aNumberOfShip) shipCards.
+	aShipCards verifyThatIncludes: aCard .
+	aCollectionOfCards:= aShipCards cardsInHand.
+	aCollectionOfCards remove: aCard.
+	aCollectionOfUsedCards add: aCard.
+			
+]
 
-	(anArrayOfCards includes: aCard)
-		ifTrue: [ 
-			anArrayOfCards remove: aCard.
-			aCollectionOfUsedCards add: aCard.
-			^ true ]
-		ifFalse: [ 
-			Error signal: 'The card you want to use is not in your ships hand'.
-			^ false ]
+{ #category : #validation }
+ShipsGame >> verifyIsTurnOf: aNumberOfShip [
+
+	aNumberOfShip = numberOfShip ifFalse: [ 
+		Error signal: 'Cannot use permanent card when its not their turn' ]
 ]
 
 { #category : #validation }

@@ -7,8 +7,8 @@ Class {
 { #category : #action }
 WormHole >> applyTo: aGameBoard for: aChosenShip [
 	|newCell newShipPosition shipPosition|
-	newCell := (((aChosenShip shipPosition ) currentCell)-4).
-	shipPosition := aChosenShip shipPosition .
+	newCell := (((aChosenShip actualPosition ) currentCell)-4).
+	shipPosition := aChosenShip actualPosition .
 	newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
 	aChosenShip  changePosition: newShipPosition.
 	^self.
