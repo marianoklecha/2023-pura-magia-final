@@ -13,6 +13,14 @@ LoadedDie class >> with: numbers [
 	^(self new) initializeWith: numbers
 ]
 
+{ #category : #faces }
+LoadedDie >> faces [
+	|values highestValue|
+	values := numbers sorted: [:value1 :value2 | value1 > value2].
+	highestValue := values at: 1.
+	^highestValue.
+]
+
 { #category : #initialization }
 LoadedDie >> initializeWith: aNumbers [
 	numbers := aNumbers.

@@ -11,7 +11,8 @@ Class {
 		'lastEffectUsed',
 		'collectionOfShips',
 		'positionManager',
-		'collectionOfCardsForAllShips'
+		'collectionOfCardsForAllShips',
+		'spaceSheriff'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -115,14 +116,17 @@ GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
 	positionManager := PositionManager with: cells and: anAmountOfParsecs .
 	dieCollection := aCollectionOfDice .
+	spaceSheriff := SpaceSheriff with: dieCollection.
+	
 ]
 
 { #category : #action }
 GameBoard >> diceResultOf: aShip [
-	|dieResult finalResult|
-	dieResult  := 0.
+	|dieResult finalResult cardsResult|
 	dieResult  := aShip throw: dieCollection .
-	finalResult := dieResult + (aShip resultOfCards) + (self resultOfCardsForAll).
+	cardsResult := spaceSheriff verifyCardsEffectOn: aShip with: ((aShip resultOfCards) + (self resultOfCardsForAll)).
+	dieResult  := spaceSheriff verifyMoveOf: aShip with: dieResult.
+	finalResult := dieResult + cardsResult.
 	^finalResult .
 ]
 
@@ -211,6 +215,11 @@ GameBoard >> shipWith: aNumber [
 	^ (collectionOfShips at: aNumber )
 ]
 
+{ #category : #action }
+GameBoard >> spaceSheriff [
+	^ spaceSheriff
+]
+
 { #category : #validation }
 GameBoard >> specialEffectAtCell: aNumberOfCell [
 
@@ -230,11 +239,16 @@ GameBoard >> store: aCard [
 
 { #category : #action }
 GameBoard >> turnOf: numberOfShip [
-
 	turn := numberOfShip.
-	self winner = 0
-		ifTrue: [ self move: (collectionOfShips at: numberOfShip) ]
+	self verifyThereIsNotAWinner.
+	self move: (collectionOfShips at: numberOfShip).
+]
+
+{ #category : #action }
+GameBoard >> verifyThereIsNotAWinner [
+	(self winner = 0)
 		ifFalse: [ Error signal: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw' ]
+	
 ]
 
 { #category : #validation }

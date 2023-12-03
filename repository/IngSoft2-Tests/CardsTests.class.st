@@ -815,3 +815,69 @@ CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
+	| overload1 aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 1 1) and: #(1 1 3 1 1).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	overload1 := Overload with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: overload1 to: player2.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	overload1 from: player2 applyTo: player.
+	aGame throwNextShip .
+	
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
+	
+	aGame throwNextShip . "No logra salir"
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
+	| overload1 aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 3 1 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	overload1 := Overload with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: overload1 to: player2.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	overload1 from: player2 applyTo: player.
+	aGame throwNextShip .
+	
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
+	
+	aGame throwNextShip . "No logra salir"
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	
+	
+	
+	
+]

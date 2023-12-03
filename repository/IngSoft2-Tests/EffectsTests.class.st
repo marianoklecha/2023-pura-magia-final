@@ -610,3 +610,186 @@ self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
 
   
 ]
+
+{ #category : #tests }
+EffectsTests >> test053GameUsingJail [
+|aJail|
+
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+
+aJail := Jail new.
+
+aGameBoard add: aJail at: 8.
+
+aGame throwNextShip .
+aGame throwNextShip.
+self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  Jail ) .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test054ShipFallsInJailAndCantGetOut [
+|aJail|
+
+self setUpLoadedDiceWith: #(1 1 2) and: #(7 3 1).
+self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+
+aJail := Jail new.
+
+aGameBoard add: aJail at: 8.
+
+aGame throwNextShip .
+aGame throwNextShip .
+aGame throwNextShip .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test055ShipFallsInJailAndCanGetOutByHighestThrow [
+|aJail|
+
+self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
+self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+
+aJail := Jail new.
+
+aGameBoard add: aJail at: 8.
+
+aGame throwNextShip .
+aGame throwNextShip .
+aGame throwNextShip .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 9.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test056ShipFallsInJailByFallingInWormHoleAndCanMove [
+|aJail aWormhole|
+
+self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
+self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+
+aJail := Jail new.
+aWormhole := WormHole new.
+
+aGameBoard add: aWormhole at: 8.
+aGameBoard add: aJail at: 4.
+
+aGame throwNextShip .
+aGame throwNextShip .
+aGame throwNextShip .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test057ShipFallsInJailByFallingInSpeedUpAndCanMove [
+|aJail aSpeedUp|
+
+self setUpLoadedDiceWith: #(1 1 1) and: #(3 1 1).
+self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+
+aJail := Jail new.
+aSpeedUp := SpeedUp new.
+
+aGameBoard add: aSpeedUp at: 4.
+aGameBoard add: aJail at: 8.
+
+aGame throwNextShip .
+aGame throwNextShip .
+aGame throwNextShip .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test058ShipFallsInJailByFallingInHyperJumpAndCanMove [
+| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 aJail|
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+
+parsc1 := Parsecs with: 6.
+light1 := LightYears with: 9.
+parsc2 := Parsecs with: 2.
+light2 := LightYears with: 3.
+
+amountOfParsecsToMove:= OrderedCollection new.
+collection1:=OrderedCollection new.
+collection1 add: parsc1 .
+collection1 add: light1  .
+collection1 add: parsc2   .
+collection1 add: light2  .
+
+amountOfParsecsToMove add: collection1 .
+parsecs := 4. 
+hyperJump := HyperJump with: amountOfParsecsToMove .
+aJail := Jail new.
+aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard add: hyperJump  at: 3 .
+aGameBoard add: aJail at: 4.
+
+aGame throwNextShip.
+aGame throwNextShip.
+
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell ) equals: 7  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test059ShipFallsInJailAndAtomicBombDoesNotMoveIt [
+|aJail anAtomicBomb|
+
+self setUpLoadedDiceWith: #(1 1 1) and: #(7 3 1).
+self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+
+aJail := Jail new.
+anAtomicBomb := AtomicBomb new.
+
+aGameBoard add: anAtomicBomb at: 4.
+aGameBoard add: aJail at: 8.
+
+aGame throwNextShip .
+aGame throwNextShip .
+ 
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8.
+self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0.
+
+
+
+
+
+  
+]
