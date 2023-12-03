@@ -10,7 +10,8 @@ AtomicBomb >> applyTo: aGameBoard for: aShip [
 	| ship |
 	1 to: aGameBoard amountOfShipsPlaying do: [ :number | 
 		ship := aGameBoard shipWith: number.
-		self positionAtStartFor: ship ].
+		(aGameBoard spaceSheriff isKeepingJailed: ship) ifFalse: [ 
+			self positionAtStartFor: ship ] ].
 	^ self
 ]
 
