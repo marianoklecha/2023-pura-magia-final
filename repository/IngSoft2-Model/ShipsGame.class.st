@@ -7,8 +7,8 @@ Class {
 		'chosenCard',
 		'lastUsedCard',
 		'aCollectionOfUsedCards',
-		'numberOfShip',
-		'amountOfShips'
+		'amountOfShips',
+		'turnToThrow'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -58,14 +58,14 @@ ShipsGame >> initializeWith: aResult [
 
 	result := aResult.
 	gameboard := nil.
-	numberOfShip := 1.
+	turnToThrow := 1.
 	amountOfShips := 0.
 	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #action }
 ShipsGame >> lastUsedCard [
-	^ lastUsedCard
+	^ lastUsedCard .
 ]
 
 { #category : #validation }
@@ -90,16 +90,11 @@ ShipsGame >> startwith: anAmountOfShips and: aGameboard [
 
 { #category : #action }
 ShipsGame >> throwNextShip [
-	numberOfShip <= amountOfShips ifTrue:  [ 
-		gameboard turnOf: numberOfShip.
-		((numberOfShip := numberOfShip + 1)> amountOfShips )ifTrue: [ 
-			numberOfShip := 1.
-			 ].
-		 ]ifFalse: [ 
-			numberOfShip := 1.
-			gameboard turnOf: numberOfShip.
-			numberOfShip := numberOfShip + 1.
-			 ]
+
+	gameboard verifyThereIsNotAWinner.
+	gameboard move: (gameboard shipWith: turnToThrow).
+	turnToThrow := turnToThrow + 1.
+	turnToThrow <= amountOfShips ifFalse: [ turnToThrow := 1 ]
 ]
 
 { #category : #validation }
@@ -117,7 +112,7 @@ ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 { #category : #validation }
 ShipsGame >> verifyIsTurnOf: aNumberOfShip [
 
-	aNumberOfShip = numberOfShip ifFalse: [ 
+	aNumberOfShip = turnToThrow ifFalse: [ 
 		Error signal: 'Cannot use permanent card when its not their turn' ]
 ]
 

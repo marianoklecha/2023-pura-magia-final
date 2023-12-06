@@ -43,6 +43,14 @@ SpaceSheriff >> jail: aShip [
 ]
 
 { #category : #action }
+SpaceSheriff >> setFree: aShip [
+
+	(shipsInJail includes: aShip)
+		ifTrue: [ shipsInJail remove: aShip ]
+		ifFalse: [ Error signal: 'The ship you want to free is not in Jail' ]
+]
+
+{ #category : #action }
 SpaceSheriff >> verifyMoveOf: aShip with: aResult [
 
 	(shipsInJail includes: aShip)

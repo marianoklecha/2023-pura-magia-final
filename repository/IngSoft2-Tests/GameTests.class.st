@@ -101,7 +101,7 @@ self deny: aGame result equals: aShip
 { #category : #tests }
 GameTests >> test004GameIsStartedWithAGameBoardThenCheckTheAmountOfCells [
 | aShip  players|
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 aShip  := ShipPosition  new.
 players := OrderedCollection new.
 players add: aShip .
@@ -116,7 +116,7 @@ self assert: aGameBoard amountOfCells equals: 4 ." "OBSOLET BECAUSE WE ADDED THE
 { #category : #tests }
 GameTests >> test005ShipHasPosition [
 | aPlayer   dice  players|
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 aPlayer := ShipPosition   new.
 players := OrderedCollection new.
 players add: aPlayer .
@@ -135,7 +135,7 @@ self assert: (aGameBoard playerPosition: dice ) equals: 0." "OBSOLET BECAUSE WE 
 { #category : #tests }
 GameTests >> test006ShipPositionLowerThanTotalCellsThenNotWinner [
 | aPlayer   players|
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
@@ -151,7 +151,7 @@ self deny: aGame result equals: aPlayer." "OBSOLET BECAUSE WE ADDED THE CARDS"
 { #category : #tests }
 GameTests >> test007ShipPositionSameAsTotalCellsThenWinner [
 |  aPlayer  dice players|
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
@@ -171,7 +171,7 @@ aGameBoard move: aPlayer adding: dice."
 { #category : #tests }
 GameTests >> test008PlayerPlayTheGame2RoundsThenFinalPositionEqualsAmountOfCells [
 | aPlayer   dice players|
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
@@ -188,7 +188,7 @@ self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
 { #category : #tests }
 GameTests >> test009PlayersPlayTheGame2RoundsThenCheckPositions [
 | marian delfi  players  dice |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -212,7 +212,7 @@ self assert: (aGameBoard  checkPositionOf: marian  )  equals: 3.
 { #category : #tests }
 GameTests >> test010PlayersPlayTheGame3RoundsThenPlayer1Wins [
 | marian delfi  players  dice |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -245,7 +245,7 @@ self assert: (aGameBoard  checkPositionOf: marian  )  equals: 4."
 { #category : #tests }
 GameTests >> test011PlayersPlayWithRoundsThenCheckPosition [
 | marian delfi  players  dice |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -274,7 +274,7 @@ aGameBoard := GameBoard with: cells and:1 .
 { #category : #tests }
 GameTests >> test011PlayersRoundsUntilOneWins [
 | marian delfi  players  dice |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -305,7 +305,7 @@ self deny: (aGame winner)equals: delfi."
 { #category : #tests }
 GameTests >> test012PlayersRoundsUntilOneWins [
 | marian delfi  players  dice |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -334,7 +334,7 @@ aGameBoard := GameBoard with: cells and:1.
 { #category : #tests }
 GameTests >> test013PlayWithLoadedDiceThenWinsPlayer2 [
 | marian delfi  players  dice  |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.
@@ -361,7 +361,7 @@ aGameBoard := GameBoard with: cells and:1.
 { #category : #tests }
 GameTests >> test014playWithRandomDiceThenWinner [
 | marian delfi  players  aDice  |
-aGame:= GameTest initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 marian := ShipPosition new.
 delfi := ShipPosition new.
 players := OrderedCollection new.

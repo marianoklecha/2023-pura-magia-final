@@ -1081,3 +1081,138 @@ CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test040TypeCardFreedomExistsThenAssert [
+	
+	|freedom|
+	freedom := Freedom new.
+	self assert: (freedom  isKindOf:  Freedom) .
+]
+
+{ #category : #tests }
+CardsTests >> test041ShipUsesFreedomThenGetsOutOfJail [
+	| aFreedom aJail  player |
+
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+	
+	aFreedom := Freedom with: aGame  .
+	aJail := Jail new .
+	player:= 1.
+	aGameBoard add: aFreedom to: player.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	aFreedom from: player applyTo: player. "Se libera"
+	aGame throwNextShip .
+	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test042ShipUsesFreedomOnAPlayerNotInJailThenError [
+	| aFreedom aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	aFreedom := Freedom with: aGame  .
+	aJail := Jail new .
+	player:= 1.
+	player2:= 2.
+	aGameBoard add: aFreedom to: player.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	self
+		should: [ 
+		aFreedom from: player applyTo: player2 ]
+		raise: Error
+		withMessage:
+		'The ship you want to free is not in Jail'
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test043ShipUsesFreedomAndAnotherShipRedoToBeFree [
+	| aJail  player player2 redo aFreedom|
+
+	self setUpLoadedDiceWith: #(1 1) and: #(1 1).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	redo := Redo with: aGame  .
+	aFreedom := Freedom with: aGame .
+	aJail := Jail new .
+	player:=1.
+	player2:=2.
+	aGameBoard add: aFreedom to: player.
+	aGameBoard add: redo to: player2.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip . "1 Cae en Jail"
+	aGame throwNextShip . "2 Cae en Jail"
+	aFreedom from: player applyTo: player . 
+	redo from: player2 to: player2 . 
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test044ShipUsesRedoOfARedoOfAFreedomThenIsFree [
+	| aJail  player player2 player3 redo redo2 aFreedom|
+
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	self setUpGameWith: 3 andGameboardWith: 10 and: 2.
+	
+	aFreedom := Freedom with: aGame .
+	redo := Redo with: aGame  .
+	redo2 := Redo with: aGame  .
+	aJail := Jail new .
+	player:= 1.
+	player2:= 2.
+	player3:= 3.
+	aGameBoard add: aFreedom to: player.
+	aGameBoard add: redo to: player2.
+	aGameBoard add: redo2 to: player3.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip . "1 Cae en Jail"
+	aGame throwNextShip . "2 Cae en Jail"
+	aGame throwNextShip . "3 Cae en Jail"
+	aFreedom from: player applyTo: player . 
+	redo from: player2 to: player2 . 
+	redo2 from: player3 to: player3 . 
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	aGame throwNextShip . 
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 6 .
+	
+	
+	
+	
+]
