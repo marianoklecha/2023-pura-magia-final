@@ -15,15 +15,15 @@ Cancellation class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Cancellation >> apply: aGameBoard [ 
-	| collectionCards|
+Cancellation >> apply: aGameBoard [
+
+	| collectionCards |
 	collectionCards := chosenShip shipCards cardsForMe.
 	(collectionCards includes: cardToRemove)
 		ifTrue: [ collectionCards remove: cardToRemove ]
-		ifFalse: [ self applyForCardsForAllTo: aGameBoard].
-	
-	^(self)
-	
+		ifFalse: [ self applyForCardsForAllTo: aGameBoard ].
+
+	^ self
 ]
 
 { #category : #action }
@@ -31,10 +31,10 @@ Cancellation >> applyForCardsForAllTo: aGameBoard [
 
 	| cardsForAllShips |
 	cardsForAllShips := aGameBoard cardsForAllShips.
-	(cardsForAllShips includes: cardToRemove) ifTrue: [ 
-		cardsForAllShips remove: cardToRemove.
-		] ifFalse: [Error signal: 'The card you want to cancel is not affecting the ship'].
-	
+	(cardsForAllShips includes: cardToRemove)
+		ifTrue: [ cardsForAllShips remove: cardToRemove ]
+		ifFalse: [ 
+			Error signal: 'The card you want to cancel is not affecting the ship' ]
 ]
 
 { #category : #initialization }
@@ -60,8 +60,9 @@ Cancellation >> from: aNumberOfShip canceled: aCard [
 ]
 
 { #category : #initialization }
-Cancellation >> initializeWith: aShipsGame [ 
-	shipsGame := aShipsGame .
+Cancellation >> initializeWith: aShipsGame [
+
+	shipsGame := aShipsGame
 ]
 
 { #category : #action }

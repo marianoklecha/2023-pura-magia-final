@@ -10,4 +10,5 @@ Class {
 { #category : #action }
 Jail >> applyTo: aGameBoard for: aShip [ 
 	aGameBoard spaceSheriff jail: aShip.
+	^self.
 ]

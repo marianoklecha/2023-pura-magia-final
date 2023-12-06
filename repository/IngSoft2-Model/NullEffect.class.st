@@ -6,5 +6,5 @@ Class {
 
 { #category : #action }
 NullEffect >> applyTo: aGameBoard for: aShip [ 
-	^ aGameBoard lastEffectUsed .
+	^ self .
 ]

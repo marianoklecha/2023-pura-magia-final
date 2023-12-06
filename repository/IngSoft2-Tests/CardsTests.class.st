@@ -313,34 +313,36 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 { #category : #tests }
 CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	|player player2  repeat wormHole|
-	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1 1) and: #(1 6 3 1).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
-	aGameBoard add: wormHole at: 3.
+	aGameBoard add: wormHole at: 6.
 	
 	player:= 1.
 	player2:=2.
 
 	aGameBoard add: repeat   to: player.
 	
-	aGame throwNextShip .
-	aGame throwNextShip .
-	repeat from: player  to: player2  . 
+	aGame throwNextShip . "Cae en 2"
+	aGame throwNextShip . "Cae en 7"
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 1 .
+	aGame throwNextShip . "Cae en Wormhole"
+	repeat from: player  to: player2  . 
+		
+	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
 ]
 
 { #category : #tests }
 CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	|player player2 repeat moonWalk|
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	
 	moonWalk := MoonWalk with: -3.
 	repeat  := Repeat with: aGame .
-	aGameBoard add: moonWalk at: 3.
+	aGameBoard add: moonWalk at: 6.
 	
 	player:= 1.
 	player2:=2.
@@ -348,7 +350,9 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
-	repeat from: player. 
+	
+	aGame throwNextShip .
+	repeat from: player to: player2 . 
 	
 	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
 ]
@@ -405,9 +409,8 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	aGameBoard add: repeat   to: player.
 	
 	aGame throwNextShip .
-	aGame throwNextShip .
 	repeat  from: player  to: player .
-		
+			
 	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
 	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
 ]
@@ -600,26 +603,25 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 { #category : #tests }
 CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 	|ship ship2  repeat wormHole|
-	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	self setUpGameWith: 2 andGameboardWith: 8 and: 1.
+	self setUpLoadedDiceWith: #(1 1 ) and: #(6 5 ).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 1.
 	
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
-	aGameBoard add: wormHole at: 5.
+	aGameBoard add: wormHole at: 4.
 	
 	ship:= 1.
 	ship2:=2.
 	aGameBoard add: repeat to: ship2.
 	
-	aGame throwNextShip . "P1 3 LAP1 P2 0 LAP1 "
+	aGame throwNextShip . "P1 7 LAP1 P2 0 LAP1 "
 	aGame throwNextShip . "P1 3 LAP1 P2 1 LAP1 "
-	aGame throwNextShip . "P1 6 LAP1 P2 1 LAP1 "
-	aGame throwNextShip . "P1 6 LAP1 P2 6 LAP1 "
-	aGame throwNextShip . "P1 0 LAP2 P2 6 LAP1 "
+	aGame throwNextShip . "P1 4 LAP2 P2 1 LAP1 --> P1 0 LAP2 P2 1 LAP1"
 	
 	self assert: aGame winner equals: 1. "Ship 1 has won"
-	repeat from: ship2 to: ship. "P1 5 LAP1 P2 6 LAP1 "
-	aGame throwNextShip .
+	repeat from: ship2 to: ship. "P1 6 LAP1 P2 6 LAP1 "
+	
+	aGame throwNextShip . "P1 6 LAP1 P2 2 LAP2 "
 	self assert: aGame winner equals: 2. "Ship 2 has finally won"
 ]
 
@@ -638,7 +640,7 @@ CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
 { #category : #tests }
 CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	|player player2  repeat wormHole redo|
-	self setUpLoadedDiceWith: #(6 1) and: #(2 4).
+	self setUpLoadedDiceWith: #(2 1) and: #(2 4).
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	
 	wormHole := WormHole  new.
@@ -654,7 +656,8 @@ CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
-	
+	aGame throwNextShip .
+		
 	repeat from: player  to: player2  . 
 	redo from: player2  to: player .
 	
@@ -835,13 +838,11 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 	aGame throwNextShip .
 	overload1 from: player2 applyTo: player.
 	aGame throwNextShip .
-	
 	aGame throwNextShip . "Cae en Jail"
 	aGame throwNextShip .
-	
 	aGame throwNextShip . "No logra salir"
 	aGame throwNextShip .
-	
+	aGame throwNextShip . "Tira una vez mas"
 	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
 	
 	
@@ -853,7 +854,7 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
 	| overload1 aJail  player player2 |
 
-	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 3 1 4).
+	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	
 	overload1 := Overload with: aGame  .
@@ -868,14 +869,213 @@ CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
 	aGame throwNextShip .
 	overload1 from: player2 applyTo: player.
 	aGame throwNextShip .
-	
 	aGame throwNextShip . "Cae en Jail"
 	aGame throwNextShip .
+	aGame throwNextShip . "Logra salir"
+	aGame throwNextShip .
+	aGame throwNextShip . "Tira una vez mas"
 	
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test034ShipFallsInJailBecauseASpeedUpAndCanGetOut [
+	| speed aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	speed := Speed with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player2.
+	aGameBoard add: aJail at: 5.
+
+	aGame throwNextShip .
+	speed from: player2 applyTo: player.
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
+	aGame throwNextShip . "Logra salir"
+	aGame throwNextShip .
+	aGame throwNextShip . "Tira una vez mas"
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test035ShipFallsInJailBecauseASpeedUpAndCantGetOut [
+	| speed aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 4 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	speed := Speed with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player2.
+	aGameBoard add: aJail at: 5.
+
+	aGame throwNextShip .
+	speed from: player2 applyTo: player.
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
 	aGame throwNextShip . "No logra salir"
 	aGame throwNextShip .
+	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test036ShipFallsInJailBecauseAnAccelerationCanGetOut [
+	| acceleration aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	acceleration := Acceleration with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: acceleration to: player2.
+	aGameBoard add: aJail at: 5.
+
+	aGame throwNextShip .
+	acceleration applyToAllFrom:  player2.
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
+	aGame throwNextShip . "Logra salir"
+	aGame throwNextShip .
+	aGame throwNextShip . "Tira una vez mas"
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test037ShipFallsInJailBecauseAnAccelerationAndCantGetOut [
+	| acceleration aJail  player player2 |
+
+	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 5 4).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	acceleration := Acceleration with: aGame  .
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: acceleration to: player2.
+	aGameBoard add: aJail at: 5.
+
+	aGame throwNextShip .
+	acceleration applyToAllFrom:  player2.
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	aGame throwNextShip .
+	aGame throwNextShip . "No logra salir"
+	aGame throwNextShip .
+	aGame throwNextShip . "Tira una vez mas"
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test038ShipFallsInJailAndSendsOtherShipToJailWithRepeat [
+	| aJail  player player2 repeat|
+
+	self setUpLoadedDiceWith: #(1 1) and: #(1 1).
+	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+	
+	repeat := Repeat with: aGame  .
+	
+	aJail := Jail new .
+		
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: repeat to: player.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip . "Cae en Jail"
+	repeat from: player to: player2 . "Manda a Jail al player2"
+	aGame throwNextShip . "No logra salir"
+	aGame throwNextShip . "No logra salir"
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
+	| aJail  player player2 player3 player4 repeat redo|
+
+	self setUpLoadedDiceWith: #(1 1 2 1) and: #(1 1 1 1).
+	self setUpGameWith: 4 andGameboardWith: 10 and: 2.
+	
+	repeat := Repeat with: aGame  .
+	redo := Redo with: aGame .
+	aJail := Jail new .
+	player :=1.
+	player2 :=2.
+	player3 := 3.
+	player4 := 4.
+	aGameBoard add: repeat to: player.
+	aGameBoard add: redo to: player3.
+	aGameBoard add: aJail at: 4.
+
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip . "1 Cae en Jail"
+	repeat from: player to: player2 . "Manda a Jail al player2"
+	redo from: player3 to: player4 . "Manda a Jail al player4"
+	aGame throwNextShip . "2 No logra salir"
+	aGame throwNextShip . "3 Se mueve"
+	aGame throwNextShip . "4 No logra salir"
+	aGame throwNextShip . "1 No logra salir"
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 4) equals: 2 .
 	
 	
 	
