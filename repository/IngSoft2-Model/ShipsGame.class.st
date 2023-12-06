@@ -8,9 +8,7 @@ Class {
 		'lastUsedCard',
 		'aCollectionOfUsedCards',
 		'amountOfShips',
-		'turnToThrow',
-		'aShip',
-		'chosenShip'
+		'turnToThrow'
 	],
 	#category : #'IngSoft2-Model'
 }
