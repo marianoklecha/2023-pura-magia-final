@@ -7,9 +7,9 @@ Class {
 { #category : #creating }
 DeckOfCards >> designateRandomCardTo: aNumberOfShip from: aGameBoard [ 
 	|probabilities randomNumber|
-	probabilities := #(0 10 20 30 40 50 60) .
+	probabilities := #(0 10 20 30 40 50 60 70) .
 		
-		randomNumber:= 60 atRandom.
+		randomNumber:= 70 atRandom.
 		
 		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [
 			aGameBoard add: (Overload new) to: aNumberOfShip.
@@ -28,5 +28,8 @@ DeckOfCards >> designateRandomCardTo: aNumberOfShip from: aGameBoard [
 		 ].
 	(randomNumber >= (probabilities  at: 6) and: randomNumber <= (probabilities at: 7)) ifTrue: [ 
 			aGameBoard add: (Repeat new) to: aNumberOfShip. 
+		 ].
+	(randomNumber >= (probabilities  at: 7) and: randomNumber <= (probabilities at: 8)) ifTrue: [ 
+			aGameBoard add: (Freedom new) to: aNumberOfShip. 
 		 ].
 ]

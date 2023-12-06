@@ -168,6 +168,7 @@ GameBoard >> move: aShip [
 { #category : #action }
 GameBoard >> move: aShip with: aTotalResult [ 
 	|newPosition auxResult specialEffect|
+	
 	newPosition := positionManager manageCellsOf: aShip actualPosition at: aTotalResult.
 	aShip changePosition: newPosition.
 	auxResult := positionManager updateResult: aTotalResult.
@@ -227,13 +228,6 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 { #category : #adding }
 GameBoard >> store: aCard [ 
 	collectionOfCardsForAllShips add: aCard.
-]
-
-{ #category : #action }
-GameBoard >> turnOf: numberOfShip [
-	turn := numberOfShip.
-	self verifyThereIsNotAWinner.
-	self move: (self shipWith: numberOfShip).
 ]
 
 { #category : #action }
