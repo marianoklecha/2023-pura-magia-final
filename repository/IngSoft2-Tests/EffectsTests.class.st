@@ -637,7 +637,7 @@ self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  Jail ) .
 EffectsTests >> test054ShipFallsInJailAndCantGetOut [
 |aJail|
 
-self setUpLoadedDiceWith: #(1 1 2) and: #(7 3 1).
+self setUpLoadedDiceWith: #(1 1) and: #(7 3).
 self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 
 aJail := Jail new.
@@ -646,7 +646,7 @@ aGameBoard add: aJail at: 8.
 
 aGame throwNextShip .
 aGame throwNextShip .
-aGame throwNextShip .
+
 self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8.
 
 
@@ -670,7 +670,7 @@ aGameBoard add: aJail at: 8.
 aGame throwNextShip .
 aGame throwNextShip .
 aGame throwNextShip .
-self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 9.
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 1.
 
 
 

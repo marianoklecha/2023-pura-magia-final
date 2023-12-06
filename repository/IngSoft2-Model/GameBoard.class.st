@@ -120,16 +120,6 @@ GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	
 ]
 
-{ #category : #action }
-GameBoard >> diceResultOf: aShip [
-	|dieResult finalResult cardsResult|
-	dieResult  := aShip throw: dieCollection .
-	cardsResult := spaceSheriff verifyCardsEffectOn: aShip with: ((aShip resultOfCards) + (self resultOfCardsForAll)).
-	dieResult  := spaceSheriff verifyMoveOf: aShip with: dieResult.
-	finalResult := dieResult + cardsResult.
-	^finalResult .
-]
-
 { #category : #creating }
 GameBoard >> fillWith: players [
 	|aDeckOfCards|
@@ -163,24 +153,26 @@ GameBoard >> lastEffectUsed [
 
 { #category : #action }
 GameBoard >> move: aShip [ 
-	| aNumberOfShip actualShipPosition result specialEffect auxResult aDieResult |
+	| actualShipPosition totalResult aDieResult cardsResult|
 
-	aDieResult := self diceResultOf: aShip .
-	aNumberOfShip := aShip numberOfShip.
-	actualShipPosition := ((collectionOfShips at: aNumberOfShip)actualPosition) currentCell.
-	result := actualShipPosition + aDieResult .
-	auxResult := positionManager updateResult: result.
-	specialEffect := self specialEffectAtCell: auxResult.
-	self move:(collectionOfShips at: aNumberOfShip) using: specialEffect and: result  .
+	aDieResult := aShip throw: dieCollection .
+	cardsResult := aShip resultOfCards + self resultOfCardsForAll.
+	actualShipPosition := aShip actualPosition currentCell.
+	totalResult := actualShipPosition + aDieResult + cardsResult.
+	(spaceSheriff verifyMoveOf: aShip with: aDieResult) ifTrue: [ 
+		self move: aShip with: totalResult.
+		 ]
+	
 ]
 
 { #category : #action }
-GameBoard >> move: aShip using: specialEffect and: result [ 
-	|newPosition turnShip|
-	newPosition := positionManager manageCellsOf: aShip actualPosition at: result.
+GameBoard >> move: aShip with: aTotalResult [ 
+	|newPosition auxResult specialEffect|
+	newPosition := positionManager manageCellsOf: aShip actualPosition at: aTotalResult.
 	aShip changePosition: newPosition.
-	turnShip:= self shipWith: turn .
-	lastEffectUsed:= specialEffect applyTo:  self  for: turnShip  . 
+	auxResult := positionManager updateResult: aTotalResult.
+	specialEffect := self specialEffectAtCell: auxResult.
+	lastEffectUsed:= specialEffect applyTo:  self  for: aShip . 
 ]
 
 { #category : #actions }
@@ -241,7 +233,7 @@ GameBoard >> store: aCard [
 GameBoard >> turnOf: numberOfShip [
 	turn := numberOfShip.
 	self verifyThereIsNotAWinner.
-	self move: (collectionOfShips at: numberOfShip).
+	self move: (self shipWith: numberOfShip).
 ]
 
 { #category : #action }

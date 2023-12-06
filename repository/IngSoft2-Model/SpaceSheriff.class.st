@@ -14,14 +14,14 @@ SpaceSheriff class >> with: aDieCollection [
 ]
 
 { #category : #action }
-SpaceSheriff >> giveChanceToFree: aShip with: aDieResult [ 
-	|highestResult|
+SpaceSheriff >> giveChanceToFree: aShip with: aDieResult [
+
+	| highestResult |
 	highestResult := 0.
-	1 to: dieCollection size do: [:number | highestResult := highestResult + (dieCollection at: number) faces].
-	(aDieResult = highestResult) ifTrue: [ 
-		shipsInJail remove: aShip .
-		^aDieResult
-		 ] ifFalse:  [ ^ 0]
+	dieCollection do: [ :each | 
+		highestResult := highestResult + each faces ].
+	aDieResult = highestResult ifFalse: [ ^ self ].
+	shipsInJail remove: aShip
 ]
 
 { #category : #action }
@@ -31,8 +31,9 @@ SpaceSheriff >> initializeWith: aDieCollection [
 ]
 
 { #category : #action }
-SpaceSheriff >> isKeepingJailed: aShip [ 
-	^(shipsInJail includes: aShip)
+SpaceSheriff >> isKeepingJailed: aShip [
+
+	^ shipsInJail includes: aShip
 ]
 
 { #category : #action }
@@ -42,11 +43,11 @@ SpaceSheriff >> jail: aShip [
 ]
 
 { #category : #action }
-SpaceSheriff >> verifyCardsEffectOn: aShip with: aCardsResult [ 
-	(self isKeepingJailed: aShip) ifTrue: [ ^0 ] ifFalse: [ ^aCardsResult ] 
-]
+SpaceSheriff >> verifyMoveOf: aShip with: aResult [
 
-{ #category : #action }
-SpaceSheriff >> verifyMoveOf: aShip with: aResult [ 
-	(shipsInJail includes: aShip) ifTrue: [ ^ self giveChanceToFree: aShip with: aResult ] ifFalse: [ ^ aResult ]
+	(shipsInJail includes: aShip)
+		ifTrue: [ 
+			self giveChanceToFree: aShip with: aResult.
+			^ false ]
+		ifFalse: [ ^ true ]
 ]
