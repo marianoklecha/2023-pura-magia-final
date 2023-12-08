@@ -634,7 +634,7 @@ GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
 
 	aGame throwNextShip.
-	self deny: aGameBoard winner equals: 0
+	self deny: aGame winner equals: 0
 ]
 
 { #category : #tests }

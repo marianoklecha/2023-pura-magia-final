@@ -2,8 +2,8 @@ Class {
 	#name : #Overload,
 	#superclass : #Object,
 	#instVars : [
-		'chosenPlayer',
-		'shipsGame'
+		'shipsGame',
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,14 +20,14 @@ Overload >> amountToChange [
 
 { #category : #action }
 Overload >> apply: aGameBoard [ 
-	((aGameBoard shipWith: (chosenPlayer numberOfShip))shipCards ) store: self.
+	((aGameBoard shipWith: chosenShipNumber) shipCards) store: self.
 	^(self)
 ]
 
 { #category : #action }
 Overload >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
 	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	chosenShipNumber := aChosenNumberOfShip .
 	shipsGame applyChosenCard.
 ]
 
@@ -41,14 +41,14 @@ Overload >> permanent [
 	^true.
 ]
 
-{ #category : #validation }
-Overload >> permanent: aShipsGame verify: aNumberOfShip [ 
-	aShipsGame verifyIsTurnOf: aNumberOfShip.	
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self .
-]
-
 { #category : #instance }
 Overload >> selected: aShipPosition [ 
-	chosenPlayer := aShipPosition .
+	chosenShipNumber := aShipPosition .
+]
+
+{ #category : #validation }
+Overload >> verifyUseWith: aNumberOfShip [ 
+	shipsGame verifyIsTurnOf: aNumberOfShip.	
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self .
 ]

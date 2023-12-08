@@ -12,6 +12,18 @@ ProbabilityOfEffects class >> with: aNumber [
 	^(self new) initializeWith: aNumber.
 ]
 
+{ #category : #action }
+ProbabilityOfEffects >> amountOf: typeOfSpecialEffect on: aGameBoard [ 
+	
+	| count |
+	count := 0.
+	1 to: 100 do: [ :aNumberOfCell | 
+		((aGameBoard specialEffectAtCell: aNumberOfCell) isKindOf: typeOfSpecialEffect) ifTrue: [ 
+			count := count + 1 ] ].
+
+	^ count
+]
+
 { #category : #calculating }
 ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
 
@@ -42,13 +54,13 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalCells:= 0.
 		
 	   gameboards do: [ :each | 
-		totalWormHoles := totalWormHoles + (each amountOf: WormHole).
-		totalSpeedUps := totalSpeedUps + (each amountOf: SpeedUp). 
-		totalMoonWalks := totalMoonWalks + (each amountOf: MoonWalk). 
-		totalHyperJumps := totalHyperJumps + (each amountOf: HyperJump). 
-		totalAtomicBombs := totalAtomicBombs + (each amountOf: AtomicBomb).
-		totalSpecialCardsCells := totalSpecialCardsCells + (each amountOf: CardAssignation).
-		totalEmptyCells := totalEmptyCells + (each amountOfEmptyCells).
+		totalWormHoles := totalWormHoles + (self amountOf: WormHole on: each).
+		totalSpeedUps := totalSpeedUps + (self amountOf: SpeedUp on: each). 
+		totalMoonWalks := totalMoonWalks + (self amountOf: MoonWalk on: each). 
+		totalHyperJumps := totalHyperJumps + (self amountOf: HyperJump on: each). 
+		totalAtomicBombs := totalAtomicBombs + (self amountOf: AtomicBomb on: each).
+		totalSpecialCardsCells := totalSpecialCardsCells + (self amountOf: CardAssignation on: each).
+		totalEmptyCells := totalEmptyCells + (self amountOf: NullEffect on: each).
 		
 		
 		totalCells:= amountOfCells + totalCells.].

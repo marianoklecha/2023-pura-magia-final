@@ -7,7 +7,6 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell',
 		'dieCollection',
-		'turn',
 		'lastEffectUsed',
 		'collectionOfShips',
 		'positionManager',
@@ -58,6 +57,9 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 	
 	0 to: cells do: [ :index | randomNumber:= 100 atRandom.
 		
+		( randomNumber >= 0 and: randomNumber < (probabilities at: 1)) ifTrue: [ 
+			self add: (NullEffect new) at: index. 
+		 ].
 		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
 			self add: (WormHole new) at: index. 
 		 ].
@@ -77,23 +79,6 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 			self add: (CardAssignation withDeck) at: index. 
 		 ].].
 
-]
-
-{ #category : #counting }
-GameBoard >> amountOf: typeOfSpecialEffect [
-
-	| count |
-	count := 0.
-	aCollectionOfSpecialCells do: [ :each | 
-		(each typeOfSpecialEffect isKindOf: typeOfSpecialEffect) ifTrue: [ 
-			count := count + 1 ] ].
-
-	^ count
-]
-
-{ #category : #counter }
-GameBoard >> amountOfEmptyCells [
-	^ cells - (aCollectionOfSpecialCells size) 
 ]
 
 { #category : #action }
@@ -147,6 +132,11 @@ GameBoard >> lapOfShip: aNumber [
 ]
 
 { #category : #action }
+GameBoard >> lapsToWin [
+	^laps
+]
+
+{ #category : #action }
 GameBoard >> lastEffectUsed [
 	^lastEffectUsed.
 ]
@@ -173,23 +163,12 @@ GameBoard >> move: aShip with: aTotalResult [
 	aShip changePosition: newPosition.
 	auxResult := positionManager updateResult: aTotalResult.
 	specialEffect := self specialEffectAtCell: auxResult.
-	lastEffectUsed:= specialEffect applyTo:  self  for: aShip . 
+	lastEffectUsed:= specialEffect applyTo: self for: aShip . 
 ]
 
 { #category : #actions }
 GameBoard >> positionManager [
 	^ positionManager
-]
-
-{ #category : #validation }
-GameBoard >> ranking [
-	| array sortedArray |
-	array := collectionOfShips .
-	sortedArray := array sorted: [:player1 :player2 | (player1 actualPosition ) currentLap    < (player2 actualPosition ) currentLap  ].
-	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 actualPosition )currentCell  < (player2 actualPosition )  currentCell ].
-	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 actualPosition) currentParsec )nominalValue  < ((player2 actualPosition ) currentParsec)nominalValue  ].
-	^sortedArray 
-	 
 ]
 
 { #category : #action }
@@ -228,26 +207,4 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 { #category : #adding }
 GameBoard >> store: aCard [ 
 	collectionOfCardsForAllShips add: aCard.
-]
-
-{ #category : #action }
-GameBoard >> verifyThereIsNotAWinner [
-	(self winner = 0)
-		ifFalse: [ Error signal: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw' ]
-	
-]
-
-{ #category : #validation }
-GameBoard >> winner [
-
-	| counter shipLap |
-	counter := 1.
-	shipLap := (collectionOfShips at: counter) actualPosition currentLap.
-	[ counter >= collectionOfShips size or: shipLap >= (laps + 1) ] 
-		whileFalse: [ counter := counter + 1. 
-			shipLap := (collectionOfShips at: counter) actualPosition currentLap.].
-
-	(counter <= collectionOfShips size and: shipLap >= (laps + 1))
-		ifTrue: [ ^ (collectionOfShips at: counter) numberOfShip ]
-		ifFalse: [ ^ 0 ]
 ]

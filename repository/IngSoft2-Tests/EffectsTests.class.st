@@ -171,7 +171,7 @@ aGame throwNextShip.
 aGame throwNextShip.
 aGame throwNextShip.
 
-self assert: aGameBoard winner equals: 1 .
+self assert: aGame winner equals: 1 .
 
 
 

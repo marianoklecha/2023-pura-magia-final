@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'shipsGame',
-		'chosenShip'
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,14 +14,16 @@ Freedom class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Freedom >> apply: aGameBoard [ 
-	aGameBoard spaceSheriff setFree: chosenShip.
+Freedom >> apply: aGameBoard [
+	|aChosenShip|
+	aChosenShip := aGameBoard shipWith: chosenShipNumber .
+	aGameBoard spaceSheriff setFree: aChosenShip.
 ]
 
 { #category : #action }
 Freedom >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
 	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	chosenShipNumber := aChosenNumberOfShip.
 	shipsGame applyChosenCard.
 ]
 
@@ -36,14 +38,14 @@ Freedom >> permanent [
 ]
 
 { #category : #action }
-Freedom >> permanent: aShipsGame verify: aNumberOfShip [
-
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self.
-	aShipsGame cardDirectedTo: aNumberOfShip
+Freedom >> selected: aShip [ 
+	chosenShipNumber := aShip .
 ]
 
 { #category : #action }
-Freedom >> selected: aShip [ 
-	chosenShip := aShip .
+Freedom >> verifyUseWith: aNumberOfShip [ 
+
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self.
+	chosenShipNumber := aNumberOfShip.
 ]

@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'shipsGame',
-		'chosenShip'
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,14 +20,14 @@ Speed >> amountToChange [
 
 { #category : #action }
 Speed >> apply: aGameBoard [ 
-	((aGameBoard shipWith: (chosenShip numberOfShip))shipCards ) store: (self). 
+	((aGameBoard shipWith: chosenShipNumber)shipCards ) store: (self). 
 	^(self)
 ]
 
 { #category : #action }
 Speed >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
 	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	chosenShipNumber := aChosenNumberOfShip .
 	shipsGame applyChosenCard.
 ]
 
@@ -41,14 +41,14 @@ Speed >> permanent [
 	^true
 ]
 
-{ #category : #validation }
-Speed >> permanent: aShipsGame verify: aNumberOfShip [ 
-	aShipsGame verifyIsTurnOf: aNumberOfShip.
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self.
-]
-
 { #category : #selection }
 Speed >> selected: aShip [ 
-	chosenShip := aShip .
+	chosenShipNumber := aShip .
+]
+
+{ #category : #validation }
+Speed >> verifyUseWith: aNumberOfShip [ 
+	shipsGame verifyIsTurnOf: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self.
 ]

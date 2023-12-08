@@ -39,14 +39,14 @@ Acceleration >> permanent [
 	^true.
 ]
 
-{ #category : #validation }
-Acceleration >> permanent: aShipsGame verify: aNumberOfShip [ 
-	aShipsGame verifyIsTurnOf: aNumberOfShip.
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self.
-]
-
 { #category : #action }
 Acceleration >> selected: aShip [ 
 	^self.
+]
+
+{ #category : #validation }
+Acceleration >> verifyUseWith: aNumberOfShip [ 
+	shipsGame verifyIsTurnOf: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self.
 ]
