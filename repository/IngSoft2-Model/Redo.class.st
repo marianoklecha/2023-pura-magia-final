@@ -60,11 +60,6 @@ Redo >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
-{ #category : #instance }
-Redo >> selected: aShipPosition [ 
-	chosenShipNumber := aShipPosition .
-]
-
 { #category : #validation }
 Redo >> verifyUseWith: aNumberOfShip [ 
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
