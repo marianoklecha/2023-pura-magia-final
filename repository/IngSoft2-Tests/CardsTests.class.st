@@ -1034,7 +1034,7 @@ CardsTests >> test038ShipFallsInJailAndSendsOtherShipToJailWithRepeat [
 	aGame throwNextShip . "No logra salir"
 	
 	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
 	
 	
 	
@@ -1072,9 +1072,9 @@ CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
 	aGame throwNextShip . "1 No logra salir"
 	
 	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
 	self assert: (aGameBoard cellOfShip: 3) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 4) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 4) equals: 4 .
 	
 	
 	

@@ -1,6 +1,9 @@
 Class {
 	#name : #AtomicBomb,
 	#superclass : #Object,
+	#instVars : [
+		'numberOfCell'
+	],
 	#category : #'IngSoft2-Model'
 }
 
@@ -16,6 +19,11 @@ AtomicBomb >> applyTo: aGameBoard for: aShip [
 ]
 
 { #category : #action }
+AtomicBomb >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #action }
 AtomicBomb >> positionAtStartFor: aShip [
 
 	| parsec lap newShipPosition |
@@ -23,4 +31,9 @@ AtomicBomb >> positionAtStartFor: aShip [
 	parsec := aShip actualPosition currentParsec.
 	newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
 	aShip changePosition: newShipPosition
+]
+
+{ #category : #action }
+AtomicBomb >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]

@@ -1,6 +1,9 @@
 Class {
 	#name : #WormHole,
 	#superclass : #Object,
+	#instVars : [
+		'numberOfCell'
+	],
 	#category : #'IngSoft2-Model'
 }
 
@@ -12,4 +15,14 @@ WormHole >> applyTo: aGameBoard for: aChosenShip [
 	newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
 	aChosenShip  changePosition: newShipPosition.
 	^self.
+]
+
+{ #category : #action }
+WormHole >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #'instance creation' }
+WormHole >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]

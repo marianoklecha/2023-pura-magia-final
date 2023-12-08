@@ -487,8 +487,9 @@ self assert: (aGameBoard lapOfShip: 1)  equals: 2  .
 EffectsTests >> test047HyperJumpCausesNegativeParsecsThenChangePosition [
 | parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
-self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
 
 parsc1 := Parsecs with: -7.
 light1 := LightYears with: -9.
@@ -684,7 +685,7 @@ EffectsTests >> test056ShipFallsInJailByFallingInWormHoleAndCanMove [
 |aJail aWormhole|
 
 self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
-self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+self setUpGameWith: 1 andGameboardWith: 10 and: 3.
 
 aJail := Jail new.
 aWormhole := WormHole new.

@@ -36,7 +36,7 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
-	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
+	aCollectionOfSpecialCells add: (aEffect with: aNumberOfCell).
 ]
 
 { #category : #action }
@@ -199,7 +199,7 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 	typeOfCell := NullEffect new.
 	aCollectionOfSpecialCells do: [ :each | 
 		each numberOfSpecialCell = aNumberOfCell ifTrue: [ 
-			typeOfCell := each typeOfSpecialEffect ] ].
+			typeOfCell := each ] ].
 
 	^ typeOfCell
 ]

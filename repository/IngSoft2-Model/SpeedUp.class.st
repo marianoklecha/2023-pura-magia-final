@@ -1,6 +1,9 @@
 Class {
 	#name : #SpeedUp,
 	#superclass : #Object,
+	#instVars : [
+		'numberOfCell'
+	],
 	#category : #'IngSoft2-Model'
 }
 
@@ -12,4 +15,14 @@ SpeedUp >> applyTo: aGameBoard for: aChosenShip [
 	newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
 	aChosenShip  changePosition: newShipPosition.
 	^self.
+]
+
+{ #category : #validation }
+SpeedUp >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #action }
+SpeedUp >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]

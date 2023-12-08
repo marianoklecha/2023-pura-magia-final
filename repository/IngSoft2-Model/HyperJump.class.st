@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'anAmountOfParsecsToMove',
-		'round'
+		'round',
+		'numberOfCell'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -48,4 +49,14 @@ HyperJump >> applyTo: aGameBoard for: aChosenShip [
 HyperJump >> initializeWith: amountOfParsecsToMove [ 
 	anAmountOfParsecsToMove:=amountOfParsecsToMove  .
 	round:= 0.
+]
+
+{ #category : #action }
+HyperJump >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #action }
+HyperJump >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]

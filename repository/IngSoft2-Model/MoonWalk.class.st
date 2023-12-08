@@ -2,7 +2,8 @@ Class {
 	#name : #MoonWalk,
 	#superclass : #Object,
 	#instVars : [
-		'amountOfCells'
+		'amountOfCells',
+		'numberOfCell'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -28,4 +29,14 @@ MoonWalk >> applyTo: aGameBoard for: aChosenShip [
 { #category : #initialization }
 MoonWalk >> initializeWith: anAmountOfCells [ 
 	amountOfCells:= anAmountOfCells .
+]
+
+{ #category : #action }
+MoonWalk >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #action }
+MoonWalk >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]

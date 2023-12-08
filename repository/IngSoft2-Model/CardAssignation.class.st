@@ -2,7 +2,8 @@ Class {
 	#name : #CardAssignation,
 	#superclass : #Object,
 	#instVars : [
-		'deckOfCards'
+		'deckOfCards',
+		'numberOfCell'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -24,4 +25,14 @@ CardAssignation >> applyTo: aGameBoard for: aShip [
 { #category : #initialization }
 CardAssignation >> initializeWith: aDeckOfCards [ 
 	deckOfCards := aDeckOfCards .
+]
+
+{ #category : #action }
+CardAssignation >> numberOfSpecialCell [
+	^numberOfCell .
+]
+
+{ #category : #action }
+CardAssignation >> with: aNumberOfCell [
+	numberOfCell := aNumberOfCell .
 ]
