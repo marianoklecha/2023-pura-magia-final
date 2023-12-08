@@ -98,6 +98,7 @@ GameBoard >> cellOfShip: aNumber [
 
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
+	self verifyCanExistWith: anAmountOfParsecs and: aCollectionOfDice.
 	parsecsByCell := anAmountOfParsecs .
 	positionManager := PositionManager with: cells and: anAmountOfParsecs .
 	dieCollection := aCollectionOfDice .
@@ -207,4 +208,10 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 { #category : #adding }
 GameBoard >> store: aCard [ 
 	collectionOfCardsForAllShips add: aCard.
+]
+
+{ #category : #validation }
+GameBoard >> verifyCanExistWith: anAmountOfParsecs and: aCollection [ 
+	(aCollection isEmpty) ifTrue:[ Error signal: 'The collection of dices cant be empty' ].
+	(anAmountOfParsecs < 0) ifTrue:[ Error signal: 'The amount of parsecs cant be negative' ]
 ]

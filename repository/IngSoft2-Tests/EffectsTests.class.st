@@ -18,15 +18,12 @@ Class {
 
 { #category : #running }
 EffectsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
-	aGame:= ShipsGame initializeEmpty.
-	
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGameBoard cellsWith: 0 and: arrayOfDie  .
-	aGame startwith: amountOfPlayers   and: aGameBoard.
+	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
 ]
 
 { #category : #running }
@@ -40,6 +37,8 @@ EffectsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
+	
+	aGameBoard cellsWith: 0 and: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -58,8 +57,8 @@ EffectsTests >> test031GameUsingSpeedUpEffect [
 
 speedUp:= SpeedUp new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGameBoard add: speedUp at: 3.
 
@@ -81,8 +80,8 @@ EffectsTests >> test032GamePlayerFallsInSpeedUpEffectThenChangePosition [
 
 speedUp:= SpeedUp new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 
 aGameBoard add: speedUp at: 3.
 
@@ -103,8 +102,8 @@ EffectsTests >> test033GameUsingWormHoleEffect [
 
 wormHole:= WormHole new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGameBoard add: wormHole at: 7.
 
@@ -124,8 +123,8 @@ EffectsTests >> test034GamePlayerFallsInWormHoleEffectThenChangePosition [
 | wormHole|
 wormHole:= WormHole  new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 
 aGameBoard add: wormHole at: 7.
 aGame throwNextShip.
@@ -143,8 +142,8 @@ EffectsTests >> test034bisGamePlayerFallsInWormHoleEffectThenChangePosition [
 | wormHole|
 wormHole:= WormHole  new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
 
 aGameBoard add: wormHole at: 2.
 aGame throwNextShip .
@@ -162,8 +161,8 @@ self assert: (aGameBoard lapOfShip:  1) equals: 1 .
 EffectsTests >> test035GamePlayAndCheckWinner [
 | wormHole|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 
 wormHole:= WormHole  new.
 
@@ -184,8 +183,8 @@ self assert: aGame winner equals: 1 .
 EffectsTests >> test036GamePlayerFallsInWormHoleAndThenSpeedUpOnlyWornHoleApplied [
 | wormHole speedUp|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
 
 wormHole:= WormHole  new.
 speedUp := SpeedUp new.
@@ -206,8 +205,8 @@ self assert: (aGameBoard cellOfShip: 1) equals: 3 .
 EffectsTests >> test037GamePUsingMoonWalk [
 |aMoonWalk|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aMoonWalk := MoonWalk new.
 
@@ -229,8 +228,8 @@ EffectsTests >> test038GamePlayerFallsInWMoonWalkEffectThenChangePositionOfOther
 
 |aMoonWalk|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
 
 aMoonWalk := MoonWalk with: -3.
 
@@ -250,8 +249,8 @@ EffectsTests >> test039GameHasTwoDifferentMoonWalksandDifferentPlayersFallInto [
 
 |aMoonWalk anotherMoonWalk|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
 
 aMoonWalk := MoonWalk with: -3.
 anotherMoonWalk := MoonWalk with: -2.
@@ -278,8 +277,8 @@ EffectsTests >> test040GameHasTwoDifferentMoonWalksandDifferentPlayersFallIntoAn
 
 |aMoonWalk anotherMoonWalk|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
 
 aMoonWalk := MoonWalk with: -3.
 anotherMoonWalk := MoonWalk with: -2.
@@ -305,8 +304,8 @@ self assert: (aGameBoard lapOfShip: 1) equals: 1 .
 EffectsTests >> test041GameUsingAtomicBomb [
 |anAtomicBomb|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 anAtomicBomb := AtomicBomb new.
 
@@ -328,8 +327,8 @@ EffectsTests >> test042GameUsingAtomicBombAllPlayersMovedToCellZero [
 
 |anAtomicBomb|
 
-self setUpLoadedDiceWith: #(1 1 1) and: #(1 4 7).
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 1) and: #(1 4 7).
 
 anAtomicBomb := AtomicBomb new.
 
@@ -487,9 +486,7 @@ self assert: (aGameBoard lapOfShip: 1)  equals: 2  .
 EffectsTests >> test047HyperJumpCausesNegativeParsecsThenChangePosition [
 | parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
-
 
 parsc1 := Parsecs with: -7.
 light1 := LightYears with: -9.
@@ -506,6 +503,11 @@ collection1 add: parsc1  .
 amountOfParsecsToMove add: collection1 .
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
+die1 := LoadedDie with: #(1 1).
+die2 := LoadedDie with: #(2 2).
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2.
 aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextShip.
@@ -598,8 +600,8 @@ EffectsTests >> test052GameUsingNullEffect [
 
 nullEffect := NullEffect new.
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGameBoard add: nullEffect at: 3.
 
@@ -616,8 +618,8 @@ self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
 EffectsTests >> test053GameUsingJail [
 |aJail|
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aJail := Jail new.
 
@@ -638,8 +640,8 @@ self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  Jail ) .
 EffectsTests >> test054ShipFallsInJailAndCantGetOut [
 |aJail|
 
-self setUpLoadedDiceWith: #(1 1) and: #(7 3).
-self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(7 3 ).
 
 aJail := Jail new.
 
@@ -661,8 +663,8 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8.
 EffectsTests >> test055ShipFallsInJailAndCanGetOutByHighestThrow [
 |aJail|
 
-self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
 self setUpGameWith: 1 andGameboardWith: 10 and: 2.
+self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
 
 aJail := Jail new.
 
@@ -684,9 +686,8 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 1.
 EffectsTests >> test056ShipFallsInJailByFallingInWormHoleAndCanMove [
 |aJail aWormhole|
 
+self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
-self setUpGameWith: 1 andGameboardWith: 10 and: 3.
-
 aJail := Jail new.
 aWormhole := WormHole new.
 
@@ -695,8 +696,8 @@ aGameBoard add: aJail at: 4.
 
 aGame throwNextShip .
 aGame throwNextShip .
-aGame throwNextShip .
-self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5.
+
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2.
 
 
 
@@ -709,9 +710,8 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5.
 EffectsTests >> test057ShipFallsInJailByFallingInSpeedUpAndCanMove [
 |aJail aSpeedUp|
 
-self setUpLoadedDiceWith: #(1 1 1) and: #(3 1 1).
 self setUpGameWith: 1 andGameboardWith: 10 and: 2.
-
+self setUpLoadedDiceWith: #(1 1 1) and: #(3 1 1).
 aJail := Jail new.
 aSpeedUp := SpeedUp new.
 
@@ -773,8 +773,8 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell ) equals: 7  .
 EffectsTests >> test059ShipFallsInJailAndAtomicBombDoesNotMoveIt [
 |aJail anAtomicBomb|
 
-self setUpLoadedDiceWith: #(1 1 1) and: #(7 3 1).
 self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+self setUpLoadedDiceWith: #(1 1 1) and: #(7 3 1).
 
 aJail := Jail new.
 anAtomicBomb := AtomicBomb new.
@@ -787,6 +787,24 @@ aGame throwNextShip .
  
 self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8.
 self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0.
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test060MoonWalkRobustInstanceCreation [
+|aMoonWalk|
+
+self
+	should: [ 
+	aMoonWalk := MoonWalk with: 5 . ]
+	raise: Error
+	withMessage:
+	'The number of cells must be negative and lower than zero'
 
 
 
