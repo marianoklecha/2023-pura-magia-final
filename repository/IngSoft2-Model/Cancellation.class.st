@@ -3,8 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'cardToRemove',
-		'chosenShip',
-		'shipsGame'
+		'shipsGame',
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,7 +17,8 @@ Cancellation class >> with: aShipsGame [
 { #category : #action }
 Cancellation >> apply: aGameBoard [
 
-	| collectionCards |
+	| collectionCards chosenShip|
+	chosenShip := aGameBoard shipWith: chosenShipNumber .
 	collectionCards := chosenShip shipCards cardsForMe.
 	(collectionCards includes: cardToRemove)
 		ifTrue: [ collectionCards remove: cardToRemove ]
@@ -46,8 +47,8 @@ Cancellation >> canceled: aCardToRemove [
 Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard [ 
 
 	shipsGame  chosen: self from: aNumberOfShip.
-	self  canceled: aCard .
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	cardToRemove:= aCard.
+	chosenShipNumber := aChosenNumberOfShip.
 	shipsGame applyChosenCard.
 ]
 
@@ -55,7 +56,7 @@ Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard
 Cancellation >> from: aNumberOfShip canceled: aCard [ 
 
 	shipsGame  chosen: self from: aNumberOfShip.
-	self canceled: aCard .
+	cardToRemove:= aCard.
 	shipsGame  applyChosenCard.
 ]
 
@@ -70,15 +71,15 @@ Cancellation >> permanent [
 	^false.
 ]
 
-{ #category : #validation }
-Cancellation >> permanent: aShipsGame verify: aNumberOfShip [
-
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self.
-	aShipsGame cardDirectedTo: aNumberOfShip
-]
-
 { #category : #instance }
 Cancellation >> selected: aShipPosition [  
-	chosenShip := aShipPosition.
+	chosenShipNumber := aShipPosition.
+]
+
+{ #category : #validation }
+Cancellation >> verifyUseWith: aNumberOfShip [ 
+
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self.
+	chosenShipNumber := aNumberOfShip.
 ]

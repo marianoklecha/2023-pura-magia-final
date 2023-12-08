@@ -23,17 +23,12 @@ ShipsGame >> applyChosenCard [
 	lastUsedCard := chosenCard apply: gameboard .
 ]
 
-{ #category : #action }
-ShipsGame >> cardDirectedTo: aNumberOfShip [ 
-	chosenCard selected: (gameboard shipWith: aNumberOfShip)
-]
-
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
 	| aShip |
 	aShip := gameboard shipWith: aNumberOfShip.
-	aCard permanent: self verify: aNumberOfShip .
+	aCard verifyUseWith: aNumberOfShip 
 ]
 
 { #category : #instance }
@@ -70,7 +65,14 @@ ShipsGame >> lastUsedCard [
 
 { #category : #validation }
 ShipsGame >> ranking [
-	^gameboard ranking
+	
+	| array sortedArray |
+	array := OrderedCollection new.
+	1 to: amountOfShips do: [ :number | array add: (gameboard shipWith: number) ].
+	sortedArray := array sorted: [:player1 :player2 | (player1 actualPosition ) currentLap    < (player2 actualPosition ) currentLap  ].
+	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 actualPosition )currentCell  < (player2 actualPosition )  currentCell ].
+	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 actualPosition) currentParsec )nominalValue  < ((player2 actualPosition ) currentParsec)nominalValue  ].
+	^sortedArray
 ]
 
 { #category : #validation }
@@ -91,7 +93,7 @@ ShipsGame >> startwith: anAmountOfShips and: aGameboard [
 { #category : #action }
 ShipsGame >> throwNextShip [
 
-	gameboard verifyThereIsNotAWinner.
+	self verifyThereIsNotAWinner.
 	gameboard move: (gameboard shipWith: turnToThrow).
 	turnToThrow := turnToThrow + 1.
 	turnToThrow <= amountOfShips ifFalse: [ turnToThrow := 1 ]
@@ -116,8 +118,19 @@ ShipsGame >> verifyIsTurnOf: aNumberOfShip [
 		Error signal: 'Cannot use permanent card when its not their turn' ]
 ]
 
+{ #category : #action }
+ShipsGame >> verifyThereIsNotAWinner [
+	(self winner = 0)
+		ifFalse: [ Error signal: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw' ]
+]
+
 { #category : #validation }
 ShipsGame >> winner [
 
-	^ gameboard winner
+	| winnerNumber shipLap |
+	winnerNumber := 0.
+	1 to: amountOfShips do: [ :number | 
+		shipLap := (gameboard shipWith: number) actualPosition currentLap.
+		shipLap > gameboard lapsToWin ifTrue: [ winnerNumber := number ] ].
+	^ winnerNumber
 ]

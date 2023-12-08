@@ -3,8 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'cardToRedo',
-		'chosenShip',
-		'shipsGame'
+		'shipsGame',
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,7 +16,7 @@ Redo class >> with: aShipsGame [
 
 { #category : #action }
 Redo >> apply: aGameBoard [
-	cardToRedo selected: chosenShip .
+	cardToRedo selected: chosenShipNumber .
 	cardToRedo apply: aGameBoard.
 	^ cardToRedo
 ]
@@ -25,7 +25,7 @@ Redo >> apply: aGameBoard [
 Redo >> behaveInstantaneousWith: aNumberOfShip [
 
 	shipsGame chosenCard: self.
-	shipsGame cardDirectedTo: aNumberOfShip
+	chosenShipNumber := aNumberOfShip .
 ]
 
 { #category : #action }
@@ -38,7 +38,7 @@ Redo >> behavePermanentWith: aNumberOfShip [
 Redo >> cancellationFrom: aNumberOfShip to: aChosenNumberOfShip canceled: aCard [
 	|lastCardUsedInGame|
 	lastCardUsedInGame := shipsGame lastUsedCard.
-	lastCardUsedInGame  canceled: aCard.
+	lastCardUsedInGame canceled: aCard.
 	self from: aNumberOfShip to: aChosenNumberOfShip 
 ]
 
@@ -51,7 +51,7 @@ Redo >> from: aNumberOfShip [
 { #category : #action }
 Redo >> from: aNumberOfShip to: aChosenNumberOfShip [
 	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	chosenShipNumber := aChosenNumberOfShip .
 	shipsGame applyChosenCard.
 ]
 
@@ -60,16 +60,16 @@ Redo >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #instance }
+Redo >> selected: aShipPosition [ 
+	chosenShipNumber := aShipPosition .
+]
+
 { #category : #validation }
-Redo >> permanent: aShipsGame verify: aNumberOfShip [
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	cardToRedo := aShipsGame lastUsedCard .
+Redo >> verifyUseWith: aNumberOfShip [ 
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	cardToRedo := shipsGame lastUsedCard .
 	cardToRedo permanent
 		ifFalse: [ self behaveInstantaneousWith: aNumberOfShip ]
 		ifTrue: [ self behavePermanentWith: aNumberOfShip ]
-]
-
-{ #category : #instance }
-Redo >> selected: aShipPosition [ 
-	chosenShip := aShipPosition .
 ]

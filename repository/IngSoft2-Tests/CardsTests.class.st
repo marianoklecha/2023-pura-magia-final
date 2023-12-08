@@ -420,12 +420,11 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	| overload redo player player2 |
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
 	overload := Overload  with: aGame .
 	redo:= Redo with: aGame .
-
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: overload to: player.
 	aGameBoard add: redo to: player2.
 	

@@ -2,8 +2,8 @@ Class {
 	#name : #Repeat,
 	#superclass : #Object,
 	#instVars : [
-		'chosenShip',
-		'shipsGame'
+		'shipsGame',
+		'chosenShipNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,9 +15,10 @@ Repeat class >> with: aShipsGame [
 
 { #category : #action }
 Repeat >> apply: aGameBoard [ 
-	|lastEffectUsed counter|
-	counter:=1.
-	lastEffectUsed:= aGameBoard lastEffectUsed  .
+	|lastEffectUsed counter chosenShip|
+	counter:= 1.
+	lastEffectUsed:= aGameBoard lastEffectUsed.
+	chosenShip := aGameBoard shipWith: chosenShipNumber.
 	lastEffectUsed applyTo: aGameBoard  for: chosenShip  .
 	^(self)
 ]
@@ -31,7 +32,7 @@ Repeat >> from: aNumberOfShip [
 { #category : #action }
 Repeat >> from: aNumberOfShip to: aChosenNumberOfShip [
 	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	chosenShipNumber:= aChosenNumberOfShip.
 	shipsGame applyChosenCard.
 ]
 
@@ -45,15 +46,15 @@ Repeat >> permanent [
 	^false.
 ]
 
-{ #category : #validation }
-Repeat >> permanent: aShipsGame verify: aNumberOfShip [
-
-	aShipsGame verify: self IsInHandOf: aNumberOfShip.
-	aShipsGame chosenCard: self.
-	aShipsGame cardDirectedTo: aNumberOfShip
-]
-
 { #category : #intance }
 Repeat >> selected: aShipPosition [ 
-	chosenShip:= aShipPosition.
+	chosenShipNumber:= aShipPosition.
+]
+
+{ #category : #validation }
+Repeat >> verifyUseWith: aNumberOfShip [ 
+
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	shipsGame chosenCard: self.
+	chosenShipNumber:= aNumberOfShip.
 ]
