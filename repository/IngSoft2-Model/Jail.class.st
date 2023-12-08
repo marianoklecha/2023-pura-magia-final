@@ -25,11 +25,6 @@ Jail >> check: aShip positionOn: aGameBoard [
 ]
 
 { #category : #action }
-Jail >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 Jail >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
 ]

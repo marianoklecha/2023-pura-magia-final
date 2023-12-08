@@ -19,11 +19,6 @@ AtomicBomb >> applyTo: aGameBoard for: aShip [
 ]
 
 { #category : #action }
-AtomicBomb >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 AtomicBomb >> positionAtStartFor: aShip [
 
 	| parsec lap newShipPosition |

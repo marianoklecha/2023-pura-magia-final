@@ -17,11 +17,6 @@ SpeedUp >> applyTo: aGameBoard for: aChosenShip [
 	^self.
 ]
 
-{ #category : #validation }
-SpeedUp >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
 { #category : #action }
 SpeedUp >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .

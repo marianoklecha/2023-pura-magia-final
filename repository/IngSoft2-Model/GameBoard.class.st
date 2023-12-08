@@ -36,7 +36,7 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
-	aCollectionOfSpecialCells add: (aEffect with: aNumberOfCell).
+	aCollectionOfSpecialCells at: aNumberOfCell put: (aEffect with: aNumberOfCell).
 ]
 
 { #category : #action }
@@ -55,7 +55,7 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 	
 	probabilities := (ProbabilityOfEffects new) createCollectionFrom: aCollectionOfProbabilities .
 	
-	0 to: cells do: [ :index | randomNumber:= 100 atRandom.
+	1 to: cells do: [ :index | randomNumber:= 100 atRandom.
 		
 		( randomNumber >= 0 and: randomNumber < (probabilities at: 1)) ifTrue: [ 
 			self add: (NullEffect new) at: index. 
@@ -123,6 +123,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	cells := numberOfCells .
 	laps := numberOfLaps.
 	aCollectionOfSpecialCells := OrderedCollection new.
+	1 to: cells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
 	collectionOfShips := OrderedCollection new.
 	collectionOfCardsForAllShips := OrderedCollection new.
 ]
@@ -196,13 +197,7 @@ GameBoard >> spaceSheriff [
 { #category : #validation }
 GameBoard >> specialEffectAtCell: aNumberOfCell [
 
-	| typeOfCell |
-	typeOfCell := NullEffect new.
-	aCollectionOfSpecialCells do: [ :each | 
-		each numberOfSpecialCell = aNumberOfCell ifTrue: [ 
-			typeOfCell := each ] ].
-
-	^ typeOfCell
+	^ aCollectionOfSpecialCells at: aNumberOfCell
 ]
 
 { #category : #adding }

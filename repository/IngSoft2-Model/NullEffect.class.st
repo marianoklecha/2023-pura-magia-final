@@ -13,11 +13,6 @@ NullEffect >> applyTo: aGameBoard for: aShip [
 ]
 
 { #category : #action }
-NullEffect >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 NullEffect >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
 ]
