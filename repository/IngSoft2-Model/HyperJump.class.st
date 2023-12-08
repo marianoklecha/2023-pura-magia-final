@@ -52,11 +52,6 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 ]
 
 { #category : #action }
-HyperJump >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 HyperJump >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
 ]

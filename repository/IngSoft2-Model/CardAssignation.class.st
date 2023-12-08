@@ -28,11 +28,6 @@ CardAssignation >> initializeWith: aDeckOfCards [
 ]
 
 { #category : #action }
-CardAssignation >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 CardAssignation >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
 ]

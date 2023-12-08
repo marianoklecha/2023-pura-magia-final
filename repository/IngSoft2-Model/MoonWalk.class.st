@@ -38,11 +38,6 @@ MoonWalk >> initializeWith: anAmountOfCells [
 ]
 
 { #category : #action }
-MoonWalk >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
-{ #category : #action }
 MoonWalk >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
 ]

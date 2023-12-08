@@ -17,11 +17,6 @@ WormHole >> applyTo: aGameBoard for: aChosenShip [
 	^self.
 ]
 
-{ #category : #action }
-WormHole >> numberOfSpecialCell [
-	^numberOfCell .
-]
-
 { #category : #'instance creation' }
 WormHole >> with: aNumberOfCell [
 	numberOfCell := aNumberOfCell .
