@@ -9,8 +9,14 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #initialization }
+Cancellation class >> verifyCanInitializeWith: anInstance [ 
+	(anInstance isKindOf: ShipsGame)ifFalse:[ Error signal: 'The card must receive a ShipsGame instance' ]
+]
+
 { #category : #action }
-Cancellation class >> with: aShipsGame [ 
+Cancellation class >> with: aShipsGame [
+	self verifyCanInitializeWith: aShipsGame.
 	^(self new) initializeWith: aShipsGame .
 ]
 

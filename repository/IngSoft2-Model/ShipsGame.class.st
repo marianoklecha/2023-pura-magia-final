@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #initialization }
-ShipsGame class >> initializeEmpty [
-	^(self new) initializeWith: 'The Game does not have a winner'
+ShipsGame class >> with: amountOfPlayers and: aGameBoard [
+	^(self new) initializeWith: amountOfPlayers and: aGameBoard
 ]
 
 { #category : #action }
@@ -47,14 +47,17 @@ ShipsGame >> create: anAmountOfShips [
 	^ shipsCollection
 ]
 
-{ #category : #intialization }
-ShipsGame >> initializeWith: aResult [
-
-	result := aResult.
-	gameboard := nil.
+{ #category : #initialization }
+ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [ 
+	| ships |
+	result := 'The Game does not have a winner'.
 	turnToThrow := 1.
-	amountOfShips := 0.
 	aCollectionOfUsedCards := OrderedCollection new.
+	gameboard := aGameboard.
+	amountOfShips := anAmountOfShips. 
+	
+	ships := self create: anAmountOfShips .
+	aGameboard fillWith: ships
 ]
 
 { #category : #action }
@@ -77,16 +80,6 @@ ShipsGame >> ranking [
 { #category : #validation }
 ShipsGame >> result [
 	^ result
-]
-
-{ #category : #starting }
-ShipsGame >> startwith: anAmountOfShips and: aGameboard [
-
-	| ships |
-	gameboard := aGameboard.
-	ships := self create: anAmountOfShips .
-	amountOfShips := anAmountOfShips. 
-	aGameboard fillWith: ships
 ]
 
 { #category : #action }

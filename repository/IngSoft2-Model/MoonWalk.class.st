@@ -9,7 +9,13 @@ Class {
 }
 
 { #category : #initialization }
-MoonWalk class >> with: anAmountOfCells [ 
+MoonWalk class >> verifyCanExistWith: aNumberOfCells [ 
+	(aNumberOfCells <= 0)ifFalse:[ Error signal: 'The number of cells must be negative and lower than zero' ]
+]
+
+{ #category : #initialization }
+MoonWalk class >> with: anAmountOfCells [
+	self verifyCanExistWith: anAmountOfCells.
 	^(self new) initializeWith: anAmountOfCells.
 ]
 
