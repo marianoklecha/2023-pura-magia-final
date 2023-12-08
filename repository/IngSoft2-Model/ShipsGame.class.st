@@ -41,7 +41,6 @@ ShipsGame >> create: anAmountOfShips [
 
 	| shipsCollection |
 	shipsCollection := OrderedCollection new.
-
 	1 to: anAmountOfShips do: [ :count | 
 	shipsCollection add: (Ship with: count) ].
 

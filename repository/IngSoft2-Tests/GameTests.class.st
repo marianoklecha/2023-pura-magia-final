@@ -890,14 +890,13 @@ aGameBoard cellsWith: parsecs and: arrayOfDie .
 
 aPositionManager := PositionManager with: 4 and: 4.
 aChosenShip:= aGameBoard shipWith: 1 .
-newCell := (((aChosenShip actualPosition ) currentCell) + cellsToSum).
 shipPosition := aChosenShip actualPosition .
 
-newShipPosition := aPositionManager manageCellsOf: shipPosition at: newCell.
+newShipPosition := aPositionManager manageCellsOf: shipPosition at: cellsToSum.
 newShipPosition := aPositionManager manageParsecsOf: newShipPosition at: parsecsToSum.
 
 aChosenShip changePosition: newShipPosition.
-self assert: aChosenShip actualPosition currentLap equals: 2.
+self assert: aChosenShip actualPosition currentLap equals: 3.
 self assert: aChosenShip actualPosition currentCell equals: 2.
 self assert: aChosenShip actualPosition currentParsec nominalValue equals: 2.
 
