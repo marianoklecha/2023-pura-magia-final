@@ -8,7 +8,8 @@ Class {
 		'lastUsedCard',
 		'aCollectionOfUsedCards',
 		'amountOfShips',
-		'turnToThrow'
+		'turnToThrow',
+		'amountToSum'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -50,11 +51,11 @@ ShipsGame >> create: anAmountOfShips [
 { #category : #initialization }
 ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [ 
 	| ships |
-	result := 'The Game does not have a winner'.
 	turnToThrow := 1.
 	aCollectionOfUsedCards := OrderedCollection new.
 	gameboard := aGameboard.
 	amountOfShips := anAmountOfShips. 
+	amountToSum := 1.
 	
 	ships := self create: anAmountOfShips .
 	aGameboard fillWith: ships
@@ -77,9 +78,9 @@ ShipsGame >> ranking [
 	^sortedArray
 ]
 
-{ #category : #validation }
-ShipsGame >> result [
-	^ result
+{ #category : #action }
+ShipsGame >> reverseTurnsOrder [
+	amountToSum := -1.
 ]
 
 { #category : #action }
@@ -87,7 +88,7 @@ ShipsGame >> throwNextShip [
 
 	self verifyThereIsNotAWinner.
 	gameboard move: (gameboard shipWith: turnToThrow).
-	turnToThrow := turnToThrow + 1.
+	turnToThrow := turnToThrow + amountToSum .
 	turnToThrow <= amountOfShips ifFalse: [ turnToThrow := 1 ]
 ]
 

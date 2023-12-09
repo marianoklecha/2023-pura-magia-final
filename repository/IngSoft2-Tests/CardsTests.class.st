@@ -1306,3 +1306,36 @@ CardsTests >> test051FreedomRobustInstanceCreation [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test052TypeCardReverseExists [
+	
+	|reverse|
+	reverse := Reverse new.
+	self assert: (reverse  isKindOf:  Reverse ) .
+]
+
+{ #category : #tests }
+CardsTests >> test053ReverseCardIsUsedThenTurnsAreReversed [
+	| reverse ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	reverse := Reverse with: aGame  .
+	ship1:= 1.
+	aGameBoard add: reverse to: ship1.
+	
+	aGame throwNextShip .
+	aGame throwNextShip .
+	reverse applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
