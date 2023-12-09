@@ -59,6 +59,7 @@ CardsTests >> test001TypeCardOverloadExistsThenAssert [
 	
 	|cardOverload|
 	cardOverload := Overload new.
+	
 	self assert: (cardOverload  isKindOf:  Overload ) .
 ]
 
@@ -67,6 +68,7 @@ CardsTests >> test002TypeCardASpeedExistsThenAssert [
 	
 	|cardSpeed|
 	cardSpeed := Speed new.
+	
 	self assert: (cardSpeed  isKindOf:  Speed ) .
 ]
 
@@ -75,6 +77,7 @@ CardsTests >> test003TypeCardAccelerationExistsThenAssert [
 	
 	|cardAcceleration|
 	cardAcceleration  := Acceleration new.
+	
 	self assert: (cardAcceleration   isKindOf:  Acceleration ) .
 ]
 
@@ -83,6 +86,7 @@ CardsTests >> test004TypeCardCancellationExistsThenAssert [
 	
 	|cardCancellation|
 	cardCancellation := Acceleration new.
+	
 	self assert: (cardCancellation isKindOf:  Acceleration ) .
 ]
 
@@ -91,6 +95,7 @@ CardsTests >> test005TypeCardRepeatExistsThenAssert [
 	
 	|cardRepeat|
 	cardRepeat  := Repeat new.
+	
 	self assert: (cardRepeat  isKindOf:  Repeat ) .
 ]
 
@@ -118,18 +123,14 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	overload1 := Overload with: aGame  .
 	overload2 := Overload with: aGame .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: overload1 to: player.
 	aGameBoard add: overload2 to: player2.
 
-	overload1 from: player applyTo: player2. 
-	
+	overload1 from: player applyTo: player2. 	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -148,19 +149,15 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	speed1 := Speed with: aGame.
 	speed2 := Speed with: aGame.
-	
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: speed1 to: player.
 	aGameBoard add: speed2 to: player2.
 
 	aGame throwNextShip .
-	aGame throwNextShip .
-	
+	aGame throwNextShip .	
 	speed1 from: player applyTo: player.
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -178,19 +175,15 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	acceleration1  := Acceleration with: aGame .
 	acceleration2  := Acceleration with: aGame .
-	
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: acceleration1 to: player.
 	aGameBoard add: acceleration2 to: player2.
 		
 	aGame throwNextShip .
 	aGame throwNextShip .
-	
 	acceleration1 applyToAllFrom: player.
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -211,19 +204,15 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	cancellation:= Cancellation with: aGame .
 	overload := Overload with: aGame .
-	
 	player:= 1.
 	player2:=2.
-	
 	aGameBoard add: overload to: player.
 	aGameBoard add: cancellation to: player2.
 
 	overload  from: player  applyTo: player2 .
 	cancellation from: player2 applyTo: player2 canceled: overload .
-	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -242,12 +231,10 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-
 	cancellation:= Cancellation with: aGame.
 	speed := Speed with: aGame .
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: speed  to: player.
 	aGameBoard add: cancellation to: player2.
 	
@@ -267,13 +254,10 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-
 	cancellation:= Cancellation with: aGame .
 	acceleration := Acceleration  with: aGame .
-	
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: acceleration  to: player.
 	aGameBoard add: cancellation to: player2.
 
@@ -290,16 +274,14 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 { #category : #tests }
 CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	|player player2   repeat speedUp|
+
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	speedUp := SpeedUp new.
 	repeat  := Repeat with: aGame .
-	
 	aGameBoard add: speedUp at: 3.
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: repeat   to: player.
 
 	aGame throwNextShip .
@@ -312,21 +294,18 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 { #category : #tests }
 CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	|player player2  repeat wormHole|
+	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1) and: #(1 6 3 1).
-		
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
 	aGameBoard add: wormHole at: 6.
-	
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: repeat   to: player.
 	
 	aGame throwNextShip . "Cae en 2"
 	aGame throwNextShip . "Cae en 7"
-	
 	aGame throwNextShip . "Cae en Wormhole"
 	repeat from: player  to: player2  . 
 		
@@ -336,20 +315,18 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 { #category : #tests }
 CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	|player player2 repeat moonWalk|
+	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	moonWalk := MoonWalk with: -3.
 	repeat  := Repeat with: aGame .
 	aGameBoard add: moonWalk at: 6.
-	
 	player:= 1.
 	player2:=2.
 	aGameBoard add: repeat   to: player.
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
-	
 	aGame throwNextShip .
 	repeat from: player to: player2 . 
 	
@@ -359,17 +336,16 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 { #category : #tests }
 CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	| player player2  repeat anAtomicBomb|
+	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	anAtomicBomb := AtomicBomb new.
 	repeat  := Repeat with: aGame .
 	aGameBoard add: anAtomicBomb at: 5 .
-
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: repeat   to: player.	
+	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	repeat from: player. 
@@ -385,24 +361,15 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	light1 := LightYears with: 9.
 	parsc2 := Parsecs with: 2.
 	light2 := LightYears with: 3.
-
 	amountOfParsecsToMove:= OrderedCollection new.
-	collection1:=OrderedCollection new.
-	collection1 add: parsc1 .
-	collection1 add: light1  .
-	collection1 add: parsc2   .
-	collection1 add: light2  .
-
+	collection1:= OrderedCollection new.
+	collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 	amountOfParsecsToMove add: collection1 .
 	hyperJump := HyperJump with: amountOfParsecsToMove .
-	die1 := LoadedDie with: #(1 1).
-	die2 := LoadedDie with: #(2 4).
 	arrayOfDie := OrderedCollection new.
-	arrayOfDie add: die1 .
-	arrayOfDie add: die2.
+	arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 4)).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	aGameBoard cellsWith: 4 and: arrayOfDie .
-	
 	repeat  := Repeat with: aGame.
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
@@ -419,9 +386,9 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 { #category : #tests }
 CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	| overload redo player player2 |
+	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	overload := Overload  with: aGame .
 	redo:= Redo with: aGame .
 	player:=1.
@@ -453,13 +420,9 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	redo:= Redo with: aGame .
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: acceleration to: player.
-	aGameBoard add: acceleration to: player.
-	
 	aGameBoard add: redo to: player2.
-	aGameBoard add: acceleration to: player2.
-
+	
 	acceleration applyToAllFrom:  player . 
 	aGame throwNextShip . 
 	redo from: player2 . 
@@ -480,14 +443,13 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 { #category : #tests }
 CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	| speed redo player player2 |
+	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
-
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player.
 	aGameBoard add: redo to: player2.
 
@@ -515,10 +477,8 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	speed2 := Speed with: aGame .
 	cancellation := Cancellation with: aGame .
 	redo:= Redo with: aGame .
-	
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed1 to: player.
 	aGameBoard add: cancellation to: player.
 	aGameBoard add: redo to: player2.
@@ -548,16 +508,12 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	| speed redo1 redo2 player player2 |
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	speed := Speed with: aGame .
 	redo1:= Redo with: aGame .
 	redo2:= Redo with: aGame .
-	
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player.
-	
 	aGameBoard add: redo1 to: player2.
 	aGameBoard add: redo2 to: player2.
 
@@ -583,14 +539,13 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player.
 	aGameBoard add: redo to: player2.
+	
 	speed  from: player  applyTo: player .
 	
 	self should:  [redo from: player2] raise: Error withMessage: 'Cannot use permanent card when its not their turn'.
@@ -605,12 +560,9 @@ CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 	|ship ship2  repeat wormHole|
 	self setUpGameWith: 2 andGameboardWith: 10 and: 1.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(6 5 ).
-	
-	
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
 	aGameBoard add: wormHole at: 4.
-	
 	ship:= 1.
 	ship2:=2.
 	aGameBoard add: repeat to: ship2.
@@ -620,19 +572,21 @@ CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 	aGame throwNextShip . "P1 4 LAP2 P2 1 LAP1 --> P1 0 LAP2 P2 1 LAP1"
 	
 	self assert: aGame winner equals: 1. "Ship 1 has won"
-	repeat from: ship2 to: ship. "P1 6 LAP1 P2 6 LAP1 "
 	
+	repeat from: ship2 to: ship. "P1 6 LAP1 P2 6 LAP1 "
 	aGame throwNextShip . "P1 6 LAP1 P2 2 LAP2 "
+	
 	self assert: aGame winner equals: 2. "Ship 2 has finally won"
 ]
 
 { #category : #tests }
 CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
 	|aDeckOfCards aNumberOfShip|
-	self setUpGameWith:  1 andGameboardWith: 10 and: 1.
 	
+	self setUpGameWith:  1 andGameboardWith: 10 and: 1.
 	aDeckOfCards := DeckOfCards new.
 	aNumberOfShip := 1.
+	
 	aDeckOfCards designateRandomCardTo: aNumberOfShip from: aGameBoard .
 	
 	self assert: (aGameBoard shipWith: aNumberOfShip)shipCards cardsInHand size equals: 2+1 "Two are random"
@@ -641,24 +595,21 @@ CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
 { #category : #tests }
 CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	|player player2  repeat wormHole redo|
+	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(2 1) and: #(2 4).
-	
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
 	redo:= Redo with: aGame .
 	aGameBoard add: wormHole at: 8.
-	
 	player:= 1.
 	player2:=2.
-
 	aGameBoard add: repeat to: player.
 	aGameBoard add: redo to: player2. 
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
-		
 	repeat from: player  to: player2  . 
 	redo from: player2  to: player .
 	
@@ -672,21 +623,17 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-	
 	cancellation:= Cancellation with: aGame .
 	overload := Overload with: aGame .
 	redo:= Redo with: aGame.
-	
 	player:= 1.
 	player2:=2.
-	
 	aGameBoard add: overload to: player.
 	aGameBoard add: cancellation to: player.
 	aGameBoard add: redo to: player2.
 
 	overload  from: player  applyTo: player2 .
 	aGame throwNextShip .
-	
 	redo from: player2 to: player .
 	cancellation from: player applyTo: player canceled: overload  .
 	aGame throwNextShip .
@@ -704,15 +651,14 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 { #category : #tests }
 CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 	| speed redo player player2 cancellation|
+	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
 	cancellation := Cancellation with: aGame .
-
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player.
 	aGameBoard add: redo to: player2.
 	aGameBoard add: cancellation to: player.
@@ -735,17 +681,16 @@ CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 
 { #category : #tests }
 CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
+
 	| player player2  cancellation acceleration redo|
 
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-
 	cancellation:= Cancellation with: aGame .
 	acceleration := Acceleration  with: aGame .
 	redo := Redo with: aGame.	
 	player:= 1.
 	player2:= 2.
-
 	aGameBoard add: acceleration  to: player.
 	aGameBoard add: cancellation to: player.
 	aGameBoard add: redo to: player2 .
@@ -765,16 +710,14 @@ CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
 CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 
 	| redo overload player player2 cancellation |
+	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-
 	cancellation := Cancellation with: aGame.
 	overload := Overload with: aGame.
 	redo := Redo with: aGame.
-
 	player := 1.
 	player2 := 2.
-
 	aGameBoard add: overload to: player.
 	aGameBoard add: cancellation to: player.
 	aGameBoard add: redo to: player2.
@@ -782,6 +725,7 @@ CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 	overload from: player applyTo: player2.
 	aGame throwNextShip.
 	redo from: player2 to: player.
+	
 	self
 		should: [ 
 		cancellation from: player applyTo: player canceled: redo ]
@@ -793,21 +737,21 @@ CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 { #category : #tests }
 CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
 	| speed redo player player2 cancellation|
+	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
 	cancellation := Cancellation with: aGame .
-
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player.
 	aGameBoard add: redo to: player2.
 
 	speed from: player applyTo: player . 
 	aGame throwNextShip . 
 	redo from: player2 to: player2 . 
+	
 	self
 		should: [ 
 		cancellation from: player applyTo: player2 canceled: speed ]
@@ -826,13 +770,10 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 1) and: #(1 1 3 1 1).
-		
 	overload1 := Overload with: aGame  .
-	aJail := Jail new .
-		
+	aJail := Jail new.
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: overload1 to: player2.
 	aGameBoard add: aJail at: 4.
 
@@ -844,6 +785,7 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 	aGame throwNextShip . "No logra salir"
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
+	
 	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
 	
 	
@@ -857,13 +799,10 @@ CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
-		
 	overload1 := Overload with: aGame  .
 	aJail := Jail new .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: overload1 to: player2.
 	aGameBoard add: aJail at: 4.
 
@@ -889,13 +828,10 @@ CardsTests >> test034ShipFallsInJailBecauseASpeedUpAndCanGetOut [
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
-	
 	speed := Speed with: aGame  .
 	aJail := Jail new .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player2.
 	aGameBoard add: aJail at: 5.
 
@@ -921,13 +857,10 @@ CardsTests >> test035ShipFallsInJailBecauseASpeedUpAndCantGetOut [
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 4 4).
-	
 	speed := Speed with: aGame  .
 	aJail := Jail new .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: speed to: player2.
 	aGameBoard add: aJail at: 5.
 
@@ -953,13 +886,10 @@ CardsTests >> test036ShipFallsInJailBecauseAnAccelerationCanGetOut [
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
-	
 	acceleration := Acceleration with: aGame  .
 	aJail := Jail new .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: acceleration to: player2.
 	aGameBoard add: aJail at: 5.
 
@@ -985,13 +915,10 @@ CardsTests >> test037ShipFallsInJailBecauseAnAccelerationAndCantGetOut [
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 5 4).
-	
 	acceleration := Acceleration with: aGame  .
 	aJail := Jail new .
-		
 	player:=1.
 	player2:=2.
-	
 	aGameBoard add: acceleration to: player2.
 	aGameBoard add: aJail at: 5.
 
@@ -1083,6 +1010,7 @@ CardsTests >> test040TypeCardFreedomExistsThenAssert [
 	
 	|freedom|
 	freedom := Freedom new.
+	
 	self assert: (freedom  isKindOf:  Freedom) .
 ]
 
@@ -1102,6 +1030,7 @@ CardsTests >> test041ShipUsesFreedomThenGetsOutOfJail [
 	aGame throwNextShip . "Cae en Jail"
 	aFreedom from: player applyTo: player. "Se libera"
 	aGame throwNextShip .
+	
 	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
 	
 	
@@ -1125,6 +1054,7 @@ CardsTests >> test042ShipUsesFreedomOnAPlayerNotInJailThenError [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip . "Cae en Jail"
+	
 	self
 		should: [ 
 		aFreedom from: player applyTo: player2 ]
@@ -1175,7 +1105,6 @@ CardsTests >> test044ShipUsesRedoOfARedoOfAFreedomThenIsFree [
 
 	self setUpGameWith: 3 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
-	
 	aFreedom := Freedom with: aGame .
 	redo := Redo with: aGame  .
 	redo2 := Redo with: aGame  .
@@ -1456,6 +1385,30 @@ CardsTests >> test058ReverseRobustInstanceCreation [
 		raise: Error
 		withMessage:
 		'The card must receive a ShipsGame instance'
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test059SameCardInstanceIsGivenToDifferentShipsThenError [
+	|reverse ship1 ship2|
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	reverse := Reverse with: aGame.
+	
+	ship1:= 1.
+	ship2:= 2.
+	aGameBoard add: reverse to: ship1.
+	
+	self
+		should: [ 
+		aGameBoard add: reverse to: ship2. ]
+		raise: Error
+		withMessage:
+		'The card was already assigned to a ship'
+	
+	
 	
 	
 ]
