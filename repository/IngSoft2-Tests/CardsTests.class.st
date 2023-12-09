@@ -1339,3 +1339,30 @@ CardsTests >> test053ReverseCardIsUsedThenTurnsAreReversed [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test054ReverseCardWithTurnsDoingACompleteRoundReversed [
+	| reverse ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	reverse := Reverse with: aGame  .
+	ship1:= 1.
+	aGameBoard add: reverse to: ship1.
+	
+	aGame throwNextShip .
+	aGame throwNextShip .
+	reverse applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 4 .
+	
+	
+	
+	
+]

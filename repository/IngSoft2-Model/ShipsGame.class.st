@@ -2,7 +2,6 @@ Class {
 	#name : #ShipsGame,
 	#superclass : #Object,
 	#instVars : [
-		'result',
 		'gameboard',
 		'chosenCard',
 		'lastUsedCard',
@@ -89,7 +88,8 @@ ShipsGame >> throwNextShip [
 	self verifyThereIsNotAWinner.
 	gameboard move: (gameboard shipWith: turnToThrow).
 	turnToThrow := turnToThrow + amountToSum .
-	turnToThrow <= amountOfShips ifFalse: [ turnToThrow := 1 ]
+	(turnToThrow > amountOfShips) ifTrue: [ turnToThrow := 1 ].
+	(turnToThrow = 0) ifTrue: [ turnToThrow := amountOfShips ]
 ]
 
 { #category : #validation }
