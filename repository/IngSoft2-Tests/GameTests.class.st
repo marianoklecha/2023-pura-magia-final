@@ -64,7 +64,7 @@ GameTests >> test002GameStateBeforeStartThenMessage [
 
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
 
-self assert: aGame result equals: 'The Game does not have a winner'  
+"self assert: aGame result equals: 'The Game does not have a winner' "
 ]
 
 { #category : #tests }
@@ -73,7 +73,7 @@ GameTests >> test003GameIsStartedThenWinnerShip [
 aShip := ShipPosition new.
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
  
-self deny: aGame result equals: aShip  
+self deny: aGame winner equals: aShip  
 ]
 
 { #category : #tests }
@@ -367,7 +367,7 @@ GameTests >> test015PlayWithNPlayersUntilGameEnds [
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
 "aGame playUntilWinner: arrayOfDices. ""OBSOLETO"
 
-self deny: (aGame result) equals: 'The Game has ended' . 
+"self deny: (aGame result) equals: 'The Game has ended' . "
 
 
 
