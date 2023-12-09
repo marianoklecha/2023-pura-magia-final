@@ -79,7 +79,7 @@ ShipsGame >> ranking [
 
 { #category : #action }
 ShipsGame >> reverseTurnsOrder [
-	amountToSum := -1.
+	amountToSum := amountToSum*(-1).
 ]
 
 { #category : #action }

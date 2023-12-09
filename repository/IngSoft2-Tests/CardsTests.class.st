@@ -1366,3 +1366,54 @@ CardsTests >> test054ReverseCardWithTurnsDoingACompleteRoundReversed [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test055ReverseCardAppliedBeforeFirstThrow [
+	| reverse ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	reverse := Reverse with: aGame  .
+	ship1:= 1.
+	aGameBoard add: reverse to: ship1.
+	
+	reverse applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test056TwoReverseCardsAppliedNothingChanges [
+	| reverse  reverse2 ship1 ship2|
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	reverse := Reverse with: aGame.
+	reverse2 := Reverse with: aGame.
+	ship1:= 1.
+	ship2:= 2.
+	aGameBoard add: reverse to: ship1.
+	aGameBoard add: reverse2 to: ship2.
+	
+	aGame throwNextShip.
+	reverse applyFrom: ship1.
+	reverse2 applyFrom: ship2.
+	aGame throwNextShip.
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
