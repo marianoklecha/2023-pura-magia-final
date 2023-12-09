@@ -1445,3 +1445,17 @@ CardsTests >> test057RedoAReverseCardThenNothingChanges [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test058ReverseRobustInstanceCreation [
+	| reverse |
+	
+	self
+		should: [ 
+		reverse := Reverse with: 2 . ]
+		raise: Error
+		withMessage:
+		'The card must receive a ShipsGame instance'
+	
+	
+]
