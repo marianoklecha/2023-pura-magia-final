@@ -29,6 +29,16 @@ Reverse >> initializeWith: aShipsGame [
 ]
 
 { #category : #action }
+Reverse >> permanent [
+	^false.
+]
+
+{ #category : #action }
+Reverse >> selected: anInteger [ 
+	^self.
+]
+
+{ #category : #action }
 Reverse >> verifyUseWith: aNumberOfShip [ 	
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	shipsGame chosenCard: self .
