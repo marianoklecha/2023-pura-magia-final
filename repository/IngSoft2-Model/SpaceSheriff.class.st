@@ -14,6 +14,11 @@ SpaceSheriff class >> with: aDieCollection [
 ]
 
 { #category : #action }
+SpaceSheriff >> change: shipsToJail [ 
+	shipsInJail := shipsToJail .
+]
+
+{ #category : #action }
 SpaceSheriff >> giveChanceToFree: aShip with: aDieResult [
 
 	| highestResult |
@@ -48,6 +53,11 @@ SpaceSheriff >> setFree: aShip [
 	(shipsInJail includes: aShip)
 		ifTrue: [ shipsInJail remove: aShip ]
 		ifFalse: [ Error signal: 'The ship you want to free is not in Jail' ]
+]
+
+{ #category : #action }
+SpaceSheriff >> shipsJailed [
+	^shipsInJail .
 ]
 
 { #category : #action }
