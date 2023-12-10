@@ -54,8 +54,7 @@ PositionManager >> change: aShipPosition withMoreParsecsThanMax: aResult [
 		newParsec := newParsec - parsecs ].
 	newShipPosition := self manageCellsOf: aShipPosition at: cell.
 	^ newShipPosition := ShipPosition createWith: newShipPosition currentCell
-		                   at: newShipPosition currentLap
-		                   and: (Parsecs with: newParsec).
+		                   at: newShipPosition currentLap and: (Parsecs with: newParsec).
 ]
 
 { #category : #'manage action' }
@@ -82,8 +81,7 @@ PositionManager >> change: aShipPosition withNegativeParsecs: aResult [
 		newParsec := newParsec + parsecs ].
 	newShipPosition := self manageCellsOf: aShipPosition at: cell.
 	^ newShipPosition := ShipPosition createWith: newShipPosition currentCell
-		                   at: newShipPosition currentLap
-		                   and: (Parsecs with: newParsec).
+		                   at: newShipPosition currentLap and: (Parsecs with: newParsec).
 ]
 
 { #category : #initialization }
@@ -130,6 +128,5 @@ PositionManager >> updateResult: aResult [
 	| auxResult |
 	auxResult := aResult.
 	[ auxResult > cells ] whileTrue: [ auxResult := auxResult - cells ].
-
 	^ auxResult
 ]

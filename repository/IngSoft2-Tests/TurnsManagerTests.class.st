@@ -6,7 +6,9 @@ Class {
 		'numberOfLaps',
 		'amountOfPlayers',
 		'aGameBoard',
-		'aGame'
+		'aGame',
+		'aCollectionOfCards',
+		'loadedDeck'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -16,10 +18,16 @@ TurnsManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmoun
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
 	amountOfPlayers := anAmountOfPlayers .
-	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
 	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
+]
+
+{ #category : #running }
+TurnsManagerTests >> setUpLoadedDeck [
+	aCollectionOfCards := OrderedCollection new.
+	loadedDeck := LoadedDeck with: aCollectionOfCards.
+	aGame useCardsFrom: loadedDeck.
 ]
 
 { #category : #running }
@@ -65,7 +73,9 @@ TurnsManagerTests >> test063TurnsManagerGivesTurnsInReverseOrder [
 	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
 	turnsManager := aGame turnsManager .
 	reverse := Reverse with: aGame  .
-	aGameBoard add: reverse to: 1.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse.
+	aGame giveCardTo: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
 	reverse applyFrom: 1.
@@ -86,7 +96,9 @@ TurnsManagerTests >> test064TurnsManagerCanSkipATurn [
 	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
 	turnsManager := aGame turnsManager .
 	skip := Skip with: aGame  .
-	aGameBoard add: skip to: 1.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: skip.
+	aGame giveCardTo: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
 	skip applyFrom: 1.
@@ -107,7 +119,9 @@ TurnsManagerTests >> test065TurnsManagerAllowsDoubleTurn [
 	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
 	turnsManager := aGame turnsManager .
 	double := Double with: aGame  .
-	aGameBoard add: double to: 1.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: double.
+	aGame giveCardTo: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
 	double applyFrom: 1.

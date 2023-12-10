@@ -14,7 +14,9 @@ Class {
 		'aGameBoard',
 		'die1',
 		'die2',
-		'arrayOfDie'
+		'arrayOfDie',
+		'aCollectionOfCards',
+		'loadedDeck'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -24,10 +26,17 @@ CardsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCell
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
 	amountOfPlayers := anAmountOfPlayers .
-	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
 	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
+	aGame useCardsFrom: Deck new.
+]
+
+{ #category : #running }
+CardsTests >> setUpLoadedDeck [
+	aCollectionOfCards := OrderedCollection new.
+	loadedDeck := LoadedDeck with: aCollectionOfCards.
+	aGame useCardsFrom: loadedDeck.
 ]
 
 { #category : #running }
@@ -60,13 +69,15 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	
 	overload1 := Overload with: aGame .
-	overload2 := Overload with: aGame .	
+	overload2 := Overload with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: overload1 ; add: overload2.
 	player:= 1.
-	aGameBoard add: overload1 to: player.
-	aGameBoard add: overload2 to: player.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player.
 
-	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 3) isKindOf: Overload).
-	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 4) isKindOf: Overload).
+	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 1) isKindOf: Overload).
+	self assert: (((((aGameBoard shipWith: 1)shipCards ) cardsInHand ) at: 2) isKindOf: Overload).
 	
 	
 ]
@@ -79,10 +90,13 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	overload1 := Overload with: aGame  .
 	overload2 := Overload with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: overload1 ; add: overload2.
 	player:=1.
 	player2:=2.
-	aGameBoard add: overload1 to: player.
-	aGameBoard add: overload2 to: player2.
+	
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	overload1 from: player applyTo: player2. 	
 	aGame throwNextShip .
@@ -90,7 +104,7 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
 	
 	
 	
@@ -105,10 +119,12 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed1 := Speed with: aGame.
 	speed2 := Speed with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed1 ; add: speed2.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: speed1 to: player.
-	aGameBoard add: speed2 to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	aGame throwNextShip .
 	aGame throwNextShip .	
@@ -116,7 +132,7 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip:  1) equals: 7 .
+	self assert: ((aGameBoard shipWith: 1 )actualPosition currentCell) equals: 7 .
 	
 	
 	
@@ -131,10 +147,12 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	acceleration1  := Acceleration with: aGame .
 	acceleration2  := Acceleration with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: acceleration1  ; add: acceleration2.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: acceleration1 to: player.
-	aGameBoard add: acceleration2 to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 		
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -142,10 +160,10 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
-	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
-	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 7 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 3 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 2 .
 	
 	
 	
@@ -160,10 +178,12 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation:= Cancellation with: aGame .
 	overload := Overload with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: overload .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: overload to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player.
 
 	overload  from: player  applyTo: player2 .
 	cancellation from: player2 applyTo: player2 canceled: overload .
@@ -172,7 +192,7 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -187,10 +207,12 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation:= Cancellation with: aGame.
 	speed := Speed with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: speed.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: speed  to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player.
 	
 	speed from: player applyTo: player . 
 	aGame throwNextShip .
@@ -199,7 +221,7 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 7 .
 ]
 
 { #category : #tests }
@@ -210,10 +232,12 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation:= Cancellation with: aGame .
 	acceleration := Acceleration  with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: acceleration.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: acceleration  to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player.
 
 	acceleration applyToAllFrom: player . 
 	aGame throwNextShip .
@@ -222,7 +246,7 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 7 .
 ]
 
 { #category : #tests }
@@ -233,16 +257,18 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speedUp := SpeedUp new.
 	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: speedUp at: 3.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame giveCardTo: player.
 
 	aGame throwNextShip .
 	repeat from: player to: player . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 3 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 3 .
 ]
 
 { #category : #tests }
@@ -253,17 +279,19 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	self setUpLoadedDiceWith: #(1 1 1 1) and: #(1 6 3 1).
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: wormHole at: 6.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame giveCardTo: player.
 	
 	aGame throwNextShip . "Cae en 2"
 	aGame throwNextShip . "Cae en 7"
 	aGame throwNextShip . "Cae en Wormhole"
 	repeat from: player  to: player2  . 
 		
-	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 3 .
 ]
 
 { #category : #tests }
@@ -274,17 +302,19 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	moonWalk := MoonWalk with: -3.
 	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: moonWalk at: 6.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame giveCardTo: player.
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
 	repeat from: player to: player2 . 
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
 ]
 
 { #category : #tests }
@@ -295,16 +325,18 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	anAtomicBomb := AtomicBomb new.
 	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: anAtomicBomb at: 5 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.	
+	aGame giveCardTo: player.	
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	repeat from: player. 
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
 ]
 
 { #category : #tests }
@@ -326,16 +358,18 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	aGameBoard cellsDividedIn: 4. 
 	aGameBoard shipsUseToThrow: arrayOfDie .
 	repeat  := Repeat with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame giveCardTo: player.
 	
 	aGame throwNextShip .
 	repeat  from: player  to: player .
 			
-	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
-	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
 ]
 
 { #category : #tests }
@@ -346,10 +380,12 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	overload := Overload  with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: overload ; add: redo.
 	player:=1.
 	player2:=2.
-	aGameBoard add: overload to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 	
 	overload from: player applyTo: player2 . 
 	aGame throwNextShip . 
@@ -358,8 +394,8 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	aGame throwNextShip . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
 		
 	
 	
@@ -373,10 +409,12 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	acceleration := Acceleration with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: acceleration ; add: redo.
 	player:=1.
 	player2:=2.
-	aGameBoard add: acceleration to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 	
 	acceleration applyToAllFrom:  player . 
 	aGame throwNextShip . 
@@ -385,10 +423,10 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	aGame throwNextShip . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 1 .
-	self assert: (aGameBoard lapOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
-	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 1 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 2 .
 		
 	
 	
@@ -403,10 +441,12 @@ CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed ; add: redo.
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	speed from: player applyTo: player . 
 	aGame throwNextShip . 
@@ -415,8 +455,8 @@ CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	aGame throwNextShip . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 4 .
 		
 	
 	
@@ -432,12 +472,14 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	speed2 := Speed with: aGame .
 	cancellation := Cancellation with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed1 ; add: speed2 ; add: cancellation ; add: redo  .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed1 to: player.
-	aGameBoard add: cancellation to: player.
-	aGameBoard add: redo to: player2.
-	aGameBoard add: speed2 to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 	
 	speed1 from: player applyTo: player. 
 	aGame throwNextShip . "1-P4 2-P0"
@@ -448,10 +490,10 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	aGame throwNextShip . "1-P7 2-P6"
 	aGame throwNextShip . "1-P7L1 2-P3L2"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 7 .
-	self assert: (aGameBoard lapOfShip: 1) equals: 1 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 3 .
-	self assert: (aGameBoard lapOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 7 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 3 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 2 .
 		
 	
 	
@@ -466,11 +508,13 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	speed := Speed with: aGame .
 	redo1:= Redo with: aGame .
 	redo2:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed ; add: redo1 ; add: redo2  .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo1 to: player2.
-	aGameBoard add: redo2 to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player2.
 
 	speed  from: player applyTo: player .
 	aGame throwNextShip . 
@@ -480,8 +524,8 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	aGame throwNextShip . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
 		
 	
 	
@@ -496,10 +540,12 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed; add: redo  .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 	
 	speed  from: player  applyTo: player .
 	
@@ -517,10 +563,12 @@ CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(6 5 ).
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
 	aGameBoard add: wormHole at: 4.
 	ship:= 1.
 	ship2:=2.
-	aGameBoard add: repeat to: ship2.
+	aGame giveCardTo: ship2.
 	
 	aGame throwNextShip . "P1 7 LAP1 P2 0 LAP1 "
 	aGame throwNextShip . "P1 3 LAP1 P2 1 LAP1 "
@@ -535,19 +583,6 @@ CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
 ]
 
 { #category : #tests }
-CardsTests >> test025CreateADeckThatGivesARandomCardToAShipFromTheGameboard [
-	|aDeckOfCards aNumberOfShip|
-	
-	self setUpGameWith:  1 andGameboardWith: 10 and: 1.
-	aDeckOfCards := DeckOfCards new.
-	aNumberOfShip := 1.
-	
-	aDeckOfCards designateRandomCardTo: aNumberOfShip from: aGameBoard .
-	
-	self assert: (aGameBoard shipWith: aNumberOfShip)shipCards cardsInHand size equals: 2+1 "Two are random"
-]
-
-{ #category : #tests }
 CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	|player player2  repeat wormHole redo|
 	
@@ -556,36 +591,40 @@ CardsTests >> test026PlayWithRedoaRepeatCardWithEffectWormHole [
 	wormHole := WormHole  new.
 	repeat  := Repeat with: aGame .
 	redo:= Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat ; add: redo  .
 	aGameBoard add: wormHole at: 8.
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat to: player.
-	aGameBoard add: redo to: player2. 
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2. 
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
-	repeat from: player  to: player2  . 
-	redo from: player2  to: player .
+	repeat from: player  to: player  . 
+	redo from: player2  to: player2 .
 	
-	self assert: (aGameBoard cellOfShip: 2) equals: 1 .
-	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 1 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
 ]
 
 { #category : #tests }
 CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
-	| redo overload  player player2  cancellation|
+	| redo overload  player player2  cancellation |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation:= Cancellation with: aGame .
 	overload := Overload with: aGame .
 	redo:= Redo with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: overload ; add: redo  .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: overload to: player.
-	aGameBoard add: cancellation to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	overload  from: player  applyTo: player2 .
 	aGame throwNextShip .
@@ -595,8 +634,8 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1)	 equals: 6 .
-	self assert: (aGameBoard cellOfShip: 2)	 equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell)	 equals: 6 .
+	self assert: ((aGameBoard shipWith: 2)actualPosition currentCell)	 equals: 6 .
 	
 	
 	
@@ -605,18 +644,20 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 
 { #category : #tests }
 CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
-	| speed redo player player2 cancellation|
+	| speed redo player player2 cancellation  |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
 	cancellation := Cancellation with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed ; add: redo ; add: cancellation  .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
-	aGameBoard add: cancellation to: player.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
+	aGame giveCardTo: player.
 
 	speed from: player applyTo: player . 
 	aGame throwNextShip . 
@@ -626,8 +667,8 @@ CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 	aGame throwNextShip . 
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
 		
 	
 	
@@ -637,18 +678,20 @@ CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 { #category : #tests }
 CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
 
-	| player player2  cancellation acceleration redo|
+	| player player2  cancellation acceleration redo  |
 
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation:= Cancellation with: aGame .
 	acceleration := Acceleration  with: aGame .
 	redo := Redo with: aGame.	
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: acceleration  ; add: redo  .
 	player:= 1.
 	player2:= 2.
-	aGameBoard add: acceleration  to: player.
-	aGameBoard add: cancellation to: player.
-	aGameBoard add: redo to: player2 .
+	aGame giveCardTo: player.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2 .
 
 	acceleration applyToAllFrom: player . 
 	aGame throwNextShip .
@@ -658,24 +701,26 @@ CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
 ]
 
 { #category : #tests }
 CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 
-	| redo overload player player2 cancellation |
+	| redo overload player player2 cancellation  |
 	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	cancellation := Cancellation with: aGame.
 	overload := Overload with: aGame.
 	redo := Redo with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: cancellation ; add: overload ; add: redo  .
 	player := 1.
 	player2 := 2.
-	aGameBoard add: overload to: player.
-	aGameBoard add: cancellation to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	overload from: player applyTo: player2.
 	aGame throwNextShip.
@@ -691,17 +736,19 @@ CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 
 { #category : #tests }
 CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
-	| speed redo player player2 cancellation|
+	| speed redo player player2 cancellation |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	speed := Speed with: aGame .
 	redo:= Redo with: aGame .
 	cancellation := Cancellation with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed ; add: redo ; add: cancellation .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player2.
 
 	speed from: player applyTo: player . 
 	aGame throwNextShip . 
@@ -721,15 +768,17 @@ CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
 
 { #category : #tests }
 CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
-	| overload1 aJail  player player2 |
+	| overload1 aJail  player player2  |
 	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 1) and: #(1 1 3 1 1).
 	overload1 := Overload with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: overload1  .
 	aJail := Jail new.
 	player:=1.
 	player2:=2.
-	aGameBoard add: overload1 to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -741,7 +790,7 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: ((aGameBoard shipWith: 1)actualPosition currentCell) equals: 4 .
 	
 	
 	
@@ -750,15 +799,17 @@ CardsTests >> test032ShipFallsInJailBecauseAnOverloadAndCantGetOut [
 
 { #category : #tests }
 CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
-	| overload1 aJail  player player2 |
+	| overload1 aJail  player player2  |
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
 	overload1 := Overload with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: overload1   .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: overload1 to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -770,7 +821,7 @@ CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
 	
 	
 	
@@ -779,15 +830,17 @@ CardsTests >> test033ShipFallsInJailBecauseAnOverloadAndCanGetOut [
 
 { #category : #tests }
 CardsTests >> test034ShipFallsInJailBecauseASpeedUpAndCanGetOut [
-	| speed aJail  player player2 |
+	| speed aJail  player player2  |
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
 	speed := Speed with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed  .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 5.
 
 	aGame throwNextShip .
@@ -799,7 +852,7 @@ CardsTests >> test034ShipFallsInJailBecauseASpeedUpAndCanGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
 	
 	
 	
@@ -813,10 +866,12 @@ CardsTests >> test035ShipFallsInJailBecauseASpeedUpAndCantGetOut [
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 4 4).
 	speed := Speed with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: speed   .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: speed to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 5.
 
 	aGame throwNextShip .
@@ -828,7 +883,7 @@ CardsTests >> test035ShipFallsInJailBecauseASpeedUpAndCantGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5 .
 	
 	
 	
@@ -837,15 +892,17 @@ CardsTests >> test035ShipFallsInJailBecauseASpeedUpAndCantGetOut [
 
 { #category : #tests }
 CardsTests >> test036ShipFallsInJailBecauseAnAccelerationCanGetOut [
-	| acceleration aJail  player player2 |
+	| acceleration aJail  player player2  |
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 1 4) and: #(1 1 1 1 4).
 	acceleration := Acceleration with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: acceleration .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: acceleration to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 5.
 
 	aGame throwNextShip .
@@ -857,7 +914,7 @@ CardsTests >> test036ShipFallsInJailBecauseAnAccelerationCanGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 8 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 8 .
 	
 	
 	
@@ -866,15 +923,17 @@ CardsTests >> test036ShipFallsInJailBecauseAnAccelerationCanGetOut [
 
 { #category : #tests }
 CardsTests >> test037ShipFallsInJailBecauseAnAccelerationAndCantGetOut [
-	| acceleration aJail  player player2 |
+	| acceleration aJail  player player2  |
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1 5 4) and: #(1 1 1 5 4).
 	acceleration := Acceleration with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: acceleration .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: acceleration to: player2.
+	aGame giveCardTo: player2.
 	aGameBoard add: aJail at: 5.
 
 	aGame throwNextShip .
@@ -886,7 +945,7 @@ CardsTests >> test037ShipFallsInJailBecauseAnAccelerationAndCantGetOut [
 	aGame throwNextShip .
 	aGame throwNextShip . "Tira una vez mas"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 5 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 5 .
 	
 	
 	
@@ -895,15 +954,17 @@ CardsTests >> test037ShipFallsInJailBecauseAnAccelerationAndCantGetOut [
 
 { #category : #tests }
 CardsTests >> test038ShipFallsInJailAndSendsOtherShipToJailWithRepeat [
-	| aJail  player player2 repeat|
+	| aJail  player player2 repeat  |
 	
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1) and: #(1 1).
 	repeat := Repeat with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat  .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: repeat to: player.
+	aGame giveCardTo: player.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -913,8 +974,9 @@ CardsTests >> test038ShipFallsInJailAndSendsOtherShipToJailWithRepeat [
 	aGame throwNextShip . "No logra salir"
 	aGame throwNextShip . "No logra salir"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 4 .
+
 	
 	
 	
@@ -923,19 +985,21 @@ CardsTests >> test038ShipFallsInJailAndSendsOtherShipToJailWithRepeat [
 
 { #category : #tests }
 CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
-	| aJail  player player2 player3 player4 repeat redo|
+	| aJail  player player2 player3 player4 repeat redo  |
 
 	self setUpGameWith: 4 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 2 1) and: #(1 1 1 1).
 	repeat := Repeat with: aGame  .
 	redo := Redo with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat ; add: redo  .
 	aJail := Jail new .
 	player :=1.
 	player2 :=2.
 	player3 := 3.
 	player4 := 4.
-	aGameBoard add: repeat to: player.
-	aGameBoard add: redo to: player3.
+	aGame giveCardTo: player.
+	aGame giveCardTo: player3.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -950,10 +1014,10 @@ CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
 	aGame throwNextShip . "4 No logra salir"
 	aGame throwNextShip . "1 No logra salir"
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 4) equals: 4 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 4) actualPosition currentCell) equals: 4 .
 	
 	
 	
@@ -967,9 +1031,11 @@ CardsTests >> test041ShipUsesFreedomThenGetsOutOfJail [
 	self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	aFreedom := Freedom with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: aFreedom  .
 	aJail := Jail new .
 	player:= 1.
-	aGameBoard add: aFreedom to: player.
+	aGame giveCardTo: player.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -977,7 +1043,7 @@ CardsTests >> test041ShipUsesFreedomThenGetsOutOfJail [
 	aFreedom from: player applyTo: player. "Se libera"
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 6 .
 	
 	
 	
@@ -991,10 +1057,12 @@ CardsTests >> test042ShipUsesFreedomOnAPlayerNotInJailThenError [
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	aFreedom := Freedom with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: aFreedom  .
 	aJail := Jail new .
 	player:= 1.
 	player2:= 2.
-	aGameBoard add: aFreedom to: player.
+	aGame giveCardTo: player.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -1015,17 +1083,19 @@ CardsTests >> test042ShipUsesFreedomOnAPlayerNotInJailThenError [
 
 { #category : #tests }
 CardsTests >> test043ShipUsesFreedomAndAnotherShipRedoToBeFree [
-	| aJail  player player2 redo aFreedom|
+	| aJail  player player2 redo aFreedom |
 
 	self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	redo := Redo with: aGame  .
 	aFreedom := Freedom with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: redo ; add: aFreedom   .
 	aJail := Jail new .
 	player:=1.
 	player2:=2.
-	aGameBoard add: aFreedom to: player.
-	aGameBoard add: redo to: player2.
+	aGame giveCardTo:  player2.
+	aGame giveCardTo:  player.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -1037,8 +1107,8 @@ CardsTests >> test043ShipUsesFreedomAndAnotherShipRedoToBeFree [
 	aGame throwNextShip . 
 	aGame throwNextShip . 
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
 	
 	
 	
@@ -1054,13 +1124,15 @@ CardsTests >> test044ShipUsesRedoOfARedoOfAFreedomThenIsFree [
 	aFreedom := Freedom with: aGame .
 	redo := Redo with: aGame  .
 	redo2 := Redo with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: aFreedom; add: redo ; add: redo2  .
 	aJail := Jail new .
 	player:= 1.
 	player2:= 2.
 	player3:= 3.
-	aGameBoard add: aFreedom to: player.
-	aGameBoard add: redo to: player2.
-	aGameBoard add: redo2 to: player3.
+	aGame giveCardTo:  player.
+	aGame giveCardTo:  player2.
+	aGame giveCardTo:  player3.
 	aGameBoard add: aJail at: 4.
 
 	aGame throwNextShip .
@@ -1076,9 +1148,9 @@ CardsTests >> test044ShipUsesRedoOfARedoOfAFreedomThenIsFree [
 	aGame throwNextShip . 
 	aGame throwNextShip . 
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 6 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 6 .
 	
 	
 	
@@ -1189,8 +1261,10 @@ CardsTests >> test053ReverseCardIsUsedThenTurnsAreReversed [
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	reverse := Reverse with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse .
 	ship1:= 1.
-	aGameBoard add: reverse to: ship1.
+	aGame giveCardTo:  ship1.
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -1198,9 +1272,9 @@ CardsTests >> test053ReverseCardIsUsedThenTurnsAreReversed [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1214,8 +1288,10 @@ CardsTests >> test054ReverseCardWithTurnsDoingACompleteRoundReversed [
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	reverse := Reverse with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse .
 	ship1:= 1.
-	aGameBoard add: reverse to: ship1.
+	aGame giveCardTo:  ship1.
 	
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -1225,9 +1301,9 @@ CardsTests >> test054ReverseCardWithTurnsDoingACompleteRoundReversed [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 4 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 4 .
 	
 	
 	
@@ -1241,16 +1317,18 @@ CardsTests >> test055ReverseCardAppliedBeforeFirstThrow [
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	reverse := Reverse with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse .
 	ship1:= 1.
-	aGameBoard add: reverse to: ship1.
+	aGame giveCardTo:  ship1.
 	
 	reverse applyFrom: ship1.
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1259,16 +1337,18 @@ CardsTests >> test055ReverseCardAppliedBeforeFirstThrow [
 
 { #category : #tests }
 CardsTests >> test056TwoReverseCardsAppliedNothingChanges [
-	| reverse  reverse2 ship1 ship2|
+	| reverse  reverse2 ship1 ship2 |
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	reverse := Reverse with: aGame.
 	reverse2 := Reverse with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse ; add: reverse2  .
 	ship1:= 1.
 	ship2:= 2.
-	aGameBoard add: reverse to: ship1.
-	aGameBoard add: reverse2 to: ship2.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo: ship2.
 	
 	aGame throwNextShip.
 	reverse applyFrom: ship1.
@@ -1276,9 +1356,9 @@ CardsTests >> test056TwoReverseCardsAppliedNothingChanges [
 	aGame throwNextShip.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1287,16 +1367,18 @@ CardsTests >> test056TwoReverseCardsAppliedNothingChanges [
 
 { #category : #tests }
 CardsTests >> test057RedoAReverseCardThenNothingChanges [
-	| reverse  redo ship1 ship2|
+	| reverse  redo ship1 ship2 |
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	reverse := Reverse with: aGame.
 	redo := Redo with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: reverse ; add: redo  .
 	ship1:= 1.
 	ship2:= 2.
-	aGameBoard add: reverse to: ship1.
-	aGameBoard add: redo to: ship2.
+	aGame giveCardTo:  ship1.
+	aGame giveCardTo:  ship2.
 	
 	aGame throwNextShip.
 	reverse applyFrom: ship1.
@@ -1304,9 +1386,9 @@ CardsTests >> test057RedoAReverseCardThenNothingChanges [
 	aGame throwNextShip.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1315,7 +1397,7 @@ CardsTests >> test057RedoAReverseCardThenNothingChanges [
 
 { #category : #tests }
 CardsTests >> test058ReverseRobustInstanceCreation [
-	| reverse |
+	| reverse|
 	
 	self
 		should: [ 
@@ -1328,47 +1410,25 @@ CardsTests >> test058ReverseRobustInstanceCreation [
 ]
 
 { #category : #tests }
-CardsTests >> test059SameCardInstanceIsGivenToDifferentShipsThenError [
-	|reverse ship1 ship2|
-	
-	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
-	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
-	reverse := Reverse with: aGame.
-	
-	ship1:= 1.
-	ship2:= 2.
-	aGameBoard add: reverse to: ship1.
-	
-	self
-		should: [ 
-		aGameBoard add: reverse to: ship2. ]
-		raise: Error
-		withMessage:
-		'The card was already assigned to a ship'
-	
-	
-	
-	
-]
-
-{ #category : #tests }
 CardsTests >> test061SkipCardIsUsedThenShipWithTurnLosesIt [
 	| skip ship1 |
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	skip := Skip with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: skip .
 	ship1:= 1.
-	aGameBoard add: skip to: ship1.
+	aGame giveCardTo: ship1.
 	
 	aGame throwNextShip .
 	skip applyFrom: ship1.
 	aGame throwNextShip .
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1383,18 +1443,20 @@ CardsTests >> test062ShipSkipsAllTurnsThenThrowsAgain [
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	skip := Skip with: aGame  .
 	skip2 := Skip with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: skip; add: skip2 .
 	ship1:= 1.
-	aGameBoard add: skip to: ship1.
-	aGameBoard add: skip2 to: ship1.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo: ship1.
 	
 	aGame throwNextShip .
 	skip applyFrom: ship1.
 	skip2 applyFrom: ship1.
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 0 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 0 .
 	
 	
 	
@@ -1408,16 +1470,18 @@ CardsTests >> test063SkipTurnBeforeFirstThrowThenSecondShipPlays [
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	skip := Skip with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: skip.
 	ship2:= 2.
-	aGameBoard add: skip to: ship2.
+	aGame giveCardTo: ship2.
 	
 	skip applyFrom: ship2.
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1426,23 +1490,25 @@ CardsTests >> test063SkipTurnBeforeFirstThrowThenSecondShipPlays [
 
 { #category : #tests }
 CardsTests >> test064RedoASkipCardThenLastShipThrowsFirst [
-	| skip  redo ship2 ship3|
+	| skip  redo ship2 ship3 |
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	skip := Skip with: aGame.
 	redo := Redo with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: skip ; add: redo.
 	ship2:= 2.
 	ship3:= 3.
-	aGameBoard add: skip to: ship2.
-	aGameBoard add: redo to: ship3 .
+	aGame giveCardTo: ship2.
+	aGame giveCardTo: ship3 .
 	
 	skip applyFrom: ship2.
 	redo from: ship3.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1465,13 +1531,15 @@ CardsTests >> test065SkipRobustInstanceCreation [
 
 { #category : #tests }
 CardsTests >> test067DoubleCardIsUsedThenShipThrowsTwoTimes [
-	| double ship1 |
+	| double ship1|
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	double := Double with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: double .
 	ship1:= 1.
-	aGameBoard add: double to: ship1.
+	aGame giveCardTo: ship1.
 	
 	double applyFrom: ship1.
 	aGame throwNextShip .
@@ -1479,9 +1547,9 @@ CardsTests >> test067DoubleCardIsUsedThenShipThrowsTwoTimes [
 	aGame throwNextShip.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1496,9 +1564,11 @@ CardsTests >> test068TwoDoubleCardAreUsedThenShipThrowsTwoTimes [
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	double := Double with: aGame  .
 	double1 := Double with: aGame  .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: double ; add: double1 .
 	ship1:= 1.
-	aGameBoard add: double to: ship1.
-	aGameBoard add: double1 to: ship1.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo: ship1.
 	
 	double applyFrom: ship1.
 	double1 applyFrom: ship1.
@@ -1508,9 +1578,9 @@ CardsTests >> test068TwoDoubleCardAreUsedThenShipThrowsTwoTimes [
 	aGame throwNextShip.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1525,9 +1595,11 @@ CardsTests >> test069RedoADoubleCardThenShipThrowsTwoTimes [
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
 	double := Double with: aGame.
 	redo := Redo with: aGame.
+	self setUpLoadedDeck.
+	aCollectionOfCards add: double ; add: redo.
 	ship1:= 1.
-	aGameBoard add: double to: ship1.
-	aGameBoard add: redo to: ship1.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo:  ship1.
 	
 	double applyFrom: ship1.
 	redo from: ship1.
@@ -1537,9 +1609,9 @@ CardsTests >> test069RedoADoubleCardThenShipThrowsTwoTimes [
 	aGame throwNextShip.
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 6 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1548,16 +1620,19 @@ CardsTests >> test069RedoADoubleCardThenShipThrowsTwoTimes [
 
 { #category : #tests }
 CardsTests >> test070SkipAfterDoubleCardThenShipThrowsOneTime [
-	| double  skip ship1 ship2|
+	| double  skip ship1 ship2 |
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	self setUpLoadedDeck.
+	
 	double := Double with: aGame.
 	skip := Skip with: aGame.
+	aCollectionOfCards add: double ; add: skip.
 	ship1:= 1.
 	ship2:= 2.
-	aGameBoard add: double to: ship1.
-	aGameBoard add: skip to: ship2.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo: ship2.
 	
 	double applyFrom: ship1.
 	skip applyFrom: ship2.
@@ -1565,9 +1640,9 @@ CardsTests >> test070SkipAfterDoubleCardThenShipThrowsOneTime [
 	aGame throwNextShip .
 	aGame throwNextShip.
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	
@@ -1576,18 +1651,20 @@ CardsTests >> test070SkipAfterDoubleCardThenShipThrowsOneTime [
 
 { #category : #tests }
 CardsTests >> test071RedoASkipAfterDoubleCardThenFirstShipDoesntThrow [
-	| double  skip ship1 ship2 redo|
+	| double  skip ship1 ship2 redo  |
 	
 	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	self setUpLoadedDeck.
 	double := Double with: aGame.
 	skip := Skip with: aGame.
 	redo := Redo with: aGame.
+	aCollectionOfCards add: double ; add: skip ; add: redo.
 	ship1:= 1.
 	ship2:= 2.
-	aGameBoard add: double to: ship1.
-	aGameBoard add: skip to: ship2.
-	aGameBoard add: redo to: ship2.
+	aGame giveCardTo: ship1.
+	aGame giveCardTo: ship2.
+	aGame giveCardTo: ship2.
 	
 	double applyFrom: ship1.
 	skip applyFrom: ship2.
@@ -1595,9 +1672,9 @@ CardsTests >> test071RedoASkipAfterDoubleCardThenFirstShipDoesntThrow [
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
-	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
-	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
-	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 2 .
+	self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 2 .
 	
 	
 	

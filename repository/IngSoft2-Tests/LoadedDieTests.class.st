@@ -5,15 +5,6 @@ Class {
 }
 
 { #category : #tests }
-LoadedDieTests >> test01ChargeDice [
-	|aLoadedDice|
-	aLoadedDice := LoadedDie new.
-	
-	self assert: (aLoadedDice isKindOf: LoadedDie).
-	
-]
-
-{ #category : #tests }
 LoadedDieTests >> test02ChargeDiceWithCollection [
 	|aLoadedDice numbers|
 	

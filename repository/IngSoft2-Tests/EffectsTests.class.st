@@ -21,7 +21,6 @@ EffectsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCe
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
 	amountOfPlayers := anAmountOfPlayers .
-	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
 	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
@@ -82,7 +81,7 @@ aGameBoard add: speedUp at: 3.
 
 aGame throwNextShip.
 
-self assert: (aGameBoard cellOfShip: 1) equals: 7 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 7 .
 
 
 
@@ -123,7 +122,7 @@ aGameBoard add: wormHole at: 7.
 
 aGame throwNextShip.
 
-self assert: (aGameBoard cellOfShip: 1) equals: 3 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 3 .
 
 
 
@@ -143,8 +142,8 @@ aGameBoard add: wormHole at: 2.
 
 aGame throwNextShip .
 
-self assert: (aGameBoard cellOfShip: 1)  equals: 0 .
-self assert: (aGameBoard lapOfShip:  1) equals: 1 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell)  equals: 0 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
 
 
 
@@ -187,7 +186,7 @@ aGameBoard add: speedUp at: 3.
 
 aGame throwNextShip .
 
-self assert: (aGameBoard cellOfShip: 1) equals: 3 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 3 .
 
 
 
@@ -229,12 +228,12 @@ aGameBoard add: aMoonWalk at: 2 .
 
 aGame throwNextShip.
 
-self assert: (aGameBoard cellOfShip: 2 ) equals: 0 .
-self assert: (aGameBoard lapOfShip:  2) equals: 1 .
-self assert: (aGameBoard cellOfShip:  3) equals: 0 .
-self assert: (aGameBoard lapOfShip: 3) equals: 1 .
-self assert: (aGameBoard cellOfShip: 1) equals: 2 .
-self assert: (aGameBoard lapOfShip: 1) equals: 1 
+self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 1 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 0 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentLap) equals: 1 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 
 ]
 
 { #category : #tests }
@@ -252,9 +251,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextShip. "2L1 0L1 0L1 "
 aGame throwNextShip. "0L1 7L1 0L1 "
 
-self assert: (aGameBoard cellOfShip: 2) equals: 7 .
-self assert: (aGameBoard cellOfShip: 3)  equals: 0 .
-self assert: (aGameBoard cellOfShip: 1) equals: 0 .
+self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 7 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentCell)  equals: 0 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
 
 
 
@@ -279,9 +278,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextShip. 
 aGame throwNextShip. 
 
-self assert: (aGameBoard lapOfShip: 2) equals: 1 .
-self assert: (aGameBoard lapOfShip: 3) equals: 1 .
-self assert: (aGameBoard lapOfShip: 1) equals: 1 .
+self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 1 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentLap) equals: 1 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
 
 
 
@@ -326,29 +325,12 @@ aGame throwNextShip.
 aGame throwNextShip.
 aGame throwNextShip.
 
-self assert: (aGameBoard cellOfShip: 2) equals: 0 .
-self assert: (aGameBoard lapOfShip:  2) equals: 1 .
-self assert: (aGameBoard cellOfShip: 3) equals: 0 .
-self assert: (aGameBoard lapOfShip: 3)  equals: 1 .
-self assert: (aGameBoard cellOfShip: 1) equals: 0 .
-self assert: (aGameBoard lapOfShip: 1) equals: 1 .
-
-
-
-
-
-  
-]
-
-{ #category : #tests }
-EffectsTests >> test043GameUsingParsecs [
-| parsecs |
-
-self setUpGameWith: 1 andGameboardWith: 8 and: 2.
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-parsecs := Parsecs with: 4.
-
-self assert: (((aGameBoard shipWith: 1) actualPosition currentParsec ) nominalValue ) equals: 0  .
+self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0 .
+self assert: ((aGameBoard shipWith: 2) actualPosition currentLap) equals: 1 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentCell) equals: 0 .
+self assert: ((aGameBoard shipWith: 3) actualPosition currentLap)  equals: 1 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 0 .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentLap) equals: 1 .
 
 
 
@@ -412,7 +394,7 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextShip.
 
 self assert: (((aGameBoard shipWith: 1)actualPosition currentParsec) nominalValue ) equals: 3  .
-self assert: ((aGameBoard cellOfShip: 1)) equals: 4  .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 4  .
 
 
 
@@ -443,8 +425,8 @@ aGameBoard add: hyperJump  at: 8 .
 aGame throwNextShip.
 
 self assert: (((aGameBoard shipWith: 1)actualPosition currentParsec) nominalValue ) equals: 3  .
-self assert: (aGameBoard cellOfShip: 1)  equals: 1  .
-self assert: (aGameBoard lapOfShip: 1)  equals: 2  .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentCell)  equals: 1  .
+self assert: ((aGameBoard shipWith: 1) actualPosition currentLap)  equals: 2  .
 
 
 
@@ -476,7 +458,7 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextShip.
 
 self assert: (((aGameBoard shipWith: 1) actualPosition currentParsec) nominalValue ) equals: 3  .
-self assert:  (aGameBoard cellOfShip: 1) equals: 2.
+self assert:  ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2.
 
 
 
@@ -511,7 +493,7 @@ aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
 
-self assert: (( (aGameBoard cellOfShip: 1) = 4)  or: ((aGameBoard cellOfShip: 1) = 2)).
+self assert: (( ((aGameBoard shipWith: 1) actualPosition currentCell) = 4)  or: (((aGameBoard shipWith: 1) actualPosition currentCell) = 2)).
 
 
 

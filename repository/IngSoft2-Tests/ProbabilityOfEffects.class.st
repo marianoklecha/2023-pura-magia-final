@@ -2,7 +2,15 @@ Class {
 	#name : #ProbabilityOfEffects,
 	#superclass : #Object,
 	#instVars : [
-		'amountOfCells'
+		'amountOfCells',
+		'totalWormHoles',
+		'totalSpeedUps',
+		'totalMoonWalks',
+		'totalHyperJumps',
+		'totalAtomicBombs',
+		'totalEmptyCells',
+		'totalSpecialCardsCells',
+		'totalCells'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -10,6 +18,16 @@ Class {
 { #category : #initialization }
 ProbabilityOfEffects class >> with: aNumber [ 
 	^(self new) initializeWith: aNumber.
+]
+
+{ #category : #action }
+ProbabilityOfEffects >> addTotalAmountOfCells [
+	|arrayWithTemporalVariables|
+	arrayWithTemporalVariables := OrderedCollection new.
+	arrayWithTemporalVariables add: totalEmptyCells ; add: totalWormHoles
+	; add: totalSpeedUps; add: totalMoonWalks; add: totalHyperJumps
+	; add: totalAtomicBombs; add: totalSpecialCardsCells; add: totalCells.
+	^arrayWithTemporalVariables
 ]
 
 { #category : #action }
@@ -41,45 +59,25 @@ ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
 
 { #category : #calculating }
 ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
-	|gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalEmptyCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
+	|gameboards arrayWithTemporalVariables |
 	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs .
+	gameboards do: [ :each | self countAmountOfCellsOf: each ].
+	arrayWithTemporalVariables := self addTotalAmountOfCells.
+	^ self averageProbabilities: arrayWithTemporalVariables .
 	
-		totalWormHoles := 0.
-		totalSpeedUps := 0. 
-		totalMoonWalks := 0. 
-		totalHyperJumps := 0. 
-		totalAtomicBombs := 0. 
-		totalEmptyCells := 0.
-		totalSpecialCardsCells := 0.
-		totalCells:= 0.
-		
-	   gameboards do: [ :each | 
-		totalWormHoles := totalWormHoles + (self amountOf: WormHole on: each).
-		totalSpeedUps := totalSpeedUps + (self amountOf: SpeedUp on: each). 
-		totalMoonWalks := totalMoonWalks + (self amountOf: MoonWalk on: each). 
-		totalHyperJumps := totalHyperJumps + (self amountOf: HyperJump on: each). 
-		totalAtomicBombs := totalAtomicBombs + (self amountOf: AtomicBomb on: each).
-		totalSpecialCardsCells := totalSpecialCardsCells + (self amountOf: CardAssignation on: each).
-		totalEmptyCells := totalEmptyCells + (self amountOf: NullEffect on: each).
-		
-		
-		totalCells:= amountOfCells + totalCells.].
-		
-	
-	arrayWithTemporalVariables := OrderedCollection new.
-	arrayWithTemporalVariables add: totalEmptyCells.
-	arrayWithTemporalVariables add: totalWormHoles.
-	arrayWithTemporalVariables add: totalSpeedUps.
-	arrayWithTemporalVariables add: totalMoonWalks.
-	arrayWithTemporalVariables add: totalHyperJumps.
-	arrayWithTemporalVariables add: totalAtomicBombs.
-	arrayWithTemporalVariables add: totalSpecialCardsCells.
-	arrayWithTemporalVariables add: totalCells.
-	
-	
-	finalArray := self averageProbabilities: arrayWithTemporalVariables .
-	
-	^ finalArray
+
+]
+
+{ #category : #action }
+ProbabilityOfEffects >> countAmountOfCellsOf: aGameBoard [ 
+	totalWormHoles := totalWormHoles + (self amountOf: WormHole on: aGameBoard).
+	totalSpeedUps := totalSpeedUps + (self amountOf: SpeedUp on: aGameBoard). 
+	totalMoonWalks := totalMoonWalks + (self amountOf: MoonWalk on: aGameBoard). 
+	totalHyperJumps := totalHyperJumps + (self amountOf: HyperJump on: aGameBoard). 
+	totalAtomicBombs := totalAtomicBombs + (self amountOf: AtomicBomb on: aGameBoard).
+	totalSpecialCardsCells := totalSpecialCardsCells + (self amountOf: CardAssignation on: aGameBoard).
+	totalEmptyCells := totalEmptyCells + (self amountOf: NullEffect on: aGameBoard).
+	totalCells:= amountOfCells + totalCells.
 ]
 
 { #category : #creation }
@@ -110,5 +108,13 @@ ProbabilityOfEffects >> createCollectionFrom: aCollection [
 
 { #category : #creation }
 ProbabilityOfEffects >> initializeWith: aNumber [ 
-	amountOfCells := aNumber
+	amountOfCells := aNumber.
+	totalWormHoles := 0.
+	totalSpeedUps := 0. 
+	totalMoonWalks := 0. 
+	totalHyperJumps := 0. 
+	totalAtomicBombs := 0. 
+	totalEmptyCells := 0.
+	totalSpecialCardsCells := 0.
+	totalCells:= 0.
 ]
