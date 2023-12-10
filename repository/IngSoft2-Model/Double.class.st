@@ -1,5 +1,5 @@
 Class {
-	#name : #Acceleration,
+	#name : #Double,
 	#superclass : #Object,
 	#instVars : [
 		'shipsGame'
@@ -8,53 +8,46 @@ Class {
 }
 
 { #category : #initialization }
-Acceleration class >> verifyCanInitializeWith: anInstance [
+Double class >> verifyCanInitializeWith: anInstance [
 
 	(anInstance isKindOf: ShipsGame) ifFalse: [ 
 		Error signal: 'The card must receive a ShipsGame instance' ]
 ]
 
 { #category : #initialization }
-Acceleration class >> with: aShipsGame [
+Double class >> with: aShipsGame [
 	self verifyCanInitializeWith: aShipsGame.
 	^(self new) initializeWith: aShipsGame .
 ]
 
 { #category : #action }
-Acceleration >> amountToChange [
-	^1.
+Double >> apply: aGameBoard [ 
+	shipsGame doubleActualTurn.
 ]
 
 { #category : #action }
-Acceleration >> apply: aGameBoard [
-	aGameBoard store: self.
-	^self
-]
-
-{ #category : #action }
-Acceleration >> applyToAllFrom: aNumberOfShip [ 
+Double >> applyFrom: aNumberOfShip [ 
 	shipsGame chosen: self from: aNumberOfShip.
 	shipsGame applyChosenCard.
 ]
 
 { #category : #initialization }
-Acceleration >> initializeWith: aShipsGame [ 
+Double >> initializeWith: aShipsGame [ 
 	shipsGame := aShipsGame .
 ]
 
-{ #category : #validation }
-Acceleration >> permanent [
-	^true.
+{ #category : #action }
+Double >> permanent [
+	^false.
 ]
 
 { #category : #action }
-Acceleration >> selected: aShip [ 
+Double >> selected: aNumberOfShip [
 	^self.
 ]
 
-{ #category : #validation }
-Acceleration >> verifyUseWith: aNumberOfShip [ 
-	shipsGame verifyIsTurnOf: aNumberOfShip.
+{ #category : #action }
+Double >> verifyUseWith: aNumberOfShip [ 	
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
+	shipsGame chosenCard: self .
 ]

@@ -1532,3 +1532,167 @@ CardsTests >> test065SkipRobustInstanceCreation [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test066TypeCardDoubleExists [
+
+	| double |
+	double := Double new.
+	
+	self assert: (double isKindOf: Double)
+]
+
+{ #category : #tests }
+CardsTests >> test067DoubleCardIsUsedThenShipThrowsTwoTimes [
+	| double ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame  .
+	ship1:= 1.
+	aGameBoard add: double to: ship1.
+	
+	double applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip.
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test068TwoDoubleCardAreUsedThenShipThrowsTwoTimes [
+	| double double1 ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame  .
+	double1 := Double with: aGame  .
+	ship1:= 1.
+	aGameBoard add: double to: ship1.
+	aGameBoard add: double1 to: ship1.
+	
+	double applyFrom: ship1.
+	double1 applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip.
+	aGame throwNextShip.
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test069RedoADoubleCardThenShipThrowsTwoTimes [
+	| double  redo ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame.
+	redo := Redo with: aGame.
+	ship1:= 1.
+	aGameBoard add: double to: ship1.
+	aGameBoard add: redo to: ship1.
+	
+	double applyFrom: ship1.
+	redo from: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip.
+	aGame throwNextShip.
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 6 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test070SkipAfterDoubleCardThenShipThrowsOneTime [
+	| double  skip ship1 ship2|
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame.
+	skip := Skip with: aGame.
+	ship1:= 1.
+	ship2:= 2.
+	aGameBoard add: double to: ship1.
+	aGameBoard add: skip to: ship2.
+	
+	double applyFrom: ship1.
+	skip applyFrom: ship2.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test071RedoASkipAfterDoubleCardThenFirstShipDoesntThrow [
+	| double  skip ship1 ship2 redo|
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame.
+	skip := Skip with: aGame.
+	redo := Redo with: aGame.
+	ship1:= 1.
+	ship2:= 2.
+	aGameBoard add: double to: ship1.
+	aGameBoard add: skip to: ship2.
+	aGameBoard add: redo to: ship2.
+	
+	double applyFrom: ship1.
+	skip applyFrom: ship2.
+	redo from: ship2.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test072DoubleRobustInstanceCreation [
+	| double |
+	
+	self
+		should: [ 
+		double := Double with: 2 . ]
+		raise: Error
+		withMessage:
+		'The card must receive a ShipsGame instance'
+	
+	
+]
