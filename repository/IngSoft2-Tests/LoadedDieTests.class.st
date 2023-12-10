@@ -8,6 +8,7 @@ Class {
 LoadedDieTests >> test01ChargeDice [
 	|aLoadedDice|
 	aLoadedDice := LoadedDie new.
+	
 	self assert: (aLoadedDice isKindOf: LoadedDie).
 	
 ]
