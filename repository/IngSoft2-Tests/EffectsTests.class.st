@@ -56,10 +56,8 @@ EffectsTests >> test031GameUsingSpeedUpEffect [
 | speedUp|
 
 speedUp:= SpeedUp new.
-
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 aGameBoard add: speedUp at: 3.
 
 aGame throwNextShip.
@@ -79,10 +77,8 @@ EffectsTests >> test032GamePlayerFallsInSpeedUpEffectThenChangePosition [
 | speedUp|
 
 speedUp:= SpeedUp new.
-
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
-
 aGameBoard add: speedUp at: 3.
 
 aGame throwNextShip.
@@ -101,14 +97,13 @@ EffectsTests >> test033GameUsingWormHoleEffect [
 |wormHole|
 
 wormHole:= WormHole new.
-
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 aGameBoard add: wormHole at: 7.
 
 aGame throwNextShip.
 aGame throwNextShip.
+
 self assert: ((aGameBoard specialEffectAtCell: 7) isKindOf:  WormHole) .
 
 
@@ -121,13 +116,14 @@ self assert: ((aGameBoard specialEffectAtCell: 7) isKindOf:  WormHole) .
 { #category : #tests }
 EffectsTests >> test034GamePlayerFallsInWormHoleEffectThenChangePosition [
 | wormHole|
-wormHole:= WormHole  new.
 
+wormHole:= WormHole  new.
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
-
 aGameBoard add: wormHole at: 7.
+
 aGame throwNextShip.
+
 self assert: (aGameBoard cellOfShip: 1) equals: 3 .
 
 
@@ -144,9 +140,10 @@ wormHole:= WormHole  new.
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
-
 aGameBoard add: wormHole at: 2.
+
 aGame throwNextShip .
+
 self assert: (aGameBoard cellOfShip: 1)  equals: 0 .
 self assert: (aGameBoard lapOfShip:  1) equals: 1 .
 
@@ -163,7 +160,6 @@ EffectsTests >> test035GamePlayAndCheckWinner [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
-
 wormHole:= WormHole  new.
 
 aGame throwNextShip.
@@ -185,13 +181,13 @@ EffectsTests >> test036GamePlayerFallsInWormHoleAndThenSpeedUpOnlyWornHoleApplie
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
-
 wormHole:= WormHole  new.
 speedUp := SpeedUp new.
-
 aGameBoard add: wormHole at: 7.
 aGameBoard add: speedUp at: 3.
+
 aGame throwNextShip .
+
 self assert: (aGameBoard cellOfShip: 1) equals: 3 .
 
 
@@ -207,13 +203,12 @@ EffectsTests >> test037GamePUsingMoonWalk [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 aMoonWalk := MoonWalk new.
-
 aGameBoard add: aMoonWalk at: 2.
 
 aGame throwNextShip.
 aGame throwNextShip.
+
 self assert: ((aGameBoard specialEffectAtCell: 2) isKindOf:  MoonWalk) .
 
 
@@ -230,10 +225,9 @@ EffectsTests >> test038GamePlayerFallsInWMoonWalkEffectThenChangePositionOfOther
 
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
-
 aMoonWalk := MoonWalk with: -3.
-
 aGameBoard add: aMoonWalk at: 2 .
+
 aGame throwNextShip.
 
 self assert: (aGameBoard cellOfShip: 2 ) equals: 0 .
@@ -251,12 +245,11 @@ EffectsTests >> test039GameHasTwoDifferentMoonWalksandDifferentPlayersFallInto [
 
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
-
 aMoonWalk := MoonWalk with: -3.
 anotherMoonWalk := MoonWalk with: -2.
-
 aGameBoard add: aMoonWalk at: 2 .
 aGameBoard add: anotherMoonWalk at: 7 .
+
 aGame throwNextShip. "2L1 0L1 0L1 "
 aGame throwNextShip. "0L1 7L1 0L1 "
 
@@ -279,12 +272,11 @@ EffectsTests >> test040GameHasTwoDifferentMoonWalksandDifferentPlayersFallIntoAn
 
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
-
 aMoonWalk := MoonWalk with: -3.
 anotherMoonWalk := MoonWalk with: -2.
-
 aGameBoard add: aMoonWalk at: 2 .
 aGameBoard add: anotherMoonWalk at: 7 .
+
 aGame throwNextShip. 
 aGame throwNextShip. 
 
@@ -306,13 +298,12 @@ EffectsTests >> test041GameUsingAtomicBomb [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 anAtomicBomb := AtomicBomb new.
-
 aGameBoard add: anAtomicBomb at: 8.
 
 aGame throwNextShip .
 aGame throwNextShip.
+
 self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  AtomicBomb ) .
 
 
@@ -329,20 +320,17 @@ EffectsTests >> test042GameUsingAtomicBombAllPlayersMovedToCellZero [
 
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 1) and: #(1 4 7).
-
 anAtomicBomb := AtomicBomb new.
-
 aGameBoard add: anAtomicBomb at: 8 .
+
 aGame throwNextShip.
 aGame throwNextShip.
 aGame throwNextShip.
 
 self assert: (aGameBoard cellOfShip: 2) equals: 0 .
 self assert: (aGameBoard lapOfShip:  2) equals: 1 .
-
 self assert: (aGameBoard cellOfShip: 3) equals: 0 .
 self assert: (aGameBoard lapOfShip: 3)  equals: 1 .
-
 self assert: (aGameBoard cellOfShip: 1) equals: 0 .
 self assert: (aGameBoard lapOfShip: 1) equals: 1 .
 
@@ -372,7 +360,7 @@ self assert: (((aGameBoard shipWith: 1) actualPosition currentParsec ) nominalVa
 
 { #category : #tests }
 EffectsTests >> test044GameUsingHyperJump [
-| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
+| hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
@@ -381,19 +369,14 @@ parsc1 := Parsecs with: 4.
 light1 := LightYears with: 9.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
+
 aGame throwNextShip.
 aGame throwNextShip.
 
@@ -409,30 +392,23 @@ self assert: (((aGameBoard shipWith: 2) actualPosition currentParsec) nominalVal
 
 { #category : #tests }
 EffectsTests >> test045GameUsingHyperJumpWhenCellChangeThanksToTheEffect [
-| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
+| hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
-
 parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
-aGame throwNextShip.
 
+aGame throwNextShip.
 
 self assert: (((aGameBoard shipWith: 1)actualPosition currentParsec) nominalValue ) equals: 3  .
 self assert: ((aGameBoard cellOfShip: 1)) equals: 4  .
@@ -446,7 +422,7 @@ self assert: ((aGameBoard cellOfShip: 1)) equals: 4  .
 
 { #category : #tests }
 EffectsTests >> test046PlayerFallsInHyperJumpAndChangeLapCellAndParsec [
-| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
+| hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(7 2 ).
@@ -454,22 +430,15 @@ parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 8 .
 
 aGame throwNextShip.
-
 
 self assert: (((aGameBoard shipWith: 1)actualPosition currentParsec) nominalValue ) equals: 3  .
 self assert: (aGameBoard cellOfShip: 1)  equals: 1  .
@@ -484,37 +453,27 @@ self assert: (aGameBoard lapOfShip: 1)  equals: 2  .
 
 { #category : #tests }
 EffectsTests >> test047HyperJumpCausesNegativeParsecsThenChangePosition [
-| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
+| hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
-
 parsc1 := Parsecs with: -7.
 light1 := LightYears with: -9.
 parsc2 := Parsecs with: -1.
 light2 := LightYears with: -3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: light2 .
-collection1 add: parsc2  .
-collection1 add: light1    .
-collection1 add: parsc1  .
-
+collection1 add: light2 ; add: parsc2 ; add: light1 ;add: parsc1  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-die1 := LoadedDie with: #(1 1).
-die2 := LoadedDie with: #(2 2).
 arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1 .
-arrayOfDie add: die2.
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 2)).
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
+
 aGame throwNextShip.
 
-
-self assert: (((aGameBoard shipWith: 1)actualPosition currentParsec) nominalValue ) equals: 3  .
-self assert:  (aGameBoard cellOfShip:  1) equals: 2.
+self assert: (((aGameBoard shipWith: 1) actualPosition currentParsec) nominalValue ) equals: 3  .
+self assert:  (aGameBoard cellOfShip: 1) equals: 2.
 
 
 
@@ -525,7 +484,7 @@ self assert:  (aGameBoard cellOfShip:  1) equals: 2.
 
 { #category : #tests }
 EffectsTests >> test048GameUsingHyperJumpWithMultipleArrayWithParsecs [
-| parsecs hyperJump  arrayOfPosibilities parsc1 light1 parsc2 light2 parsc3 parsc4 amountOfParsecsToMove collection1 collection2 |
+| hyperJump  arrayOfPosibilities parsc1 light1 parsc2 light2 parsc3 parsc4 amountOfParsecsToMove collection1 collection2 |
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
@@ -536,23 +495,16 @@ parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
 parsc3 := Parsecs with: -3.
 parsc4 := Parsecs with: -4.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
 collection2:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1 .
-collection1 add: parsc2 .
-collection1 add: light2 .
-collection2 add: parsc3 .
-collection2 add: parsc4 .
-
-amountOfParsecsToMove add: collection1 .
-amountOfParsecsToMove add: collection2 .
-parsecs := 4. 
+collection1 add: parsc1; add: light1; add: parsc2; add: light2 .
+collection2 add: parsc3 ; add: parsc4 .
+amountOfParsecsToMove add: collection1;add: collection2 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
+
 aGame throwNextShip.
 
 self assert: (( (aGameBoard cellOfShip: 1) = 4)  or: ((aGameBoard cellOfShip: 1) = 2)).
@@ -570,21 +522,15 @@ EffectsTests >> test051HyperJumpWithACollectionOutOfOrderThenRaiseAnException [
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
-
-
 parsc1 := Parsecs with: 4.
 light1 := LightYears with: 3.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1; add: light1;  add: parsc2;  add: light2  .
 amountOfParsecsToMove add: collection1 .
+
 self should:[ HyperJump with: amountOfParsecsToMove ] raise: Error withMessage: 'Cannot create HyperJump with a collection out of order'.
 
 
@@ -599,10 +545,8 @@ EffectsTests >> test052GameUsingNullEffect [
 | nullEffect |
 
 nullEffect := NullEffect new.
-
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 aGameBoard add: nullEffect at: 3.
 
 self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
@@ -620,13 +564,9 @@ EffectsTests >> test053GameUsingJail [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 aJail := Jail new.
-
 aGameBoard add: aJail at: 8.
 
-aGame throwNextShip .
-aGame throwNextShip.
 self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  Jail ) .
 
 
@@ -642,9 +582,7 @@ EffectsTests >> test054ShipFallsInJailAndCantGetOut [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(7 3 ).
-
 aJail := Jail new.
-
 aGameBoard add: aJail at: 8.
 
 aGame throwNextShip .
@@ -665,14 +603,13 @@ EffectsTests >> test055ShipFallsInJailAndCanGetOutByHighestThrow [
 
 self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
-
 aJail := Jail new.
-
 aGameBoard add: aJail at: 8.
 
 aGame throwNextShip .
 aGame throwNextShip .
 aGame throwNextShip .
+
 self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 1.
 
 
@@ -690,7 +627,6 @@ self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
 aJail := Jail new.
 aWormhole := WormHole new.
-
 aGameBoard add: aWormhole at: 8.
 aGameBoard add: aJail at: 4.
 
@@ -714,13 +650,13 @@ self setUpGameWith: 1 andGameboardWith: 10 and: 2.
 self setUpLoadedDiceWith: #(1 1 1) and: #(3 1 1).
 aJail := Jail new.
 aSpeedUp := SpeedUp new.
-
 aGameBoard add: aSpeedUp at: 4.
 aGameBoard add: aJail at: 8.
 
 aGame throwNextShip .
 aGame throwNextShip .
 aGame throwNextShip .
+
 self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2.
 
 
@@ -736,19 +672,13 @@ EffectsTests >> test058ShipFallsInJailByFallingInHyperJumpAndCanMove [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
-
 parsc1 := Parsecs with: 6.
 light1 := LightYears with: 9.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 amountOfParsecsToMove add: collection1 .
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
@@ -775,10 +705,8 @@ EffectsTests >> test059ShipFallsInJailAndAtomicBombDoesNotMoveIt [
 
 self setUpGameWith: 2 andGameboardWith: 10 and: 2.
 self setUpLoadedDiceWith: #(1 1 1) and: #(7 3 1).
-
 aJail := Jail new.
 anAtomicBomb := AtomicBomb new.
-
 aGameBoard add: anAtomicBomb at: 4.
 aGameBoard add: aJail at: 8.
 

@@ -41,11 +41,11 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 
 { #category : #action }
 GameBoard >> add: aCard to: numberOfShip [
-	| aShip |
-	aShip :=(self shipWith: numberOfShip). 
-	aShip add: aCard.
-	
-	
+
+	collectionOfShips do: [ :each | 
+		(each shipCards cardsInHand includes: aCard) ifTrue: [ 
+			Error signal: 'The card was already assigned to a ship' ] ].
+	(self shipWith: numberOfShip) add: aCard
 ]
 
 { #category : #action }

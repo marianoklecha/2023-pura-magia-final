@@ -119,6 +119,7 @@ players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
 aGameBoard := GameBoard with: cells and: 1.
+
 "aGame startwith: players and: aGameBoard.
 
 self deny: aGame result equals: aPlayer." "OBSOLET BECAUSE WE ADDED THE CARDS"
@@ -157,7 +158,9 @@ cells:= 4.
 dice:= 4.
 aGameBoard := GameBoard with: cells and: 1.
 "aGame startwith: players and: aGameBoard."
+
 "aGameBoard move: aPlayer adding: dice.
+
 self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
 
   
@@ -175,6 +178,7 @@ players add:delfi.
 cells:= 4.
 dice:= 1.
 aGameBoard := GameBoard with: cells and: 1.
+
 "aGame startwith: players  and: aGameBoard."
 "aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
@@ -200,6 +204,7 @@ cells:= 4.
 dice:= 1.
 aGameBoard := GameBoard with: cells and: 1.
 "aGame startwith: players  and: aGameBoard."
+
 "aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
 dice:=2.
@@ -232,16 +237,14 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDie with:numbers.
-
 arrayOfDie  := OrderedCollection new.
 arrayOfDie  add: dice .
-
 aGameBoard := GameBoard with: cells and:1 .
+
 "aGame startwith: players  and: aGameBoard." "OBSOLET BECAUSE WE ADDED THE CARDS"
 "aGame playUntilWinner: arrayOfDices."
 
-"self assert: (aGameBoard checkPositionOf: delfi)equals: 3. "
-"Cambiaron las implementaciones"
+"self assert: (aGameBoard checkPositionOf: delfi)equals: 3. " "Cambiaron las implementaciones"
 
 
 
@@ -261,18 +264,15 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDie with:numbers.
-
 arrayOfDie  := OrderedCollection new.
 arrayOfDie  add: dice .
-
 aGameBoard := GameBoard with: cells and:1.
 "aGame startwith: players  and: aGameBoard." "OBSOLET BECAUSE WE ADDED THE CARDS"
+
 "aGame playUntilWinner: arrayOfDices."
 
 "self assert: (aGame winner)equals: marian. 
-self deny: (aGame winner)equals: delfi."
-
-"Cambió la implementacion del winner"
+self deny: (aGame winner)equals: delfi." "Cambió la implementacion del winner"
 
 
 
@@ -292,17 +292,13 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 2 3)  .
 dice:= LoadedDie with:numbers.
-
 arrayOfDie := OrderedCollection new.
 arrayOfDie add: dice .
-
 aGameBoard := GameBoard with: cells and:1.
 "aGame startwith: players  and: aGameBoard." "OBSOLET BECAUSE WE ADDED THE CARDS"
 "aGame playUntilWinner: arrayOfDices."
 
 "self assert: (aGame  winner)equals: marian. "
-
-"Cambio la implementacion del winner"
 
 
 
@@ -322,17 +318,14 @@ cells:= 4.
 dice:= LoadedDie .
 numbers := #(1 2 1 4)  .
 dice := LoadedDie with: numbers .
-
 arrayOfDie := OrderedCollection new.
 arrayOfDie add: dice .
-
 aGameBoard := GameBoard with: cells and:1.
 "aGame startwith: players  and: aGameBoard." "OBSOLETO 2"
+
 "aGame playUntilWinner: arrayOfDices." "OBSOLETO"
 
 "self assert: (aGame winner)equals: delfi . "
-
-"Cambio la implementacion del winner"
 
 ]
 
@@ -347,12 +340,11 @@ players add: marian.
 players add:delfi.
 cells:= 4.
 aDice := Die with: 4.
-
 arrayOfDie := OrderedCollection new.
 arrayOfDie add: aDice .
-
 aGameBoard := GameBoard with: cells and:1.
 "aGame startwith: players  and: aGameBoard." "OBSOLETO 2"
+
 "aGame playUntilWinner: arrayOfDices." "OBSOLETO"
 
 "self deny: ((aGame winner)isKindOf:  Integer) . "
@@ -365,6 +357,7 @@ aGameBoard := GameBoard with: cells and:1.
 { #category : #tests }
 GameTests >> test015PlayWithNPlayersUntilGameEnds [
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
+
 "aGame playUntilWinner: arrayOfDices. ""OBSOLETO"
 
 "self deny: (aGame result) equals: 'The Game has ended' . "
@@ -395,6 +388,7 @@ self deny: (aGame winner) equals: (aGameBoard shipWith: 3) .
 GameTests >> test017PlayWithMDicesAndNPlayersUntilTheGameEnds [
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 6 ).
+
 "aGame playUntilWinner: arrayOfDices ." "OBSOLETO"
 
 "self assert: (aGame result) equals: 'The Game has ended'"
@@ -408,7 +402,8 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(2 6 ).
 GameTests >> test018PlayWithMLoadedDicesAndNPlayersUntilWinnerThenCheckFinalPositions [ 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 6 ).
-"aGame playUntilWinner: arrayOfDices ." "OBSOLETO"
+
+"aGame playUntilWinner: arrayOfDices ."
  
 "self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 6 ."
 
@@ -437,37 +432,30 @@ self assert: (aPlayer numberOfShip) equals: 1.
 { #category : #tests }
 GameTests >> test020PlayWithMLoadedDicesAndNPlayersUntilWinnerThenCheckShipNumberAtFirstPositionEqualsOne [
 
-"aGame:= ShipsGame initializeEmpty."
+   "aGame:= ShipsGame initializeEmpty."
 	cells:= 8.
 	numberOfLaps:= 2.
 	amountOfPlayers:=1.
-	
-	
 	numbers := #(1 1 ).
 	anotherNumbers := #(3 4).
 	die1  := LoadedDie with: numbers .
 	die2  := LoadedDie with: anotherNumbers .
-
 	arrayOfDie  := OrderedCollection new.
 	arrayOfDie add: die1  .
 	arrayOfDie add: die2 .
-	
-	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
 	aGameBoard cellsWith: 0 and: arrayOfDie .
 	"aGame startwith: amountOfPlayers   and: aGameBoard."
-	
-amountOfPlayers := 4.
-numberOfLaps:=1.
-numbers := #(2 1 1 1)  .
-die1  := LoadedDie with: numbers .
+	amountOfPlayers := 4.
+	numberOfLaps:=1.
+	numbers := #(2 1 1 1)  .
+	die1  := LoadedDie with: numbers .
+	arrayOfDie := OrderedCollection new.
+	arrayOfDie add: die1  .
 
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1  .
+	"aGame playUntilWinner: arrayOfDices .
 
-"aGame playUntilWinner: arrayOfDices .
-
-self assert: (aGameBoard winner) equals: 1 ."
+	self assert: (aGameBoard winner) equals: 1 ."
 
 
 
@@ -555,15 +543,14 @@ GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 
 	die1 := Die with: 20.
 	die2 := Die with: 15.
-
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1.
 	arrayOfDie add: die2.
-
 	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
 	aGameBoard cellsWith: 0 and: arrayOfDie  .
 
 	aGame throwNextShip.
+	
 	self deny: aGame winner equals: 0
 ]
 
@@ -663,7 +650,9 @@ self assert: (aRanking at: 3) numberOfShip  equals: 2 .
 GameTests >> test052UsingRandomDieAndCheckingTheResult [
 | die result|
 die := Die with: 5.
+
 result:= die throw .
+
 self assert: (result > 0).
 
 
@@ -679,7 +668,6 @@ GameTests >> test053GameUsingCellWithCardThenValidateAmountOfCards [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-
 anSpecialCard := CardAssignation withDeck.
 aGameBoard add: anSpecialCard at: 4.
 
@@ -693,14 +681,13 @@ self assert: (((aGameBoard shipWith: 1)shipCards) cardsInHand size) equals: 3.
 GameTests >> test054GameUsingWormholeAndShipDecreasesLapWhenFalling [
 | wormHole|
 wormHole:= WormHole  new.
-
 self setUpGameWith: 1 andGameboardWith: 4 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(5 0 ).
-
 aGameBoard add: wormHole at: 3.
 
 aGame throwNextShip.
 self assert: (aGameBoard lapOfShip: 1)  equals: 2 .
+
 aGame throwNextShip.
 self assert: (aGameBoard lapOfShip:  1) equals: 1 .
 
@@ -729,7 +716,7 @@ self assert: ((parsecs plus: lightYears)nominalValue) equals: 5
 
 { #category : #tests }
 GameTests >> test056GameWithLightYearsAndParsecsInHyperJump [
-| parsecs hyperJump amountOfParsecsToMove parsc1 parsc2 light1 light2 collection1 aShip|
+| hyperJump amountOfParsecsToMove parsc1 parsc2 light1 light2 collection1 aShip|
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 6 ).
@@ -737,26 +724,22 @@ parsc1 := Parsecs with: 7.
 light1 := LightYears with: 9.
 parsc2 := Parsecs with: 2.
 light2 := LightYears with: 3.
-
 amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
-collection1 add: parsc1 .
-collection1 add: light1  .
-collection1 add: parsc2   .
-collection1 add: light2  .
-
+collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsWith: 4 and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
+aShip:=((aGameBoard shipWith: 1)).
+
 aGame throwNextShip.
 
-aShip:=((aGameBoard shipWith: 1)).
-self assert: ((((aGameBoard shipWith: 1) actualPosition) currentParsec )nominalValue)  equals: 3  .
+self assert: (((aShip actualPosition) currentParsec )nominalValue)  equals: 3  .
 self assert: (aGameBoard cellOfShip:  1 ) equals: 4  .
 
 aGame throwNextShip.
+
 self assert: ((aShip actualPosition currentParsec)nominalValue)  equals: 2  .
 self assert: (aGameBoard cellOfShip:  1 ) equals: 4  .
 
@@ -808,23 +791,20 @@ self should:  [aGame throwNextShip] raise: Error withMessage: 'There is a winner
 { #category : #tests }
 GameTests >> test059PositionManagerThatSolvesInconsistentPositionStates [
 |newShipPosition shipPosition aChosenShip cellsToSum parsecs parsecsToSum aPositionManager|
-
 self setUpGameWith: 1 andGameboardWith: 4 and: 4.
 self setUpLoadedDiceWith: #(1 1 ) and: #(5 0).
-
 parsecs := 4. 
 cellsToSum := 9.
 parsecsToSum := 6.
 aGameBoard cellsWith: parsecs and: arrayOfDie .
-
 aPositionManager := PositionManager with: 4 and: 4.
 aChosenShip:= aGameBoard shipWith: 1 .
 shipPosition := aChosenShip actualPosition .
 
 newShipPosition := aPositionManager manageCellsOf: shipPosition at: cellsToSum.
 newShipPosition := aPositionManager manageParsecsOf: newShipPosition at: parsecsToSum.
-
 aChosenShip changePosition: newShipPosition.
+
 self assert: aChosenShip actualPosition currentLap equals: 3.
 self assert: aChosenShip actualPosition currentCell equals: 2.
 self assert: aChosenShip actualPosition currentParsec nominalValue equals: 2.
@@ -840,7 +820,6 @@ self assert: aChosenShip actualPosition currentParsec nominalValue equals: 2.
 GameTests >> test060GameboardRobustInstanceCreation [
 |arrayOfDie1 arrayOfDie2|
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
-
 arrayOfDie1 := OrderedCollection new.
 arrayOfDie2 := OrderedCollection new.
 die1 := LoadedDie with: #(1 2) .
