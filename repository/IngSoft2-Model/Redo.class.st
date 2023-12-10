@@ -36,7 +36,7 @@ Redo >> behaveInstantaneousWith: aNumberOfShip [
 
 { #category : #action }
 Redo >> behavePermanentWith: aNumberOfShip [ 
-	shipsGame verifyIsTurnOf: aNumberOfShip.
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
 	shipsGame chosenCard: self.
 ]
 

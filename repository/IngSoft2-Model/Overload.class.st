@@ -54,7 +54,7 @@ Overload >> selected: aShipPosition [
 
 { #category : #validation }
 Overload >> verifyUseWith: aNumberOfShip [ 
-	shipsGame verifyIsTurnOf: aNumberOfShip.	
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	shipsGame chosenCard: self .
 ]

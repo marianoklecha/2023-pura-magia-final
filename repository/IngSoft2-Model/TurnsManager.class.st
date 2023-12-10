@@ -54,6 +54,13 @@ TurnsManager >> skipTurn [
 ]
 
 { #category : #action }
+TurnsManager >> verifyIsTurnOf: aNumberOfShip [
+
+	aNumberOfShip = turnToThrow first ifFalse: [ 
+		Error signal: 'Cannot use permanent card when its not their turn' ]
+]
+
+{ #category : #action }
 TurnsManager >> verifyMax: shipNumber [
 
 	shipNumber > amountOfShips ifTrue: [ turnToThrow addLast: 1 ]
