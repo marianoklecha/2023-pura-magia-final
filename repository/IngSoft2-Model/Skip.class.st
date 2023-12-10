@@ -19,7 +19,7 @@ Skip class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Skip >> apply: aGameBoard [
+Skip >> applyEffectUsing: aGameBoard [
 
 	| shipNumber turnsCollection amountOfShips|
 	turnsCollection := shipsGame turnsManager turns.
@@ -28,12 +28,13 @@ Skip >> apply: aGameBoard [
 	turnsCollection isEmpty ifTrue: [
 		turnsCollection:= self verifyConsistencyWith: shipNumber and: amountOfShips].
 	shipsGame turnsManager changeTurns: turnsCollection .
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Skip >> applyFrom: aNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame applyChosenCard.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #action }
@@ -60,10 +61,4 @@ Skip >> verifyConsistencyWith: aShipNumber and: amountOfShips [
 		shipNumber = 0 ifTrue: [ turnsCollection addLast: amountOfShips ]. 
 		turnsCollection isEmpty ifTrue: [ turnsCollection addLast: shipNumber ].
 		^turnsCollection
-]
-
-{ #category : #action }
-Skip >> verifyUseWith: aNumberOfShip [ 	
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self .
 ]

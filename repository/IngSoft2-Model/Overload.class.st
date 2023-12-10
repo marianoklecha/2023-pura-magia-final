@@ -25,16 +25,17 @@ Overload >> amountToChange [
 ]
 
 { #category : #action }
-Overload >> apply: aGameBoard [ 
+Overload >> applyEffectUsing: aGameBoard [ 
 	((aGameBoard shipWith: chosenShipNumber) shipCards) store: self.
-	^(self)
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Overload >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	chosenShipNumber := aChosenNumberOfShip .
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -50,11 +51,4 @@ Overload >> permanent [
 { #category : #instance }
 Overload >> selected: aShipPosition [ 
 	chosenShipNumber := aShipPosition .
-]
-
-{ #category : #validation }
-Overload >> verifyUseWith: aNumberOfShip [ 
-	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self .
 ]

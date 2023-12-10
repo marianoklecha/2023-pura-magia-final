@@ -21,20 +21,20 @@ Cancellation class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Cancellation >> apply: aGameBoard [
+Cancellation >> applyEffectUsing: aGameBoard [
 
 	| collectionCards chosenShip|
 	chosenShip := aGameBoard shipWith: chosenShipNumber .
 	collectionCards := chosenShip shipCards cardsForMe.
 	(collectionCards includes: cardToRemove)
 		ifTrue: [ collectionCards remove: cardToRemove ]
-		ifFalse: [ self applyForCardsForAllTo: aGameBoard ].
+		ifFalse: [ self cancelCardsFrom: aGameBoard ].
 
-	^ self
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
-Cancellation >> applyForCardsForAllTo: aGameBoard [
+Cancellation >> cancelCardsFrom: aGameBoard [
 
 	| cardsForAllShips |
 	cardsForAllShips := aGameBoard cardsForAllShips.
@@ -52,18 +52,19 @@ Cancellation >> canceled: aCardToRemove [
 { #category : #action }
 Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard [ 
 
-	shipsGame  chosen: self from: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	cardToRemove:= aCard.
 	chosenShipNumber := aChosenNumberOfShip.
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #action }
 Cancellation >> from: aNumberOfShip canceled: aCard [ 
 
-	shipsGame  chosen: self from: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	chosenShipNumber := aNumberOfShip.
 	cardToRemove:= aCard.
-	shipsGame  applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -80,12 +81,4 @@ Cancellation >> permanent [
 { #category : #instance }
 Cancellation >> selected: aShipPosition [  
 	chosenShipNumber := aShipPosition.
-]
-
-{ #category : #validation }
-Cancellation >> verifyUseWith: aNumberOfShip [ 
-
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
-	chosenShipNumber := aNumberOfShip.
 ]

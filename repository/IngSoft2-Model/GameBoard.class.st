@@ -96,14 +96,16 @@ GameBoard >> cellOfShip: aNumber [
 	^((self shipWith: aNumber) actualPosition) currentCell
 ]
 
-{ #category : #initialization }
-GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
-	self verifyCanExistWith: anAmountOfParsecs and: aCollectionOfDice.
+{ #category : #action }
+GameBoard >> cellsDividedIn: anAmountOfParsecs [ 
+	self verifyCellsCanHave: anAmountOfParsecs.
 	parsecsByCell := anAmountOfParsecs .
 	positionManager := PositionManager with: cells and: anAmountOfParsecs .
-	dieCollection := aCollectionOfDice .
-	spaceSheriff := SpaceSheriff with: dieCollection.
-	
+]
+
+{ #category : #action }
+GameBoard >> changeCardsForAllWith: aCollectionOfCards [
+	collectionOfCardsForAllShips := aCollectionOfCards.
 ]
 
 { #category : #creating }
@@ -122,10 +124,12 @@ GameBoard >> fillWith: players [
 GameBoard >> initializeWith: numberOfCells and: numberOfLaps [ 
 	cells := numberOfCells .
 	laps := numberOfLaps.
-	aCollectionOfSpecialCells := OrderedCollection new.
-	1 to: cells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
+	parsecsByCell := 1 .
+	positionManager := PositionManager with: cells and: parsecsByCell .
 	collectionOfShips := OrderedCollection new.
 	collectionOfCardsForAllShips := OrderedCollection new.
+	aCollectionOfSpecialCells := OrderedCollection new.
+	1 to: cells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
 ]
 
 { #category : #validation }
@@ -185,8 +189,18 @@ GameBoard >> resultOfCardsForAll [
 ]
 
 { #category : #positioning }
-GameBoard >> shipWith: aNumber [ 
-	^ (collectionOfShips at: aNumber )
+GameBoard >> shipWith: aNumber [
+
+	(aNumber > collectionOfShips size or: aNumber < 1) ifTrue: [ 
+		Error signal: 'There is no ship with that number' ].
+	^ collectionOfShips at: aNumber
+]
+
+{ #category : #action }
+GameBoard >> shipsUseToThrow: aCollectionOfDice [
+	self verifyShipsCanThrowWith: aCollectionOfDice.
+	dieCollection := aCollectionOfDice .
+	spaceSheriff := SpaceSheriff with: dieCollection.
 ]
 
 { #category : #action }
@@ -200,13 +214,12 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 	^ aCollectionOfSpecialCells at: aNumberOfCell
 ]
 
-{ #category : #adding }
-GameBoard >> store: aCard [ 
-	collectionOfCardsForAllShips add: aCard.
+{ #category : #action }
+GameBoard >> verifyCellsCanHave: anAmountOfParsecs [ 
+	(anAmountOfParsecs < 1) ifTrue:[ Error signal: 'The amount of parsecs cant be negative or zero' ]
 ]
 
-{ #category : #validation }
-GameBoard >> verifyCanExistWith: anAmountOfParsecs and: aCollection [ 
+{ #category : #action }
+GameBoard >> verifyShipsCanThrowWith: aCollection [ 
 	(aCollection isEmpty) ifTrue:[ Error signal: 'The collection of dices cant be empty' ].
-	(anAmountOfParsecs < 0) ifTrue:[ Error signal: 'The amount of parsecs cant be negative' ]
 ]

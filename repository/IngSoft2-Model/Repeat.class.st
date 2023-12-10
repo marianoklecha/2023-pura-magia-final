@@ -20,26 +20,27 @@ Repeat class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Repeat >> apply: aGameBoard [ 
+Repeat >> applyEffectUsing: aGameBoard [ 
 	|lastEffectUsed counter chosenShip|
 	counter:= 1.
 	lastEffectUsed:= aGameBoard lastEffectUsed.
 	chosenShip := aGameBoard shipWith: chosenShipNumber.
 	lastEffectUsed applyTo: aGameBoard  for: chosenShip  .
-	^(self)
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Repeat >> from: aNumberOfShip [
-	shipsGame  chosen: self from: aNumberOfShip.
-	shipsGame  applyChosenCard.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	chosenShipNumber:= aNumberOfShip.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #action }
 Repeat >> from: aNumberOfShip to: aChosenNumberOfShip [
-	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	chosenShipNumber:= aChosenNumberOfShip.
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -55,12 +56,4 @@ Repeat >> permanent [
 { #category : #intance }
 Repeat >> selected: aShipPosition [ 
 	chosenShipNumber:= aShipPosition.
-]
-
-{ #category : #validation }
-Repeat >> verifyUseWith: aNumberOfShip [ 
-
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
-	chosenShipNumber:= aNumberOfShip.
 ]

@@ -25,16 +25,17 @@ Speed >> amountToChange [
 ]
 
 { #category : #action }
-Speed >> apply: aGameBoard [ 
+Speed >> applyEffectUsing: aGameBoard [ 
 	((aGameBoard shipWith: chosenShipNumber)shipCards ) store: (self). 
-	^(self)
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Speed >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	chosenShipNumber := aChosenNumberOfShip .
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -50,11 +51,4 @@ Speed >> permanent [
 { #category : #selection }
 Speed >> selected: aShip [ 
 	chosenShipNumber := aShip .
-]
-
-{ #category : #validation }
-Speed >> verifyUseWith: aNumberOfShip [ 
-	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
 ]

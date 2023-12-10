@@ -9,7 +9,18 @@ Class {
 }
 
 { #category : #initialization }
-SpaceSheriff class >> with: aDieCollection [ 
+SpaceSheriff class >> verifyCanInitializeWith: aCollection [ 
+	(aCollection isKindOf: OrderedCollection)
+		ifTrue: [ 
+			(((aCollection at: 1) isKindOf: LoadedDie) or:
+				 ((aCollection at: 1) isKindOf: Die)) ifFalse: [ 
+				Error signal: 'Didnt receive a die' ] ]
+		ifFalse: [ Error signal: 'Didnt receive a die' ]
+]
+
+{ #category : #initialization }
+SpaceSheriff class >> with: aDieCollection [
+	self verifyCanInitializeWith: aDieCollection.
 	^(self new) initializeWith: aDieCollection.
 ]
 
