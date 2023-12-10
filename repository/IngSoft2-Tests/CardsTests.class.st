@@ -1532,3 +1532,36 @@ CardsTests >> test065SkipRobustInstanceCreation [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test066TypeCardDoubleExists [
+
+	| double |
+	double := Double new.
+	
+	self assert: (double isKindOf: Double)
+]
+
+{ #category : #tests }
+CardsTests >> test067DoubleCardIsUsedThenShipThrowsTwoTimes [
+	| double ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	double := Double with: aGame  .
+	ship1:= 1.
+	aGameBoard add: double to: ship1.
+	
+	aGame throwNextShip .
+	double applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 0 .
+	
+	
+	
+	
+]
