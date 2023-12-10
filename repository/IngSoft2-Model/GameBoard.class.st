@@ -214,12 +214,6 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 	^ aCollectionOfSpecialCells at: aNumberOfCell
 ]
 
-{ #category : #validation }
-GameBoard >> verifyCanExistWith: anAmountOfParsecs and: aCollection [ 
-	(aCollection isEmpty) ifTrue:[ Error signal: 'The collection of dices cant be empty' ].
-	(anAmountOfParsecs < 0) ifTrue:[ Error signal: 'The amount of parsecs cant be negative' ]
-]
-
 { #category : #action }
 GameBoard >> verifyCellsCanHave: anAmountOfParsecs [ 
 	(anAmountOfParsecs < 1) ifTrue:[ Error signal: 'The amount of parsecs cant be negative or zero' ]
