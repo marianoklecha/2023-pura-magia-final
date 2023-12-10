@@ -19,8 +19,11 @@ Reverse class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Reverse >> apply: aGameBoard [ 
-	shipsGame turnsManager reverseTurnsOrder.
+Reverse >> apply: aGameBoard [
+	|actualAmountToSum newAmountToSum|
+	actualAmountToSum:= shipsGame turnsManager amountToSum.
+	newAmountToSum := actualAmountToSum*(-1).
+	shipsGame turnsManager change: newAmountToSum.
 ]
 
 { #category : #action }

@@ -21,8 +21,12 @@ Double class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Double >> apply: aGameBoard [ 
-	shipsGame turnsManager doubleActualTurn.
+Double >> apply: aGameBoard [
+	|turnsCollection actualTurn|
+	turnsCollection := shipsGame turnsManager turns.
+	actualTurn := turnsCollection first.
+	turnsCollection addLast: actualTurn.
+	shipsGame turnsManager changeTurns: turnsCollection.
 ]
 
 { #category : #action }
