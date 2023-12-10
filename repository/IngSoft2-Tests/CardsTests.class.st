@@ -1412,3 +1412,123 @@ CardsTests >> test059SameCardInstanceIsGivenToDifferentShipsThenError [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test060TypeCardSkipExists [
+	
+	|skip|
+	skip := Skip new.
+	self assert: (skip  isKindOf:  Skip ) .
+]
+
+{ #category : #tests }
+CardsTests >> test061SkipCardIsUsedThenShipWithTurnLosesIt [
+	| skip ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	skip := Skip with: aGame  .
+	ship1:= 1.
+	aGameBoard add: skip to: ship1.
+	
+	aGame throwNextShip .
+	skip applyFrom: ship1.
+	aGame throwNextShip .
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test062ShipSkipsAllTurnsThenThrowsAgain [
+	| skip skip2 ship1 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	skip := Skip with: aGame  .
+	skip2 := Skip with: aGame  .
+	ship1:= 1.
+	aGameBoard add: skip to: ship1.
+	aGameBoard add: skip2 to: ship1.
+	
+	aGame throwNextShip .
+	skip applyFrom: ship1.
+	skip2 applyFrom: ship1.
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 4 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 0 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test063SkipTurnBeforeFirstThrowThenSecondShipPlays [
+	| skip  ship2 |
+	
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	skip := Skip with: aGame  .
+	ship2:= 2.
+	aGameBoard add: skip to: ship2.
+	
+	skip applyFrom: ship2.
+	aGame throwNextShip .
+	aGame throwNextShip .
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 2 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test064RedoASkipCardThenLastShipThrowsFirst [
+	| skip  redo ship2 ship3|
+	self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 1) and: #(1 1 1).
+	skip := Skip with: aGame.
+	redo := Redo with: aGame.
+	ship2:= 2.
+	ship3:= 3.
+	aGameBoard add: skip to: ship2.
+	aGameBoard add: redo to: ship3 .
+	
+	skip applyFrom: ship2.
+	redo from: ship3.
+	aGame throwNextShip.
+	
+	self assert: (aGameBoard cellOfShip: 1) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 2) equals: 0 .
+	self assert: (aGameBoard cellOfShip: 3) equals: 2 .
+	
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test065SkipRobustInstanceCreation [
+	| skip |
+
+	self
+		should: [ 
+		skip := Skip with: 2 . ]
+		raise: Error
+		withMessage:
+		'The card must receive a ShipsGame instance'
+	
+	
+]

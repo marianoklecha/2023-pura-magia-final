@@ -1,5 +1,5 @@
 Class {
-	#name : #Reverse,
+	#name : #Skip,
 	#superclass : #Object,
 	#instVars : [
 		'shipsGame'
@@ -8,44 +8,44 @@ Class {
 }
 
 { #category : #initialization }
-Reverse class >> verifyCanInitializeWith: anInstance [ 
+Skip class >> verifyCanInitializeWith: anInstance [ 
 	(anInstance isKindOf: ShipsGame)ifFalse:[ Error signal: 'The card must receive a ShipsGame instance' ]
 ]
 
 { #category : #action }
-Reverse class >> with: aShipsGame [
+Skip class >> with: aShipsGame [
 	self verifyCanInitializeWith: aShipsGame.
 	^(self new) initializeWith: aShipsGame .
 ]
 
 { #category : #action }
-Reverse >> apply: aGameBoard [ 
-	shipsGame reverseTurnsOrder.
+Skip >> apply: aGameBoard [ 
+	shipsGame skipTurn.
 ]
 
 { #category : #action }
-Reverse >> applyFrom: aNumberOfShip [ 
+Skip >> applyFrom: aNumberOfShip [ 
 	shipsGame chosen: self from: aNumberOfShip.
 	shipsGame applyChosenCard.
 ]
 
-{ #category : #initialization }
-Reverse >> initializeWith: aShipsGame [ 
+{ #category : #action }
+Skip >> initializeWith: aShipsGame [ 
 	shipsGame := aShipsGame .
 ]
 
 { #category : #action }
-Reverse >> permanent [
+Skip >> permanent [
 	^false.
 ]
 
 { #category : #action }
-Reverse >> selected: aNumberOfShip [ 
+Skip >> selected: aNumberOfShip [ 
 	^self.
 ]
 
 { #category : #action }
-Reverse >> verifyUseWith: aNumberOfShip [ 	
+Skip >> verifyUseWith: aNumberOfShip [ 	
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	shipsGame chosenCard: self .
 ]
