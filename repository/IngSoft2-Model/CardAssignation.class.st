@@ -10,7 +10,7 @@ Class {
 
 { #category : #creating }
 CardAssignation class >> withDeck [
-	^(self new) initializeWith: DeckOfCards new.
+	^(self new) initializeWith: Deck new.
 ]
 
 { #category : #action }
@@ -18,7 +18,7 @@ CardAssignation >> applyTo: aGameBoard for: aShip [
 	|numberOfShip|
 	
 	numberOfShip:= aShip numberOfShip .
-	deckOfCards designateRandomCardTo: numberOfShip from: aGameBoard . 
+	aShip add: deckOfCards giveCard .
 	
 ]
 

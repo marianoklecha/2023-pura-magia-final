@@ -31,9 +31,8 @@ Repeat >> applyEffectUsing: aGameBoard [
 
 { #category : #action }
 Repeat >> from: aNumberOfShip [
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	chosenShipNumber:= aNumberOfShip.
-	self applyEffectUsing: shipsGame gameboard.
+	self from: aNumberOfShip to: aNumberOfShip.
+	
 ]
 
 { #category : #action }

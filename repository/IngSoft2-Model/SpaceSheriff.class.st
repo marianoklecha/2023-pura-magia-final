@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #initialization }
-SpaceSheriff class >> verifyCanInitializeWith: aCollection [ 
-	(aCollection isKindOf: OrderedCollection)
-		ifTrue: [ 
-			(((aCollection at: 1) isKindOf: LoadedDie) or:
-				 ((aCollection at: 1) isKindOf: Die)) ifFalse: [ 
-				Error signal: 'Didnt receive a die' ] ]
-		ifFalse: [ Error signal: 'Didnt receive a die' ]
+SpaceSheriff class >> verifyCanInitializeWith: aCollection [
+| return |
+	return := false.
+	(aCollection isKindOf: OrderedCollection) ifTrue: [ 
+		(((aCollection at: 1) isKindOf: LoadedDie) or:
+			 ((aCollection at: 1) isKindOf: Die)) ifTrue: [ return := true ] ].
+	return ifFalse: [ Error signal: 'Didnt receive a die' ]
 ]
 
 { #category : #initialization }
@@ -34,8 +34,7 @@ SpaceSheriff >> giveChanceToFree: aShip with: aDieResult [
 
 	| highestResult |
 	highestResult := 0.
-	dieCollection do: [ :each | 
-		highestResult := highestResult + each faces ].
+	dieCollection do: [ :each | highestResult := highestResult + each faces ].
 	aDieResult = highestResult ifFalse: [ ^ self ].
 	shipsInJail remove: aShip
 ]
@@ -67,8 +66,7 @@ SpaceSheriff >> shipsJailed [
 SpaceSheriff >> verifyMoveOf: aShip with: aResult [
 
 	(shipsInJail includes: aShip)
-		ifTrue: [ 
-			self giveChanceToFree: aShip with: aResult.
-			^ false ]
+		ifTrue: [ self giveChanceToFree: aShip with: aResult.
+				^ false ]
 		ifFalse: [ ^ true ]
 ]

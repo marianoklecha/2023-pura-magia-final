@@ -41,7 +41,6 @@ ShipCards >> resultOfCards [
 	result := 0.
 	aCollectionOfCardsForMe do: [ :each | 
 		result := result + each amountToChange ].
-
 	^ result
 ]
 
@@ -55,7 +54,6 @@ ShipCards >> verifyThatIncludes: aCard [
 
 	| anArrayOfCards |
 	anArrayOfCards := self cardsInHand.
-
 	(anArrayOfCards includes: aCard) ifFalse: [ 
 		Error signal: 'The card you want to use is not in your ships hand' ]
 ]

@@ -40,44 +40,25 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> add: aCard to: numberOfShip [
-
-	collectionOfShips do: [ :each | 
-		(each shipCards cardsInHand includes: aCard) ifTrue: [ 
-			Error signal: 'The card was already assigned to a ship' ] ].
-	(self shipWith: numberOfShip) add: aCard
-]
-
-{ #category : #action }
 GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aCollectionOfDifferentParsecs [ 
 	|randomNumber probabilities|
 	
-	
 	probabilities := (ProbabilityOfEffects new) createCollectionFrom: aCollectionOfProbabilities .
-	
 	1 to: cells do: [ :index | randomNumber:= 100 atRandom.
-		
-		( randomNumber >= 0 and: randomNumber < (probabilities at: 1)) ifTrue: [ 
-			self add: (NullEffect new) at: index. 
-		 ].
-		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
-			self add: (WormHole new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
-			self add: (SpeedUp new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
-			self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
-			self add: (HyperJump  with: aCollectionOfDifferentParsecs) at: index. 
-		 ].
-	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
-			self add: (AtomicBomb  new) at: index. 
-		 ].
-	(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7)) ifTrue: [ 
-			self add: (CardAssignation withDeck) at: index. 
-		 ].].
+		( randomNumber >= 0 and: randomNumber < (probabilities at: 1))
+			ifTrue: [ self add: (NullEffect new) at: index. ].
+		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2))
+			ifTrue: [ self add: (WormHole new) at: index. ].
+	 	(randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3))
+			ifTrue: [ self add: (SpeedUp new) at: index. ].
+			(randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4))
+		ifTrue: [ self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. ].
+			(randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5))
+		ifTrue: [ self add: (HyperJump  with: aCollectionOfDifferentParsecs) at: index. ].
+			(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) 
+		ifTrue: [ self add: (AtomicBomb  new) at: index. ].
+			(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7))
+		ifTrue: [ self add: (CardAssignation withDeck) at: index. ].].
 
 ]
 
@@ -91,16 +72,12 @@ GameBoard >> cardsForAllShips [
 	^collectionOfCardsForAllShips .
 ]
 
-{ #category : #validation }
-GameBoard >> cellOfShip: aNumber [
-	^((self shipWith: aNumber) actualPosition) currentCell
-]
-
 { #category : #action }
-GameBoard >> cellsDividedIn: anAmountOfParsecs [ 
+GameBoard >> cellsDividedIn: anAmountOfParsecs [
+
 	self verifyCellsCanHave: anAmountOfParsecs.
-	parsecsByCell := anAmountOfParsecs .
-	positionManager := PositionManager with: cells and: anAmountOfParsecs .
+	parsecsByCell := anAmountOfParsecs.
+	positionManager := PositionManager with: cells and: anAmountOfParsecs
 ]
 
 { #category : #action }
@@ -110,14 +87,8 @@ GameBoard >> changeCardsForAllWith: aCollectionOfCards [
 
 { #category : #creating }
 GameBoard >> fillWith: players [
-	|aDeckOfCards|
-	aDeckOfCards := DeckOfCards new.
-
 	collectionOfShips := players collect: [ :each | each ].
-
-	1 to: collectionOfShips size do: [ :counter | 
-		aDeckOfCards designateRandomCardTo: counter from: self.
-		aDeckOfCards designateRandomCardTo: counter from: self. ]
+	
 ]
 
 { #category : #initialization }
@@ -130,11 +101,6 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	collectionOfCardsForAllShips := OrderedCollection new.
 	aCollectionOfSpecialCells := OrderedCollection new.
 	1 to: cells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
-]
-
-{ #category : #validation }
-GameBoard >> lapOfShip: aNumber [
-	^ ((self shipWith: aNumber) actualPosition ) currentLap.
 ]
 
 { #category : #action }
@@ -156,8 +122,7 @@ GameBoard >> move: aShip [
 	actualShipPosition := aShip actualPosition currentCell.
 	totalResult := actualShipPosition + aDieResult + cardsResult.
 	(spaceSheriff verifyMoveOf: aShip with: aDieResult) ifTrue: [ 
-		self move: aShip with: totalResult.
-		 ]
+		self move: aShip with: totalResult]
 	
 ]
 
@@ -183,7 +148,6 @@ GameBoard >> resultOfCardsForAll [
 	result := 0.
 	collectionOfCardsForAllShips do: [ :each | 
 		result := result + each amountToChange ].
-
 	^ result
 	
 ]

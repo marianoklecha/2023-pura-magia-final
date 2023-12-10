@@ -15,13 +15,14 @@ Jail >> applyTo: aGameBoard for: aShip [
 ]
 
 { #category : #action }
-Jail >> check: aShip positionOn: aGameBoard [ 
-	|aShipPosition actualShipPosition|
+Jail >> check: aShip positionOn: aGameBoard [
+
+	| aShipPosition actualShipPosition |
 	actualShipPosition := aShip actualPosition.
-	(actualShipPosition currentCell = numberOfCell) ifFalse: [ 
-		aShipPosition := aGameBoard positionManager manageCellsOf: actualShipPosition at: numberOfCell.
-		aShip changePosition: aShipPosition.
-		 ]
+	actualShipPosition currentCell = numberOfCell ifTrue: [ ^ self ].
+	aShipPosition := aGameBoard positionManager
+		                 manageCellsOf: actualShipPosition at: numberOfCell.
+	aShip changePosition: aShipPosition
 ]
 
 { #category : #action }

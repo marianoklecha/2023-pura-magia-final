@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'gameboard',
 		'lastUsedCard',
-		'aCollectionOfUsedCards',
 		'amountOfShips',
-		'turnsManager'
+		'turnsManager',
+		'deck'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,10 +21,18 @@ ShipsGame >> create: anAmountOfShips [
 
 	| shipsCollection |
 	shipsCollection := OrderedCollection new.
-	1 to: anAmountOfShips do: [ :count | 
-	shipsCollection add: (Ship with: count) ].
-
+	1 to: anAmountOfShips do: [ :count | shipsCollection add: (Ship with: count) ].
 	^ shipsCollection
+]
+
+{ #category : #action }
+ShipsGame >> distributeFirstCards [
+	|firstCard secondCard|
+	1 to: amountOfShips do: [ :number |
+		firstCard := deck giveCard.
+		secondCard := deck giveCard .
+		(gameboard shipWith: number) add:  firstCard.
+		(gameboard shipWith: number) add:  secondCard]
 ]
 
 { #category : #action }
@@ -32,10 +40,15 @@ ShipsGame >> gameboard [
 	^ gameboard
 ]
 
+{ #category : #action }
+ShipsGame >> giveCardTo: numberOfShip [
+	(gameboard shipWith: numberOfShip) add: (deck giveCard) .
+	
+]
+
 { #category : #initialization }
 ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [ 
 	turnsManager:= TurnsManager with: anAmountOfShips.
-	aCollectionOfUsedCards := OrderedCollection new.
 	gameboard := aGameboard.
 	amountOfShips := anAmountOfShips. 
 	aGameboard fillWith: (self create: anAmountOfShips)
@@ -48,14 +61,17 @@ ShipsGame >> lastUsedCard [
 
 { #category : #validation }
 ShipsGame >> ranking [
-	
+
 	| array sortedArray |
 	array := OrderedCollection new.
-	1 to: amountOfShips do: [ :number | array add: (gameboard shipWith: number) ].
-	sortedArray := array sorted: [:player1 :player2 | (player1 actualPosition ) currentLap    < (player2 actualPosition ) currentLap  ].
-	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 actualPosition )currentCell  < (player2 actualPosition )  currentCell ].
-	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 actualPosition) currentParsec )nominalValue  < ((player2 actualPosition ) currentParsec)nominalValue  ].
-	^sortedArray
+	1 to: amountOfShips do: [ :number | 
+	array add: (gameboard shipWith: number) ].
+	sortedArray := array sorted: [ :player1 :player2 | 
+		               player1 actualPosition currentLap < player2 actualPosition currentLap ].
+	sortedArray := sortedArray sorted: [ :player1 :player2 | 
+		               player1 actualPosition currentCell < player2 actualPosition currentCell ].
+	^ sortedArray := sortedArray sorted: [ :player1 :player2 | 
+		               player1 actualPosition currentParsec nominalValue < player2 actualPosition currentParsec nominalValue ].
 ]
 
 { #category : #action }
@@ -77,6 +93,11 @@ ShipsGame >> turnsManager [
 	^ turnsManager
 ]
 
+{ #category : #action }
+ShipsGame >> useCardsFrom: aDeck [ 
+	deck := aDeck.
+]
+
 { #category : #validation }
 ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 
@@ -85,7 +106,6 @@ ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 	aShipCards verifyThatIncludes: aCard .
 	aCollectionOfCards:= aShipCards cardsInHand.
 	aCollectionOfCards remove: aCard.
-	aCollectionOfUsedCards add: aCard.
 			
 ]
 

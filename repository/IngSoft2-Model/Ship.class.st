@@ -63,17 +63,16 @@ Ship >> throw: aCollectionOfDices [
 	result := 0.
 	self verifyIsPossibleToThrow: aCollectionOfDices.
 	aCollectionOfDices do: [ :each | result := result + each throw ].
-
 	^ result
 ]
 
 { #category : #action }
 Ship >> verifyIsPossibleToThrow: aCollection [
 
-	(aCollection isKindOf: OrderedCollection)
-		ifTrue: [ 
-			(((aCollection at: 1) isKindOf: LoadedDie) or:
-				 ((aCollection at: 1) isKindOf: Die)) ifFalse: [ 
-				Error signal: 'There is no die to throw' ] ]
-		ifFalse: [ Error signal: 'There is no die to throw' ]
+	| return |
+	return := false.
+	(aCollection isKindOf: OrderedCollection) ifTrue: [ 
+		(((aCollection at: 1) isKindOf: LoadedDie) or:
+			 ((aCollection at: 1) isKindOf: Die)) ifTrue: [ return := true ] ].
+	return ifFalse: [ Error signal: 'There is no die to throw' ]
 ]

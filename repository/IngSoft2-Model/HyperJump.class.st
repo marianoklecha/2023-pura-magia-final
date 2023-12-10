@@ -35,19 +35,20 @@ HyperJump class >> with: arrayOfPosibilities [
 
 { #category : #action }
 HyperJump >> applyTo: aGameBoard for: aChosenShip [
-	| parsecs newPosition|
-	round := round +1.
-		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
-		round :=1 ].
-	parsecs := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
-	newPosition := (aGameBoard positionManager) manageParsecsOf: (aChosenShip actualPosition) at: parsecs.
+
+	| parsecs newPosition |
+	round := round + 1.
+	round > anAmountOfParsecsToMove size ifTrue: [ round := 1 ].
+	parsecs := (anAmountOfParsecsToMove at: round) parsecs nominalValue.
+	newPosition := aGameBoard positionManager
+	 			manageParsecsOf: aChosenShip actualPosition at: parsecs.
 	aChosenShip changePosition: newPosition.
-	^self.
+	^ self
 ]
 
 { #category : #initialization }
 HyperJump >> initializeWith: amountOfParsecsToMove [ 
-	anAmountOfParsecsToMove:=amountOfParsecsToMove  .
+	anAmountOfParsecsToMove:= amountOfParsecsToMove  .
 	round:= 0.
 ]
 
