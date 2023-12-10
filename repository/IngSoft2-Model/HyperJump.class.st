@@ -16,7 +16,7 @@ HyperJump class >> validateCanExistWith: aCollectionOfProbabilities [
 	isOrdered := aCollectionOfProbabilities allSatisfy: [ :eachArray | 
 		             previous := eachArray first.
 		             eachArray allSatisfy: [ :value | 
-			             result := ((value) parsecs)nominalValue  <= ((previous)parsecs)nominalValue.
+			             result := value parsecs nominalValue <= previous parsecs nominalValue.
 			             previous := value.
 			             result ] ].
 

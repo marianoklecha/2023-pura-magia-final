@@ -18,6 +18,7 @@ TurnsManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmoun
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
 ]
 

@@ -20,7 +20,7 @@ Freedom class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Freedom >> apply: aGameBoard [
+Freedom >> applyEffectUsing: aGameBoard [
 	|aChosenShip shipsJailed|
 	aChosenShip := aGameBoard shipWith: chosenShipNumber .
 	shipsJailed := aGameBoard spaceSheriff shipsJailed.
@@ -28,13 +28,14 @@ Freedom >> apply: aGameBoard [
 		ifTrue: [ shipsJailed remove: aChosenShip ]
 		ifFalse: [ Error signal: 'The ship you want to free is not in Jail' ].
 	aGameBoard spaceSheriff change: shipsJailed.
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Freedom >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	chosenShipNumber := aChosenNumberOfShip.
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -50,12 +51,4 @@ Freedom >> permanent [
 { #category : #action }
 Freedom >> selected: aShip [ 
 	chosenShipNumber := aShip .
-]
-
-{ #category : #action }
-Freedom >> verifyUseWith: aNumberOfShip [ 
-
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
-	chosenShipNumber := aNumberOfShip.
 ]

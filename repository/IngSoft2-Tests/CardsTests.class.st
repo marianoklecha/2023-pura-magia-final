@@ -26,6 +26,7 @@ CardsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCell
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
 ]
 
@@ -36,12 +37,10 @@ CardsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	anotherNumbers := array2 .
 	die1 := LoadedDie with: numbers .
 	die2 := LoadedDie with: anotherNumbers .
-
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	
-	aGameBoard cellsWith: 0 and: arrayOfDie  .
+	aGameBoard shipsUseToThrow: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -52,51 +51,6 @@ CardsTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorM
 		withExceptionDo: [ :error |
 			self assert: error messageText equals: anErrorMessage 
 			 ].
-]
-
-{ #category : #tests }
-CardsTests >> test001TypeCardOverloadExistsThenAssert [
-	
-	|cardOverload|
-	cardOverload := Overload new.
-	
-	self assert: (cardOverload  isKindOf:  Overload ) .
-]
-
-{ #category : #tests }
-CardsTests >> test002TypeCardASpeedExistsThenAssert [
-	
-	|cardSpeed|
-	cardSpeed := Speed new.
-	
-	self assert: (cardSpeed  isKindOf:  Speed ) .
-]
-
-{ #category : #tests }
-CardsTests >> test003TypeCardAccelerationExistsThenAssert [
-	
-	|cardAcceleration|
-	cardAcceleration  := Acceleration new.
-	
-	self assert: (cardAcceleration   isKindOf:  Acceleration ) .
-]
-
-{ #category : #tests }
-CardsTests >> test004TypeCardCancellationExistsThenAssert [
-	
-	|cardCancellation|
-	cardCancellation := Acceleration new.
-	
-	self assert: (cardCancellation isKindOf:  Acceleration ) .
-]
-
-{ #category : #tests }
-CardsTests >> test005TypeCardRepeatExistsThenAssert [
-	
-	|cardRepeat|
-	cardRepeat  := Repeat new.
-	
-	self assert: (cardRepeat  isKindOf:  Repeat ) .
 ]
 
 { #category : #tests }
@@ -369,7 +323,8 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 4)).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
-	aGameBoard cellsWith: 4 and: arrayOfDie .
+	aGameBoard cellsDividedIn: 4. 
+	aGameBoard shipsUseToThrow: arrayOfDie .
 	repeat  := Repeat with: aGame.
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
@@ -1006,15 +961,6 @@ CardsTests >> test039ShipUsesRedoOnARepeatThenSendsAnotherShipToJail [
 ]
 
 { #category : #tests }
-CardsTests >> test040TypeCardFreedomExistsThenAssert [
-	
-	|freedom|
-	freedom := Freedom new.
-	
-	self assert: (freedom  isKindOf:  Freedom) .
-]
-
-{ #category : #tests }
 CardsTests >> test041ShipUsesFreedomThenGetsOutOfJail [
 	| aFreedom aJail  player |
 
@@ -1237,14 +1183,6 @@ CardsTests >> test051FreedomRobustInstanceCreation [
 ]
 
 { #category : #tests }
-CardsTests >> test052TypeCardReverseExists [
-	
-	|reverse|
-	reverse := Reverse new.
-	self assert: (reverse  isKindOf:  Reverse ) .
-]
-
-{ #category : #tests }
 CardsTests >> test053ReverseCardIsUsedThenTurnsAreReversed [
 	| reverse ship1 |
 	
@@ -1414,14 +1352,6 @@ CardsTests >> test059SameCardInstanceIsGivenToDifferentShipsThenError [
 ]
 
 { #category : #tests }
-CardsTests >> test060TypeCardSkipExists [
-	
-	|skip|
-	skip := Skip new.
-	self assert: (skip  isKindOf:  Skip ) .
-]
-
-{ #category : #tests }
 CardsTests >> test061SkipCardIsUsedThenShipWithTurnLosesIt [
 	| skip ship1 |
 	
@@ -1531,15 +1461,6 @@ CardsTests >> test065SkipRobustInstanceCreation [
 		'The card must receive a ShipsGame instance'
 	
 	
-]
-
-{ #category : #tests }
-CardsTests >> test066TypeCardDoubleExists [
-
-	| double |
-	double := Double new.
-	
-	self assert: (double isKindOf: Double)
 ]
 
 { #category : #tests }

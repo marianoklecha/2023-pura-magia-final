@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'gameboard',
-		'chosenCard',
 		'lastUsedCard',
 		'aCollectionOfUsedCards',
 		'amountOfShips',
@@ -17,24 +16,6 @@ ShipsGame class >> with: amountOfPlayers and: aGameBoard [
 	^(self new) initializeWith: amountOfPlayers and: aGameBoard
 ]
 
-{ #category : #action }
-ShipsGame >> applyChosenCard [
-	lastUsedCard := chosenCard apply: gameboard .
-]
-
-{ #category : #validation }
-ShipsGame >> chosen: aCard from: aNumberOfShip [
-
-	| aShip |
-	aShip := gameboard shipWith: aNumberOfShip.
-	aCard verifyUseWith: aNumberOfShip 
-]
-
-{ #category : #instance }
-ShipsGame >> chosenCard: aCard [ 
-	chosenCard := aCard .
-]
-
 { #category : #creation }
 ShipsGame >> create: anAmountOfShips [
 
@@ -44,6 +25,11 @@ ShipsGame >> create: anAmountOfShips [
 	shipsCollection add: (Ship with: count) ].
 
 	^ shipsCollection
+]
+
+{ #category : #action }
+ShipsGame >> gameboard [
+	^ gameboard
 ]
 
 { #category : #initialization }
@@ -70,6 +56,11 @@ ShipsGame >> ranking [
 	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 actualPosition )currentCell  < (player2 actualPosition )  currentCell ].
 	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 actualPosition) currentParsec )nominalValue  < ((player2 actualPosition ) currentParsec)nominalValue  ].
 	^sortedArray
+]
+
+{ #category : #action }
+ShipsGame >> takeJustUsed: aCard [
+	lastUsedCard := aCard.
 ]
 
 { #category : #action }

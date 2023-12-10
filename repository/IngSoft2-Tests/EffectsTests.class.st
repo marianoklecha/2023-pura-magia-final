@@ -23,6 +23,7 @@ EffectsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCe
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsDividedIn: 1.
 	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
 ]
 
@@ -33,12 +34,10 @@ EffectsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	anotherNumbers := array2 .
 	die1 := LoadedDie with: numbers .
 	die2 := LoadedDie with: anotherNumbers .
-
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	
-	aGameBoard cellsWith: 0 and: arrayOfDie  .
+	aGameBoard shipsUseToThrow: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -374,7 +373,8 @@ collection1:=OrderedCollection new.
 collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: 4 and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -405,7 +405,8 @@ collection1:=OrderedCollection new.
 collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: 4 and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -435,7 +436,8 @@ collection1:=OrderedCollection new.
 collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: 4 and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 8 .
 
 aGame throwNextShip.
@@ -467,7 +469,8 @@ amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 arrayOfDie := OrderedCollection new.
 arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 2)).
-aGameBoard cellsWith: 4 and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -502,7 +505,8 @@ collection1 add: parsc1; add: light1; add: parsc2; add: light2 .
 collection2 add: parsc3 ; add: parsc4 .
 amountOfParsecsToMove add: collection1;add: collection2 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: 4 and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -668,7 +672,7 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 2.
 
 { #category : #tests }
 EffectsTests >> test058ShipFallsInJailByFallingInHyperJumpAndCanMove [
-| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 aJail|
+| hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 aJail|
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
@@ -680,10 +684,10 @@ amountOfParsecsToMove:= OrderedCollection new.
 collection1:=OrderedCollection new.
 collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 amountOfParsecsToMove add: collection1 .
-parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aJail := Jail new.
-aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard cellsDividedIn: 4.
+aGameBoard shipsUseToThrow: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGameBoard add: aJail at: 4.
 

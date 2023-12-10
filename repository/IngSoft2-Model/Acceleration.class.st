@@ -26,15 +26,19 @@ Acceleration >> amountToChange [
 ]
 
 { #category : #action }
-Acceleration >> apply: aGameBoard [
-	aGameBoard store: self.
-	^self
+Acceleration >> applyEffectUsing: aGameBoard [
+	|collectionOfCards|
+	collectionOfCards := aGameBoard cardsForAllShips.
+	collectionOfCards add: self. 
+	aGameBoard changeCardsForAllWith: collectionOfCards.
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Acceleration >> applyToAllFrom: aNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame applyChosenCard.
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -50,11 +54,4 @@ Acceleration >> permanent [
 { #category : #action }
 Acceleration >> selected: aShip [ 
 	^self.
-]
-
-{ #category : #validation }
-Acceleration >> verifyUseWith: aNumberOfShip [ 
-	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self.
 ]

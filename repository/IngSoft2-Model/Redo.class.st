@@ -21,23 +21,20 @@ Redo class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Redo >> apply: aGameBoard [
+Redo >> applyEffectUsing: aGameBoard [
 	cardToRedo selected: chosenShipNumber .
-	cardToRedo apply: aGameBoard.
-	^ cardToRedo
+	cardToRedo applyEffectUsing: aGameBoard.
 ]
 
 { #category : #action }
-Redo >> behaveInstantaneousWith: aNumberOfShip [
+Redo >> beInstantaneousWith: aNumberOfShip [
 
-	shipsGame chosenCard: self.
 	chosenShipNumber := aNumberOfShip .
 ]
 
 { #category : #action }
-Redo >> behavePermanentWith: aNumberOfShip [ 
+Redo >> bePermanentWith: aNumberOfShip [ 
 	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
-	shipsGame chosenCard: self.
 ]
 
 { #category : #action }
@@ -50,27 +47,26 @@ Redo >> cancellationFrom: aNumberOfShip to: aChosenNumberOfShip canceled: aCard 
 
 { #category : #action }
 Redo >> from: aNumberOfShip [
-	shipsGame  chosen: self from: aNumberOfShip.
-	shipsGame  applyChosenCard.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	cardToRedo := shipsGame lastUsedCard .
+	cardToRedo permanent
+		ifFalse: [ self beInstantaneousWith: aNumberOfShip ]
+		ifTrue: [ self bePermanentWith: aNumberOfShip ].
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #action }
 Redo >> from: aNumberOfShip to: aChosenNumberOfShip [
-	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	cardToRedo := shipsGame lastUsedCard .
+	cardToRedo permanent
+		ifFalse: [ self beInstantaneousWith: aNumberOfShip ]
+		ifTrue: [ self bePermanentWith: aNumberOfShip ]. 
 	chosenShipNumber := aChosenNumberOfShip .
-	shipsGame applyChosenCard.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
 Redo >> initializeWith: aShipsGame [ 
 	shipsGame := aShipsGame .
-]
-
-{ #category : #validation }
-Redo >> verifyUseWith: aNumberOfShip [ 
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	cardToRedo := shipsGame lastUsedCard .
-	cardToRedo permanent
-		ifFalse: [ self behaveInstantaneousWith: aNumberOfShip ]
-		ifTrue: [ self behavePermanentWith: aNumberOfShip ]
 ]

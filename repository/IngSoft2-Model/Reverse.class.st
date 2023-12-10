@@ -19,17 +19,18 @@ Reverse class >> with: aShipsGame [
 ]
 
 { #category : #action }
-Reverse >> apply: aGameBoard [
+Reverse >> applyEffectUsing: aGameBoard [
 	|actualAmountToSum newAmountToSum|
 	actualAmountToSum:= shipsGame turnsManager amountToSum.
 	newAmountToSum := actualAmountToSum*(-1).
 	shipsGame turnsManager change: newAmountToSum.
+	shipsGame takeJustUsed: self.
 ]
 
 { #category : #action }
 Reverse >> applyFrom: aNumberOfShip [ 
-	shipsGame chosen: self from: aNumberOfShip.
-	shipsGame applyChosenCard.
+	shipsGame verify: self IsInHandOf: aNumberOfShip.
+	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
@@ -45,10 +46,4 @@ Reverse >> permanent [
 { #category : #action }
 Reverse >> selected: aNumberOfShip [ 
 	^self.
-]
-
-{ #category : #action }
-Reverse >> verifyUseWith: aNumberOfShip [ 	
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	shipsGame chosenCard: self .
 ]
