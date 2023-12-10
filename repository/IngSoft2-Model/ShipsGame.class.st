@@ -83,6 +83,13 @@ ShipsGame >> reverseTurnsOrder [
 ]
 
 { #category : #action }
+ShipsGame >> skipTurn [
+	turnToThrow := turnToThrow + amountToSum .
+	(turnToThrow > amountOfShips) ifTrue: [ turnToThrow := 1 ].
+	(turnToThrow = 0) ifTrue: [ turnToThrow := amountOfShips ]
+]
+
+{ #category : #action }
 ShipsGame >> throwNextShip [
 
 	self verifyThereIsNotAWinner.
