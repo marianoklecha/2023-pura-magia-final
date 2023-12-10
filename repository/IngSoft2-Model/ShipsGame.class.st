@@ -7,8 +7,7 @@ Class {
 		'lastUsedCard',
 		'aCollectionOfUsedCards',
 		'amountOfShips',
-		'turnToThrow',
-		'amountToSum'
+		'turnsManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -47,19 +46,12 @@ ShipsGame >> create: anAmountOfShips [
 	^ shipsCollection
 ]
 
-{ #category : #action }
-ShipsGame >> doubleActualTurn [
-	turnToThrow addLast: (turnToThrow first).
-]
-
 { #category : #initialization }
 ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [ 
-	turnToThrow := OrderedCollection new.
-	turnToThrow add: 1.
+	turnsManager:= TurnsManager with: anAmountOfShips.
 	aCollectionOfUsedCards := OrderedCollection new.
 	gameboard := aGameboard.
 	amountOfShips := anAmountOfShips. 
-	amountToSum := 1.
 	aGameboard fillWith: (self create: anAmountOfShips)
 ]
 
@@ -81,40 +73,17 @@ ShipsGame >> ranking [
 ]
 
 { #category : #action }
-ShipsGame >> reverseTurnsOrder [
-	amountToSum := amountToSum*(-1).
-]
-
-{ #category : #action }
-ShipsGame >> skipTurn [
-
-	| shipNumber |
-	shipNumber := turnToThrow removeFirst.
-	(turnToThrow isEmpty) ifTrue: [  
-	shipNumber := shipNumber + amountToSum.
-	(shipNumber > amountOfShips or: shipNumber = 0)
-		ifTrue: [ 
-			shipNumber > amountOfShips
-				ifTrue: [ turnToThrow addLast: 1 ]
-				ifFalse: [ turnToThrow addLast: amountOfShips ] ]
-		ifFalse: [ turnToThrow addLast: shipNumber ]]
-]
-
-{ #category : #action }
 ShipsGame >> throwNextShip [
 
 	| shipNumber |
 	self verifyThereIsNotAWinner.
-	shipNumber := turnToThrow removeFirst.
+	shipNumber := turnsManager nextShipNumber.
 	gameboard move: (gameboard shipWith: shipNumber).
-	(turnToThrow isEmpty) ifTrue: [  
-	shipNumber := shipNumber + amountToSum.
-	(shipNumber > amountOfShips or: shipNumber = 0)
-		ifTrue: [ 
-			shipNumber > amountOfShips
-				ifTrue: [ turnToThrow addLast: 1 ]
-				ifFalse: [ turnToThrow addLast: amountOfShips ] ]
-		ifFalse: [ turnToThrow addLast: shipNumber ]]
+]
+
+{ #category : #action }
+ShipsGame >> turnsManager [
+	^ turnsManager
 ]
 
 { #category : #validation }
@@ -127,13 +96,6 @@ ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 	aCollectionOfCards remove: aCard.
 	aCollectionOfUsedCards add: aCard.
 			
-]
-
-{ #category : #validation }
-ShipsGame >> verifyIsTurnOf: aNumberOfShip [
-
-	aNumberOfShip = turnToThrow first ifFalse: [ 
-		Error signal: 'Cannot use permanent card when its not their turn' ]
 ]
 
 { #category : #action }

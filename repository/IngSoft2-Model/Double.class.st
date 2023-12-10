@@ -22,7 +22,7 @@ Double class >> with: aShipsGame [
 
 { #category : #action }
 Double >> apply: aGameBoard [ 
-	shipsGame doubleActualTurn.
+	shipsGame turnsManager doubleActualTurn.
 ]
 
 { #category : #action }

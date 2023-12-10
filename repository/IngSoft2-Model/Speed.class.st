@@ -54,7 +54,7 @@ Speed >> selected: aShip [
 
 { #category : #validation }
 Speed >> verifyUseWith: aNumberOfShip [ 
-	shipsGame verifyIsTurnOf: aNumberOfShip.
+	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	shipsGame chosenCard: self.
 ]

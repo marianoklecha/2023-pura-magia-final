@@ -20,7 +20,7 @@ Skip class >> with: aShipsGame [
 
 { #category : #action }
 Skip >> apply: aGameBoard [ 
-	shipsGame skipTurn.
+	shipsGame turnsManager skipTurn.
 ]
 
 { #category : #action }

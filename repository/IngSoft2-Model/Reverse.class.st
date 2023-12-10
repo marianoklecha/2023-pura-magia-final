@@ -20,7 +20,7 @@ Reverse class >> with: aShipsGame [
 
 { #category : #action }
 Reverse >> apply: aGameBoard [ 
-	shipsGame reverseTurnsOrder.
+	shipsGame turnsManager reverseTurnsOrder.
 ]
 
 { #category : #action }
