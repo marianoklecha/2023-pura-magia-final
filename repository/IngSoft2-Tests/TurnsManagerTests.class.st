@@ -1,8 +1,25 @@
 Class {
 	#name : #TurnsManagerTests,
 	#superclass : #TestCase,
+	#instVars : [
+		'cells',
+		'numberOfLaps',
+		'amountOfPlayers',
+		'aGameBoard',
+		'aGame'
+	],
 	#category : #'IngSoft2-Tests'
 }
+
+{ #category : #running }
+TurnsManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
+	cells:= anAmountOfCells .
+	numberOfLaps:= laps.
+	amountOfPlayers := anAmountOfPlayers .
+	
+	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGame:= ShipsGame with: amountOfPlayers and: aGameBoard.
+]
 
 { #category : #running }
 TurnsManagerTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMessage [
@@ -43,11 +60,14 @@ TurnsManagerTests >> test062TurnsManagerGivesTurnsInOrder [
 { #category : #tests }
 TurnsManagerTests >> test063TurnsManagerGivesTurnsInReverseOrder [
 
-	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4|
-	turnsManager := TurnsManager with: 3.
+	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4 reverse|
+	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
+	turnsManager := aGame turnsManager .
+	reverse := Reverse with: aGame  .
+	aGameBoard add: reverse to: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
-	turnsManager reverseTurnsOrder.
+	reverse applyFrom: 1.
 	shipNumber2 := turnsManager nextShipNumber.
 	shipNumber3 := turnsManager nextShipNumber.
 	shipNumber4 := turnsManager nextShipNumber.
@@ -61,11 +81,14 @@ TurnsManagerTests >> test063TurnsManagerGivesTurnsInReverseOrder [
 { #category : #tests }
 TurnsManagerTests >> test064TurnsManagerCanSkipATurn [
 
-	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4|
-	turnsManager := TurnsManager with: 3.
+	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4 skip|
+	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
+	turnsManager := aGame turnsManager .
+	skip := Skip with: aGame  .
+	aGameBoard add: skip to: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
-	turnsManager skipTurn.
+	skip applyFrom: 1.
 	shipNumber2 := turnsManager nextShipNumber.
 	shipNumber3 := turnsManager nextShipNumber.
 	shipNumber4 := turnsManager nextShipNumber.
@@ -79,11 +102,14 @@ TurnsManagerTests >> test064TurnsManagerCanSkipATurn [
 { #category : #tests }
 TurnsManagerTests >> test065TurnsManagerAllowsDoubleTurn [
 
-	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4 shipNumber5|
-	turnsManager := TurnsManager with: 3.
+	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4 shipNumber5 double|
+	self setUpGameWith: 3 andGameboardWith: 4 and: 4.
+	turnsManager := aGame turnsManager .
+	double := Double with: aGame  .
+	aGameBoard add: double to: 1.
 	
 	shipNumber1 := turnsManager nextShipNumber.
-	turnsManager doubleActualTurn.
+	double applyFrom: 1.
 	shipNumber2 := turnsManager nextShipNumber.
 	shipNumber3 := turnsManager nextShipNumber.
 	shipNumber4 := turnsManager nextShipNumber.

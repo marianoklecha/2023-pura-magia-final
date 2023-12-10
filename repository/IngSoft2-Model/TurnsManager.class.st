@@ -22,8 +22,18 @@ TurnsManager class >> with: aNumberOfShips [
 ]
 
 { #category : #action }
-TurnsManager >> doubleActualTurn [
-	turnToThrow addLast: (turnToThrow first).
+TurnsManager >> amountToSum [
+	^ amountToSum
+]
+
+{ #category : #action }
+TurnsManager >> change: anAmountToSum [
+	amountToSum := anAmountToSum .
+]
+
+{ #category : #action }
+TurnsManager >> changeTurns: aTurnsCollection [ 
+	turnToThrow := aTurnsCollection.
 ]
 
 { #category : #initialization }
@@ -36,21 +46,16 @@ TurnsManager >> initializeWith: aNumberOfShips [
 
 { #category : #action }
 TurnsManager >> nextShipNumber [
+
 	| shipNumber |
 	shipNumber := turnToThrow removeFirst.
-	self verifyNextTurnWith: shipNumber.
-	^shipNumber.
-	
+	turnToThrow isEmpty ifTrue: [ self verifyNextTurnWith: shipNumber ].
+	^ shipNumber
 ]
 
 { #category : #action }
-TurnsManager >> reverseTurnsOrder [
-	amountToSum := amountToSum*(-1).
-]
-
-{ #category : #action }
-TurnsManager >> skipTurn [
-	self nextShipNumber.
+TurnsManager >> turns [
+	^turnToThrow.
 ]
 
 { #category : #action }
@@ -76,7 +81,6 @@ TurnsManager >> verifyMin: shipNumber [
 TurnsManager >> verifyNextTurnWith: aShipNumber [
 
 	| shipNumber |
-	turnToThrow isEmpty ifFalse: [ ^ self ].
 	shipNumber := aShipNumber + amountToSum.
 	self verifyMax: shipNumber.
 	self verifyMin: shipNumber.

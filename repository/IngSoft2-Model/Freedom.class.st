@@ -21,9 +21,13 @@ Freedom class >> with: aShipsGame [
 
 { #category : #action }
 Freedom >> apply: aGameBoard [
-	|aChosenShip|
+	|aChosenShip shipsJailed|
 	aChosenShip := aGameBoard shipWith: chosenShipNumber .
-	aGameBoard spaceSheriff setFree: aChosenShip.
+	shipsJailed := aGameBoard spaceSheriff shipsJailed.
+	(shipsJailed includes: aChosenShip)
+		ifTrue: [ shipsJailed remove: aChosenShip ]
+		ifFalse: [ Error signal: 'The ship you want to free is not in Jail' ].
+	aGameBoard spaceSheriff change: shipsJailed.
 ]
 
 { #category : #action }
