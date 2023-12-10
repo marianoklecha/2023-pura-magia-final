@@ -89,13 +89,15 @@ ShipsGame >> reverseTurnsOrder [
 ShipsGame >> skipTurn [
 
 	| shipNumber |
-	shipNumber := turnToThrow removeFirst + amountToSum.
+	shipNumber := turnToThrow removeFirst.
+	(turnToThrow isEmpty) ifTrue: [  
+	shipNumber := shipNumber + amountToSum.
 	(shipNumber > amountOfShips or: shipNumber = 0)
 		ifTrue: [ 
 			shipNumber > amountOfShips
 				ifTrue: [ turnToThrow addLast: 1 ]
 				ifFalse: [ turnToThrow addLast: amountOfShips ] ]
-		ifFalse: [ turnToThrow addLast: shipNumber ]
+		ifFalse: [ turnToThrow addLast: shipNumber ]]
 ]
 
 { #category : #action }
@@ -103,15 +105,16 @@ ShipsGame >> throwNextShip [
 
 	| shipNumber |
 	self verifyThereIsNotAWinner.
-	shipNumber := turnToThrow at: 1.
+	shipNumber := turnToThrow removeFirst.
 	gameboard move: (gameboard shipWith: shipNumber).
-	shipNumber := turnToThrow removeFirst + amountToSum.
+	(turnToThrow isEmpty) ifTrue: [  
+	shipNumber := shipNumber + amountToSum.
 	(shipNumber > amountOfShips or: shipNumber = 0)
 		ifTrue: [ 
 			shipNumber > amountOfShips
 				ifTrue: [ turnToThrow addLast: 1 ]
 				ifFalse: [ turnToThrow addLast: amountOfShips ] ]
-		ifFalse: [ turnToThrow addLast: shipNumber ]
+		ifFalse: [ turnToThrow addLast: shipNumber ]]
 ]
 
 { #category : #validation }

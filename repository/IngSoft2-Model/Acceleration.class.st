@@ -8,8 +8,10 @@ Class {
 }
 
 { #category : #initialization }
-Acceleration class >> verifyCanInitializeWith: anInstance [ 
-	(anInstance isKindOf: ShipsGame)ifFalse:[ Error signal: 'The card must receive a ShipsGame instance' ]
+Acceleration class >> verifyCanInitializeWith: anInstance [
+
+	(anInstance isKindOf: ShipsGame) ifFalse: [ 
+		Error signal: 'The card must receive a ShipsGame instance' ]
 ]
 
 { #category : #initialization }
