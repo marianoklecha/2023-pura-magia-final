@@ -57,7 +57,10 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 			(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) 
 		ifTrue: [ self add: (AtomicBomb  new) at: index. ].
 			(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7))
-		ifTrue: [ self add: (CardAssignation withDeck) at: index. ].].
+		ifTrue: [ self add: (CardAssignation withDeck) at: index. ].
+			(randomNumber >= (probabilities  at: 7) and: randomNumber < (probabilities at: 8))
+		ifTrue: [ self add: (Jail new) at: index].].
+	
 
 ]
 

@@ -1694,3 +1694,26 @@ CardsTests >> test072DoubleRobustInstanceCreation [
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test073RepeatANullEffectHasNoEffect [
+	| player player2  repeat aNullEffect|
+	
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	aNullEffect := NullEffect new.
+	repeat  := Repeat with: aGame .
+	self setUpLoadedDeck.
+	aCollectionOfCards add: repeat.
+	aGameBoard add: aNullEffect at: 5 .
+	player:= 1.
+	player2:=2.
+	aGame giveCardTo: player.	
+	
+	aGame throwNextShip .
+	aGame throwNextShip .
+	repeat from: player. 
+	
+	self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 3 .
+	self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 5 .
+]
