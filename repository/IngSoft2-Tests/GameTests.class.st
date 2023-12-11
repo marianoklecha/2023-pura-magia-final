@@ -37,7 +37,7 @@ GameTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	aGameBoard shipsUseToThrow: arrayOfDie  .
+	aGameBoard shipsCanThrowUsing: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -174,7 +174,7 @@ GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 	arrayOfDie add: die1.
 	arrayOfDie add: die2.
 	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
-	aGameBoard shipsUseToThrow: arrayOfDie .
+	aGameBoard shipsCanThrowUsing: arrayOfDie .
 
 	aGame throwNextShip.
 	
@@ -255,7 +255,7 @@ self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 4).
 amountOfParsecsToMove:= #(7 3 2 1).
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 
 aGame throwNextShip.
 aGame throwNextShip.
@@ -374,7 +374,7 @@ collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aShip:=((aGameBoard shipWith: 1)).
 
@@ -418,7 +418,7 @@ self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
 amountOfParsecsToMove:= #(7 3 2 1).
 parsecs := 4. 
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 
 aGame throwNextShip. "P1: 4 LAP1 P2: 0 LAP1"
 aGame throwNextShip. "P1: 4 LAP1 P2: 3 LAP1"
@@ -443,7 +443,7 @@ arrayOfDie2 := OrderedCollection new.
 die1 := LoadedDie with: #(1 2) .
 arrayOfDie2 add: die1 .
 
-self should:  [aGameBoard shipsUseToThrow:  arrayOfDie1] raise: Error withMessage: 'The collection of dices cant be empty'.
+self should:  [aGameBoard shipsCanThrowUsing:  arrayOfDie1] raise: Error withMessage: 'The collection of dices cant be empty'.
 self should:  [aGameBoard cellsDividedIn: -2] raise: Error withMessage: 'The amount of parsecs cant be negative or zero'.
 self should:  [aGameBoard cellsDividedIn: 0] raise: Error withMessage: 'The amount of parsecs cant be negative or zero'.
 
@@ -468,7 +468,7 @@ collection1:=OrderedCollection new.
 collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip .

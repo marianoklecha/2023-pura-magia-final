@@ -27,12 +27,14 @@ ShipPosition class >> verifyCanExistWith: aNumberOfCell and: aNumberOfLap and: a
 
 { #category : #validation }
 ShipPosition >> currentCell [
+
 	^ cellNumber 
 ]
 
 { #category : #validation }
 ShipPosition >> currentLap [
-	^actualLap.
+
+	^ actualLap
 ]
 
 { #category : #validation }
@@ -42,14 +44,16 @@ ShipPosition >> currentParsec [
 
 { #category : #initialization }
 ShipPosition >> initializeNew [
-	cellNumber := 0 .
+
+	cellNumber := 0.
 	actualLap := 1.
-	parsecs := Parsecs with: 0.
+	parsecs := Parsecs with: 0
 ]
 
 { #category : #initialization }
 ShipPosition >> initializeWith: aNumberOfCell and: aNumberOfLap and: aParsec [
-	cellNumber := aNumberOfCell .
-	actualLap := aNumberOfLap .
-	parsecs := aParsec .
+
+	cellNumber := aNumberOfCell.
+	actualLap := aNumberOfLap.
+	parsecs := aParsec
 ]

@@ -14,10 +14,12 @@ LightYears class >> with: aNominalValue [
 
 { #category : #initialization }
 LightYears >> initializeWith: aNominalValue [ 
+
 	nominalValue := aNominalValue .
 ]
 
 { #category : #calculating }
 LightYears >> parsecs [
+
 	^( Parsecs with: (nominalValue // 3))
 ]

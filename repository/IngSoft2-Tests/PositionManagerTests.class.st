@@ -35,7 +35,7 @@ PositionManagerTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	aGameBoard shipsUseToThrow: arrayOfDie  .
+	aGameBoard shipsCanThrowUsing: arrayOfDie  .
 ]
 
 { #category : #tests }
@@ -47,7 +47,7 @@ parsecs := 4.
 cellsToSum := 9.
 parsecsToSum := 6.
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aPositionManager := PositionManager with: 4 and: 4.
 aChosenShip:= aGameBoard shipWith: 1 .
 shipPosition := aChosenShip actualPosition .

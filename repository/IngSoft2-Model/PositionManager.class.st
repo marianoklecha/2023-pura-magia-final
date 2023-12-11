@@ -44,24 +44,10 @@ PositionManager >> change: aShipPosition with: newCell [
 ]
 
 { #category : #'manage action' }
-PositionManager >> change: aShipPosition withMoreParsecsThanMax: aResult [
-
-	| newParsec cell newShipPosition |
-	newParsec := aResult.
-	cell := aShipPosition currentCell.
-	[ newParsec > parsecs ] whileTrue: [ 
-		cell := cell + 1.
-		newParsec := newParsec - parsecs ].
-	newShipPosition := self manageCellsOf: aShipPosition at: cell.
-	^ newShipPosition := ShipPosition createWith: newShipPosition currentCell
-		                   at: newShipPosition currentLap and: (Parsecs with: newParsec).
-]
-
-{ #category : #'manage action' }
-PositionManager >> change: aShipPosition withNegative: aResult [ 
+PositionManager >> change: aShipPosition withNegative: amountOfCells [ 
 
 	|newShipPosition newCell newLap |
-	newCell := aResult.
+	newCell := amountOfCells.
 	newLap := aShipPosition currentLap.
 	[ newCell < 0 ] whileTrue: [
 		(newLap = 1) ifTrue: [ ^ newShipPosition := ShipPosition createNew.].
@@ -71,14 +57,28 @@ PositionManager >> change: aShipPosition withNegative: aResult [
 ]
 
 { #category : #'manage action' }
-PositionManager >> change: aShipPosition withNegativeParsecs: aResult [
+PositionManager >> change: aShipPosition withNegativeAmountOf: parsecsObtained [
 
 	| newShipPosition newParsec cell |
-	newParsec := aResult.
+	newParsec := parsecsObtained.
 	cell := aShipPosition currentCell.
 	[ newParsec < 0 ] whileTrue: [ 
 		cell := cell - 1.
 		newParsec := newParsec + parsecs ].
+	newShipPosition := self manageCellsOf: aShipPosition at: cell.
+	^ newShipPosition := ShipPosition createWith: newShipPosition currentCell
+		                   at: newShipPosition currentLap and: (Parsecs with: newParsec).
+]
+
+{ #category : #'manage action' }
+PositionManager >> change: aShipPosition withParsecsDivisionLowThan: aParsecsAmount [
+
+	| newParsec cell newShipPosition |
+	newParsec := aParsecsAmount.
+	cell := aShipPosition currentCell.
+	[ newParsec > parsecs ] whileTrue: [ 
+		cell := cell + 1.
+		newParsec := newParsec - parsecs ].
 	newShipPosition := self manageCellsOf: aShipPosition at: cell.
 	^ newShipPosition := ShipPosition createWith: newShipPosition currentCell
 		                   at: newShipPosition currentLap and: (Parsecs with: newParsec).
@@ -113,20 +113,20 @@ PositionManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 	newShipPosition := ShipPosition createNew .
 	result := aNewParsec + aShipPosition currentParsec nominalValue.
 	result < 0 ifTrue: [ 
-		newShipPosition := self change: aShipPosition withNegativeParsecs: result ].
+		newShipPosition := self change: aShipPosition withNegativeAmountOf: result ].
 	(result <= parsecs and: result >= 0) ifTrue: [ 
 		newShipPosition := self change: aShipPosition using: result ].
 	result > parsecs ifTrue: [ 
-		newShipPosition := self change: aShipPosition withMoreParsecsThanMax: result ].
+		newShipPosition := self change: aShipPosition withParsecsDivisionLowThan: result ].
 
 	^ newShipPosition
 ]
 
 { #category : #action }
-PositionManager >> updateResult: aResult [
+PositionManager >> updateToGameCellsHaving: anAmountOfCells [
 
 	| auxResult |
-	auxResult := aResult.
+	auxResult := anAmountOfCells.
 	[ auxResult > cells ] whileTrue: [ auxResult := auxResult - cells ].
 	^ auxResult
 ]

@@ -8,11 +8,13 @@ Class {
 }
 
 { #category : #action }
-NullEffect >> applyTo: aGameBoard for: aShip [ 
+NullEffect >> applyEffectUsing: aGameBoard for: aShip [ 
+
 	^ self .
 ]
 
 { #category : #action }
 NullEffect >> with: aNumberOfCell [
+
 	numberOfCell := aNumberOfCell .
 ]

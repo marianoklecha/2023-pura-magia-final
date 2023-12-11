@@ -29,7 +29,6 @@ Cancellation >> applyEffectUsing: aGameBoard [
 	(collectionCards includes: cardToRemove)
 		ifTrue: [ collectionCards remove: cardToRemove ]
 		ifFalse: [ self cancelCardsFrom: aGameBoard ].
-
 	shipsGame takeJustUsed: self.
 ]
 
@@ -46,11 +45,12 @@ Cancellation >> cancelCardsFrom: aGameBoard [
 
 { #category : #initialization }
 Cancellation >> canceled: aCardToRemove [
+
 	cardToRemove:= aCardToRemove.
 ]
 
 { #category : #action }
-Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard [ 
+Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip cancelling: aCard [ 
 
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	cardToRemove:= aCard.
@@ -59,12 +59,9 @@ Cancellation >> from: aNumberOfShip applyTo: aChosenNumberOfShip canceled: aCard
 ]
 
 { #category : #action }
-Cancellation >> from: aNumberOfShip canceled: aCard [ 
+Cancellation >> from: aNumberOfShip cancelling: aCard [
 
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	chosenShipNumber := aNumberOfShip.
-	cardToRemove:= aCard.
-	self applyEffectUsing: shipsGame gameboard.
+	self from: aNumberOfShip applyTo: aNumberOfShip cancelling: aCard.
 ]
 
 { #category : #initialization }
@@ -75,10 +72,12 @@ Cancellation >> initializeWith: aShipsGame [
 
 { #category : #action }
 Cancellation >> permanent [
+
 	^false.
 ]
 
 { #category : #instance }
 Cancellation >> selected: aShipPosition [  
+
 	chosenShipNumber := aShipPosition.
 ]

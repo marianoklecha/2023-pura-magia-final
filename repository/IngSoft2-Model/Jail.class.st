@@ -8,7 +8,8 @@ Class {
 }
 
 { #category : #action }
-Jail >> applyTo: aGameBoard for: aShip [
+Jail >> applyEffectUsing: aGameBoard for: aShip [
+
 	self check: aShip positionOn: aGameBoard.
 	aGameBoard spaceSheriff jail: aShip.
 	^self.
@@ -27,5 +28,6 @@ Jail >> check: aShip positionOn: aGameBoard [
 
 { #category : #action }
 Jail >> with: aNumberOfCell [
+
 	numberOfCell := aNumberOfCell .
 ]

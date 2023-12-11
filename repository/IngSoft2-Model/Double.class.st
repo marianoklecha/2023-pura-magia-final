@@ -22,6 +22,7 @@ Double class >> with: aShipsGame [
 
 { #category : #action }
 Double >> applyEffectUsing: aGameBoard [
+
 	|turnsCollection actualTurn|
 	turnsCollection := shipsGame turnsManager turns.
 	actualTurn := turnsCollection first.
@@ -32,21 +33,25 @@ Double >> applyEffectUsing: aGameBoard [
 
 { #category : #action }
 Double >> applyFrom: aNumberOfShip [ 
+
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
 Double >> initializeWith: aShipsGame [ 
+
 	shipsGame := aShipsGame .
 ]
 
 { #category : #action }
 Double >> permanent [
+
 	^false.
 ]
 
 { #category : #action }
 Double >> selected: aNumberOfShip [
+
 	^self.
 ]

@@ -14,16 +14,19 @@ Parsecs class >> with: aNominalValue [
 
 { #category : #initialization }
 Parsecs >> initializeWith: aNominalValue [ 
+
 	nominalValue := aNominalValue.
 ]
 
 { #category : #value }
 Parsecs >> nominalValue [
+
 	^ nominalValue
 ]
 
 { #category : #calculating }
 Parsecs >> parsecs [
+
 	^self.
 ]
 

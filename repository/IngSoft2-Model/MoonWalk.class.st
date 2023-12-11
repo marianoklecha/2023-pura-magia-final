@@ -20,9 +20,9 @@ MoonWalk class >> with: anAmountOfCells [
 ]
 
 { #category : #action }
-MoonWalk >> applyTo: aGameBoard for: aChosenShip [
+MoonWalk >> applyEffectUsing: aGameBoard for: aChosenShip [
+
 	| newCell shipPosition newShipPosition |
-	
 	1 to: aGameBoard amountOfShipsPlaying do: [ :number | 
 		(aGameBoard shipWith: number) = aChosenShip ifFalse: [ 
 			newCell := (aGameBoard shipWith: number) actualPosition currentCell + amountOfCells.
@@ -34,10 +34,12 @@ MoonWalk >> applyTo: aGameBoard for: aChosenShip [
 
 { #category : #initialization }
 MoonWalk >> initializeWith: anAmountOfCells [ 
+
 	amountOfCells:= anAmountOfCells .
 ]
 
 { #category : #action }
 MoonWalk >> with: aNumberOfCell [
+
 	numberOfCell := aNumberOfCell .
 ]

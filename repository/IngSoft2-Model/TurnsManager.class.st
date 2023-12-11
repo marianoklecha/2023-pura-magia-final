@@ -23,25 +23,29 @@ TurnsManager class >> with: aNumberOfShips [
 
 { #category : #action }
 TurnsManager >> amountToSum [
+
 	^ amountToSum
 ]
 
 { #category : #action }
 TurnsManager >> change: anAmountToSum [
+
 	amountToSum := anAmountToSum .
 ]
 
 { #category : #action }
-TurnsManager >> changeTurns: aTurnsCollection [ 
-	turnToThrow := aTurnsCollection.
+TurnsManager >> changeTurns: aTurnsCollection [
+
+	turnToThrow := aTurnsCollection
 ]
 
 { #category : #initialization }
-TurnsManager >> initializeWith: aNumberOfShips [ 
+TurnsManager >> initializeWith: aNumberOfShips [
+
 	amountOfShips := aNumberOfShips.
 	amountToSum := 1.
 	turnToThrow := OrderedCollection new.
-	turnToThrow add: 1.
+	turnToThrow add: 1
 ]
 
 { #category : #action }
@@ -55,7 +59,8 @@ TurnsManager >> nextShipNumber [
 
 { #category : #action }
 TurnsManager >> turns [
-	^turnToThrow.
+
+	^ turnToThrow
 ]
 
 { #category : #action }

@@ -49,7 +49,7 @@ CardsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	aGameBoard shipsUseToThrow: arrayOfDie  .
+	aGameBoard shipsCanThrowUsing: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -186,7 +186,7 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	aGame giveCardTo: player.
 
 	overload  from: player  applyTo: player2 .
-	cancellation from: player2 applyTo: player2 canceled: overload .
+	cancellation from: player2 applyTo: player2 cancelling: overload .
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -217,7 +217,7 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	speed from: player applyTo: player . 
 	aGame throwNextShip .
 	aGame throwNextShip .
-	cancellation from: player2  applyTo: player  canceled: speed .	
+	cancellation from: player2  applyTo: player  cancelling: speed .	
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
@@ -242,7 +242,7 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	acceleration applyToAllFrom: player . 
 	aGame throwNextShip .
 	aGame throwNextShip .
-	cancellation from: player2 canceled: acceleration .
+	cancellation from: player2 cancelling: acceleration .
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
@@ -356,7 +356,7 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 4)).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	aGameBoard cellsDividedIn: 4. 
-	aGameBoard shipsUseToThrow: arrayOfDie .
+	aGameBoard shipsCanThrowUsing: arrayOfDie .
 	repeat  := Repeat with: aGame.
 	self setUpLoadedDeck.
 	aCollectionOfCards add: repeat.
@@ -485,7 +485,7 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	aGame throwNextShip . "1-P4 2-P0"
 	speed2 from: player2  applyTo: player2. 
 	aGame throwNextShip . "1-P4 2-P6"
-	cancellation  from: player applyTo: player2  canceled: speed2 . 
+	cancellation  from: player applyTo: player2  cancelling: speed2 . 
 	redo cancellationFrom: player2 to: player canceled: speed1.
 	aGame throwNextShip . "1-P7 2-P6"
 	aGame throwNextShip . "1-P7L1 2-P3L2"
@@ -629,7 +629,7 @@ CardsTests >> test027PlayWithCancelletionCardForARedoOnAnOverload [
 	overload  from: player  applyTo: player2 .
 	aGame throwNextShip .
 	redo from: player2 to: player .
-	cancellation from: player applyTo: player canceled: overload  .
+	cancellation from: player applyTo: player cancelling: overload  .
 	aGame throwNextShip .
 	aGame throwNextShip .
 	aGame throwNextShip .
@@ -662,7 +662,7 @@ CardsTests >> test028PlayWithCancellationCardForRedoCardOnASpeedCard [
 	speed from: player applyTo: player . 
 	aGame throwNextShip . 
 	redo from: player2 to: player2 . 
-	cancellation from: player applyTo: player2 canceled: speed. 
+	cancellation from: player applyTo: player2 cancelling: speed. 
 	aGame throwNextShip . 
 	aGame throwNextShip . 
 	aGame throwNextShip .
@@ -697,7 +697,7 @@ CardsTests >> test029PlayWithCancellationCardForRedoOnAnAccelerationCard [
 	aGame throwNextShip .
 	redo from: player2.
 	aGame throwNextShip .
-	cancellation from: player canceled: acceleration .
+	cancellation from: player cancelling: acceleration .
 	aGame throwNextShip .
 	aGame throwNextShip .
 	
@@ -728,7 +728,7 @@ CardsTests >> test030PlayWithCancelletionCardErrorIfTheCardIsNotInEffect [
 	
 	self
 		should: [ 
-		cancellation from: player applyTo: player canceled: redo ]
+		cancellation from: player applyTo: player cancelling: redo ]
 		raise: Error
 		withMessage:
 		'The card you want to cancel is not affecting the ship'
@@ -756,7 +756,7 @@ CardsTests >> test031ThrowErrorWhenTheSelectedCardIsNotInShipHand [
 	
 	self
 		should: [ 
-		cancellation from: player applyTo: player2 canceled: speed ]
+		cancellation from: player applyTo: player2 cancelling: speed ]
 		raise: Error
 		withMessage:
 		'The card you want to use is not in your ships hand'

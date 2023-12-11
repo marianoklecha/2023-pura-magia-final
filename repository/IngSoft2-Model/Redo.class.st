@@ -22,6 +22,7 @@ Redo class >> with: aShipsGame [
 
 { #category : #action }
 Redo >> applyEffectUsing: aGameBoard [
+
 	cardToRedo selected: chosenShipNumber .
 	cardToRedo applyEffectUsing: aGameBoard.
 ]
@@ -34,11 +35,13 @@ Redo >> beInstantaneousWith: aNumberOfShip [
 
 { #category : #action }
 Redo >> bePermanentWith: aNumberOfShip [ 
+
 	shipsGame turnsManager verifyIsTurnOf: aNumberOfShip.	
 ]
 
 { #category : #action }
 Redo >> cancellationFrom: aNumberOfShip to: aChosenNumberOfShip canceled: aCard [
+
 	|lastCardUsedInGame|
 	lastCardUsedInGame := shipsGame lastUsedCard.
 	lastCardUsedInGame canceled: aCard.
@@ -47,16 +50,15 @@ Redo >> cancellationFrom: aNumberOfShip to: aChosenNumberOfShip canceled: aCard 
 
 { #category : #action }
 Redo >> from: aNumberOfShip [
-	shipsGame verify: self IsInHandOf: aNumberOfShip.
-	cardToRedo := shipsGame lastUsedCard .
-	cardToRedo permanent
-		ifFalse: [ self beInstantaneousWith: aNumberOfShip ]
-		ifTrue: [ self bePermanentWith: aNumberOfShip ].
-	self applyEffectUsing: shipsGame gameboard.
+
+	self from: aNumberOfShip to: aNumberOfShip .
+
+	
 ]
 
 { #category : #action }
 Redo >> from: aNumberOfShip to: aChosenNumberOfShip [
+
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	cardToRedo := shipsGame lastUsedCard .
 	cardToRedo permanent
@@ -68,5 +70,6 @@ Redo >> from: aNumberOfShip to: aChosenNumberOfShip [
 
 { #category : #initialization }
 Redo >> initializeWith: aShipsGame [ 
+
 	shipsGame := aShipsGame .
 ]

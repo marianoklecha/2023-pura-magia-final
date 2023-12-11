@@ -21,10 +21,12 @@ Die class >> with: aFace [
 
 { #category : #initialization }
 Die >> initializeWith: aFace [
+
 	faces := aFace.
 ]
 
 { #category : #action }
 Die >> throw [
+
 	^faces  atRandom.
 ]

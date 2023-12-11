@@ -26,6 +26,7 @@ SpaceSheriff class >> with: aDieCollection [
 
 { #category : #action }
 SpaceSheriff >> change: shipsToJail [ 
+
 	shipsInJail := shipsToJail .
 ]
 
@@ -41,6 +42,7 @@ SpaceSheriff >> giveChanceToFree: aShip with: aDieResult [
 
 { #category : #action }
 SpaceSheriff >> initializeWith: aDieCollection [ 
+
 	dieCollection := aDieCollection.
 	shipsInJail := OrderedCollection new.
 ]
@@ -59,6 +61,7 @@ SpaceSheriff >> jail: aShip [
 
 { #category : #action }
 SpaceSheriff >> shipsJailed [
+
 	^shipsInJail .
 ]
 
