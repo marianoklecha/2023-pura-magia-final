@@ -10,7 +10,8 @@ Class {
 		'totalAtomicBombs',
 		'totalEmptyCells',
 		'totalSpecialCardsCells',
-		'totalCells'
+		'totalCells',
+		'totalJails'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -27,7 +28,7 @@ ProbabilityOfEffects >> addTotalAmountOfCells [
 	arrayWithTemporalVariables := OrderedCollection new.
 	arrayWithTemporalVariables add: totalEmptyCells ; add: totalWormHoles
 	; add: totalSpeedUps; add: totalMoonWalks; add: totalHyperJumps
-	; add: totalAtomicBombs; add: totalSpecialCardsCells; add: totalCells.
+	; add: totalAtomicBombs; add: totalSpecialCardsCells; add: totalJails; add: totalCells.
 	^arrayWithTemporalVariables
 ]
 
@@ -76,6 +77,7 @@ ProbabilityOfEffects >> countAmountOfCellsOf: aGameBoard [
 	totalAtomicBombs := totalAtomicBombs + (self amountOf: AtomicBomb on: aGameBoard).
 	totalSpecialCardsCells := totalSpecialCardsCells + (self amountOf: CardAssignation on: aGameBoard).
 	totalEmptyCells := totalEmptyCells + (self amountOf: NullEffect on: aGameBoard).
+	totalJails := totalJails + (self amountOf: Jail on: aGameBoard).
 	totalCells:= amountOfCells + totalCells.
 ]
 
@@ -113,5 +115,6 @@ ProbabilityOfEffects >> initializeWith: aNumber [
 	totalAtomicBombs := 0. 
 	totalEmptyCells := 0.
 	totalSpecialCardsCells := 0.
+	totalJails := 0.
 	totalCells:= 0.
 ]

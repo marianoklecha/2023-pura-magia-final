@@ -131,3 +131,39 @@ self assert: ((effectsProbabilities at: 10) >min  and: (effectsProbabilities at:
 
   
 ]
+
+{ #category : #tests }
+ProbabilityTests >> test005CheckDifferentDistributionOfEffectsIn5000GameboardsWithJailAdded [
+| parsecs aProbability effectsProbabilities parsc1 light1 parsc2 light2 amountOfParsecsToMove collection1 |
+
+parsecs := 4. 
+aProbability := ProbabilityOfEffects with: 100.
+parsc1 := Parsecs with: 7.
+light1 := LightYears with: 9.
+parsc2 := Parsecs with: 2.
+light2 := LightYears with: 3.
+amountOfParsecsToMove:= OrderedCollection new.
+collection1:=OrderedCollection new.
+collection1 add: parsc1 .
+collection1 add: light1  .
+collection1 add: parsc2   .
+collection1 add: light2  .
+amountOfParsecsToMove add: collection1 .
+
+effectsProbabilities := aProbability calculate: #(25 20 20 10 8 2 10 5) forHyperJump: amountOfParsecsToMove.
+
+self assert: ((effectsProbabilities at: 1) >24  and: (effectsProbabilities at: 1) < 26) .
+self assert: ((effectsProbabilities at: 2) >19  and: (effectsProbabilities at: 2) < 21) .
+self assert: ((effectsProbabilities at: 3) >19  and: (effectsProbabilities at: 3) < 21) .
+self assert: ((effectsProbabilities at: 4) >9  and: (effectsProbabilities at: 4) < 11) .
+self assert: ((effectsProbabilities at: 5) >7  and: (effectsProbabilities at: 5) < 9) .
+self assert: ((effectsProbabilities at: 6) >1  and: (effectsProbabilities at: 6) < 3) .
+self assert: ((effectsProbabilities at: 7) >9  and: (effectsProbabilities at: 7) < 11) .
+self assert: ((effectsProbabilities at: 8) >4  and: (effectsProbabilities at: 8) < 6) .
+
+
+
+
+
+  
+]

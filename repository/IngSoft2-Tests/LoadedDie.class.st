@@ -15,6 +15,7 @@ LoadedDie class >> with: numbers [
 
 { #category : #faces }
 LoadedDie >> faces [
+
 	|values highestValue|
 	values := numbers sorted: [:value1 :value2 | value1 > value2].
 	highestValue := values at: 1.
@@ -23,16 +24,17 @@ LoadedDie >> faces [
 
 { #category : #initialization }
 LoadedDie >> initializeWith: aNumbers [
+
 	numbers := aNumbers.
 	round := 0.
 ]
 
 { #category : #action }
 LoadedDie >> throw [
-	|result|
-	round := round +1.
-	(round > numbers size) ifTrue: [ 
-		round :=1 ].
+
+	| result |
+	round := round + 1.
+	round > numbers size ifTrue: [ round := 1 ].
 	result := numbers at: round.
-	^(result  )
+	^ result
 ]

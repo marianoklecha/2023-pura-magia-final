@@ -123,7 +123,6 @@ PositionsManager >> manageCellsOf: aShipPosition at: newCell [
 		newShipPosition := self change: aShipPosition with: newCell ].
 	newCell > cells ifTrue: [ 
 		newShipPosition := self change: aShipPosition changingLap: newCell ].
-
 	^ newShipPosition
 ]
 
@@ -139,7 +138,6 @@ PositionsManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 		newShipPosition := self change: aShipPosition using: result ].
 	result > parsecs ifTrue: [ 
 		newShipPosition := self change: aShipPosition withParsecsDivisionLowThan: result ].
-
 	^ newShipPosition
 ]
 
