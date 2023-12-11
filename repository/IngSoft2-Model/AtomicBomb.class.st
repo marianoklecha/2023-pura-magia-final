@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #action }
-AtomicBomb >> applyTo: aGameBoard for: aShip [
+AtomicBomb >> applyEffectUsing: aGameBoard for: aShip [
 
 	| ship |
 	1 to: aGameBoard amountOfShipsPlaying do: [ :number | 
 		ship := aGameBoard shipWith: number.
 		(aGameBoard spaceSheriff isKeepingJailed: ship) ifFalse: [ 
-			self positionAtStartFor: ship ] ].
+			ship changePosition: (self positionAtStartFor: ship) ] ].
 	^ self
 ]
 
@@ -24,11 +24,11 @@ AtomicBomb >> positionAtStartFor: aShip [
 	| parsec lap newShipPosition |
 	lap := aShip actualPosition currentLap.
 	parsec := aShip actualPosition currentParsec.
-	newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
-	aShip changePosition: newShipPosition
+	^ newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
 ]
 
 { #category : #action }
 AtomicBomb >> with: aNumberOfCell [
-	numberOfCell := aNumberOfCell .
+
+	numberOfCell := aNumberOfCell
 ]

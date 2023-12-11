@@ -11,7 +11,9 @@ Class {
 		'numbers',
 		'anotherNumbers',
 		'die1',
-		'die2'
+		'die2',
+		'aCollectionOfCards',
+		'loadedDeck'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -27,6 +29,13 @@ EffectsTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCe
 ]
 
 { #category : #running }
+EffectsTests >> setUpLoadedDeck [
+	aCollectionOfCards := OrderedCollection new.
+	loadedDeck := LoadedDeck with: aCollectionOfCards.
+	aGame useCardsFrom: loadedDeck.
+]
+
+{ #category : #running }
 EffectsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	
 	numbers := array1 .
@@ -36,7 +45,7 @@ EffectsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1 .
 	arrayOfDie add: die2.
-	aGameBoard shipsUseToThrow: arrayOfDie  .
+	aGameBoard shipsCanThrowUsing: arrayOfDie  .
 ]
 
 { #category : #running }
@@ -61,7 +70,7 @@ aGameBoard add: speedUp at: 3.
 aGame throwNextShip.
 aGame throwNextShip.
 
-self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  SpeedUp) .
+self assert: ((aGameBoard specialEffectAt: 3) isKindOf:  SpeedUp) .
 
 
 
@@ -102,7 +111,7 @@ aGameBoard add: wormHole at: 7.
 aGame throwNextShip.
 aGame throwNextShip.
 
-self assert: ((aGameBoard specialEffectAtCell: 7) isKindOf:  WormHole) .
+self assert: ((aGameBoard specialEffectAt: 7) isKindOf:  WormHole) .
 
 
 
@@ -207,7 +216,7 @@ aGameBoard add: aMoonWalk at: 2.
 aGame throwNextShip.
 aGame throwNextShip.
 
-self assert: ((aGameBoard specialEffectAtCell: 2) isKindOf:  MoonWalk) .
+self assert: ((aGameBoard specialEffectAt: 2) isKindOf:  MoonWalk) .
 
 
 
@@ -302,7 +311,7 @@ aGameBoard add: anAtomicBomb at: 8.
 aGame throwNextShip .
 aGame throwNextShip.
 
-self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  AtomicBomb ) .
+self assert: ((aGameBoard specialEffectAt: 8) isKindOf:  AtomicBomb ) .
 
 
 
@@ -356,7 +365,7 @@ collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -388,7 +397,7 @@ collection1 add: parsc1 ;add: light1 ;add: parsc2 ;add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -419,7 +428,7 @@ collection1 add: parsc1; add: light1; add: parsc2; add: light2  .
 amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 8 .
 
 aGame throwNextShip.
@@ -452,7 +461,7 @@ hyperJump := HyperJump with: amountOfParsecsToMove .
 arrayOfDie := OrderedCollection new.
 arrayOfDie add: (LoadedDie with: #(1 1)); add: (LoadedDie with: #(2 2)).
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -488,7 +497,7 @@ collection2 add: parsc3 ; add: parsc4 .
 amountOfParsecsToMove add: collection1;add: collection2 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 
 aGame throwNextShip.
@@ -535,7 +544,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 aGameBoard add: nullEffect at: 3.
 
-self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
+self assert: ((aGameBoard specialEffectAt: 3) isKindOf:  NullEffect) .
 
 
 
@@ -553,7 +562,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 aJail := Jail new.
 aGameBoard add: aJail at: 8.
 
-self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  Jail ) .
+self assert: ((aGameBoard specialEffectAt: 8) isKindOf:  Jail ) .
 
 
 
@@ -669,7 +678,7 @@ amountOfParsecsToMove add: collection1 .
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aJail := Jail new.
 aGameBoard cellsDividedIn: 4.
-aGameBoard shipsUseToThrow: arrayOfDie .
+aGameBoard shipsCanThrowUsing: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGameBoard add: aJail at: 4.
 
@@ -719,6 +728,33 @@ self
 	raise: Error
 	withMessage:
 	'The number of cells must be negative and lower than zero'
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+EffectsTests >> test061ShipFallsInJailAndUsesDoubleToGetOut [
+|aJail aDouble|
+
+self setUpGameWith: 2 andGameboardWith: 10 and: 2.
+self setUpLoadedDiceWith: #(1 9 1) and: #(7 9 2).
+self setUpLoadedDeck .
+aJail := Jail new.
+aDouble := Double with: aGame.
+aCollectionOfCards add: aDouble.
+aGameBoard add: aJail at: 8.
+aGame giveCardTo: 1.
+
+aDouble applyFrom: 1.
+aGame throwNextShip .
+aGame throwNextShip .
+
+self deny: ((aGameBoard spaceSheriff) isKeepingJailed: 1).
+self assert: ((aGameBoard shipWith: 2) actualPosition currentCell) equals: 0.
 
 
 

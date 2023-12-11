@@ -27,35 +27,43 @@ ShipsGame >> create: anAmountOfShips [
 
 { #category : #action }
 ShipsGame >> distributeFirstCards [
-	|firstCard secondCard|
+
+	|firstCard secondCard ship|
 	1 to: amountOfShips do: [ :number |
+		ship := gameboard shipWith: number.
 		firstCard := deck giveCard.
 		secondCard := deck giveCard .
-		(gameboard shipWith: number) add:  firstCard.
-		(gameboard shipWith: number) add:  secondCard]
+		ship add:  firstCard.
+		ship add:  secondCard]
 ]
 
 { #category : #action }
 ShipsGame >> gameboard [
+
 	^ gameboard
 ]
 
 { #category : #action }
 ShipsGame >> giveCardTo: numberOfShip [
-	(gameboard shipWith: numberOfShip) add: (deck giveCard) .
+
+	|ship|
+	ship := gameboard shipWith: numberOfShip.
+	ship add: (deck giveCard) .
 	
 ]
 
 { #category : #initialization }
-ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [ 
-	turnsManager:= TurnsManager with: anAmountOfShips.
+ShipsGame >> initializeWith: anAmountOfShips and: aGameboard [
+
+	turnsManager := TurnsManager with: anAmountOfShips.
 	gameboard := aGameboard.
-	amountOfShips := anAmountOfShips. 
+	amountOfShips := anAmountOfShips.
 	aGameboard fillWith: (self create: anAmountOfShips)
 ]
 
 { #category : #action }
 ShipsGame >> lastUsedCard [
+
 	^ lastUsedCard .
 ]
 
@@ -76,6 +84,7 @@ ShipsGame >> ranking [
 
 { #category : #action }
 ShipsGame >> takeJustUsed: aCard [
+
 	lastUsedCard := aCard.
 ]
 
@@ -90,11 +99,13 @@ ShipsGame >> throwNextShip [
 
 { #category : #action }
 ShipsGame >> turnsManager [
+
 	^ turnsManager
 ]
 
 { #category : #action }
 ShipsGame >> useCardsFrom: aDeck [ 
+
 	deck := aDeck.
 ]
 
@@ -111,6 +122,7 @@ ShipsGame >> verify: aCard IsInHandOf: aNumberOfShip [
 
 { #category : #action }
 ShipsGame >> verifyThereIsNotAWinner [
+
 	(self winner = 0)
 		ifFalse: [ Error signal: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw' ]
 ]

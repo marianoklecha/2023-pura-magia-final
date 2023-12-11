@@ -15,21 +15,25 @@ ShipCards class >> createNew [
 
 { #category : #adding }
 ShipCards >> add: aCard [ 
+
 	aCollectionOfCards add: aCard.
 ]
 
 { #category : #action }
 ShipCards >> cardsForMe [
+
 	^aCollectionOfCardsForMe.
 ]
 
 { #category : #action }
 ShipCards >> cardsInHand [
+
 	^aCollectionOfCards
 ]
 
 { #category : #initialization }
 ShipCards >> initializeNew [
+
 	aCollectionOfCards := OrderedCollection new.
 	aCollectionOfCardsForMe := OrderedCollection new.
 ]
@@ -46,6 +50,7 @@ ShipCards >> resultOfCards [
 
 { #category : #action }
 ShipCards >> store: aCardChosenForMe [ 
+
 	aCollectionOfCardsForMe add: aCardChosenForMe.
 ]
 

@@ -34,7 +34,7 @@ HyperJump class >> with: arrayOfPosibilities [
 ]
 
 { #category : #action }
-HyperJump >> applyTo: aGameBoard for: aChosenShip [
+HyperJump >> applyEffectUsing: aGameBoard for: aChosenShip [
 
 	| parsecs newPosition |
 	round := round + 1.
@@ -48,11 +48,13 @@ HyperJump >> applyTo: aGameBoard for: aChosenShip [
 
 { #category : #initialization }
 HyperJump >> initializeWith: amountOfParsecsToMove [ 
+
 	anAmountOfParsecsToMove:= amountOfParsecsToMove  .
 	round:= 0.
 ]
 
 { #category : #action }
 HyperJump >> with: aNumberOfCell [
+
 	numberOfCell := aNumberOfCell .
 ]

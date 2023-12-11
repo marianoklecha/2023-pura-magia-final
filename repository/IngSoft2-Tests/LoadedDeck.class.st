@@ -14,6 +14,7 @@ LoadedDeck class >> with: aCollectionOfCards [
 
 { #category : #action }
 LoadedDeck >> giveCard [
+	(collectionOfCards isEmpty) ifTrue: [ Error signal: 'Deck has no more cards' ].
 	^collectionOfCards removeFirst.
 ]
 

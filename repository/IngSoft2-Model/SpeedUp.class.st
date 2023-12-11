@@ -8,7 +8,8 @@ Class {
 }
 
 { #category : #action }
-SpeedUp >> applyTo: aGameBoard for: aChosenShip [  
+SpeedUp >> applyEffectUsing: aGameBoard for: aChosenShip [  
+
 	|newCell newShipPosition shipPosition|
 	newCell := (((aChosenShip actualPosition ) currentCell)+4).
 	shipPosition := aChosenShip actualPosition .
@@ -19,5 +20,6 @@ SpeedUp >> applyTo: aGameBoard for: aChosenShip [
 
 { #category : #action }
 SpeedUp >> with: aNumberOfCell [
+
 	numberOfCell := aNumberOfCell .
 ]

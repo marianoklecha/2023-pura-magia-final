@@ -33,27 +33,32 @@ Skip >> applyEffectUsing: aGameBoard [
 
 { #category : #action }
 Skip >> applyFrom: aNumberOfShip [ 
+
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #action }
 Skip >> initializeWith: aShipsGame [ 
+
 	shipsGame := aShipsGame .
 ]
 
 { #category : #action }
 Skip >> permanent [
+
 	^false.
 ]
 
 { #category : #action }
 Skip >> selected: aNumberOfShip [ 
+
 	^self.
 ]
 
 { #category : #action }
 Skip >> verifyConsistencyWith: aShipNumber and: amountOfShips [ 
+
 		|shipNumber turnsCollection|
 		turnsCollection := OrderedCollection new.
 		shipNumber := aShipNumber + shipsGame turnsManager amountToSum .

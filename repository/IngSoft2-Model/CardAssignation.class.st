@@ -14,20 +14,21 @@ CardAssignation class >> withDeck [
 ]
 
 { #category : #action }
-CardAssignation >> applyTo: aGameBoard for: aShip [
-	|numberOfShip|
-	
-	numberOfShip:= aShip numberOfShip .
-	aShip add: deckOfCards giveCard .
-	
+CardAssignation >> applyEffectUsing: aGameBoard for: aShip [
+
+	| numberOfShip |
+	numberOfShip := aShip numberOfShip.
+	aShip add: deckOfCards giveCard
 ]
 
 { #category : #initialization }
-CardAssignation >> initializeWith: aDeckOfCards [ 
-	deckOfCards := aDeckOfCards .
+CardAssignation >> initializeWith: aDeckOfCards [
+
+	deckOfCards := aDeckOfCards
 ]
 
 { #category : #action }
 CardAssignation >> with: aNumberOfCell [
-	numberOfCell := aNumberOfCell .
+
+	numberOfCell := aNumberOfCell
 ]

@@ -36,13 +36,14 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
+
 	aCollectionOfSpecialCells at: aNumberOfCell put: (aEffect with: aNumberOfCell).
 ]
 
 { #category : #action }
 GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aCollectionOfDifferentParsecs [ 
+
 	|randomNumber probabilities|
-	
 	probabilities := (ProbabilityOfEffects new) createCollectionFrom: aCollectionOfProbabilities .
 	1 to: cells do: [ :index | randomNumber:= 100 atRandom.
 		( randomNumber >= 0 and: randomNumber < (probabilities at: 1))
@@ -64,35 +65,40 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 
 { #category : #action }
 GameBoard >> amountOfShipsPlaying [
+
 	^ collectionOfShips  size.
 ]
 
 { #category : #action }
 GameBoard >> cardsForAllShips [
+
 	^collectionOfCardsForAllShips .
 ]
 
 { #category : #action }
 GameBoard >> cellsDividedIn: anAmountOfParsecs [
 
-	self verifyCellsCanHave: anAmountOfParsecs.
+	self verifyCellsCanDivideIn: anAmountOfParsecs.
 	parsecsByCell := anAmountOfParsecs.
 	positionManager := PositionManager with: cells and: anAmountOfParsecs
 ]
 
 { #category : #action }
 GameBoard >> changeCardsForAllWith: aCollectionOfCards [
+
 	collectionOfCardsForAllShips := aCollectionOfCards.
 ]
 
 { #category : #creating }
-GameBoard >> fillWith: players [
-	collectionOfShips := players collect: [ :each | each ].
+GameBoard >> fillWith: ships [
+
+	collectionOfShips := ships collect: [ :each | each ].
 	
 ]
 
 { #category : #initialization }
-GameBoard >> initializeWith: numberOfCells and: numberOfLaps [ 
+GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
+
 	cells := numberOfCells .
 	laps := numberOfLaps.
 	parsecsByCell := 1 .
@@ -105,18 +111,20 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 
 { #category : #action }
 GameBoard >> lapsToWin [
+
 	^laps
 ]
 
 { #category : #action }
 GameBoard >> lastEffectUsed [
+
 	^lastEffectUsed.
 ]
 
 { #category : #action }
 GameBoard >> move: aShip [ 
-	| actualShipPosition totalResult aDieResult cardsResult|
 
+	| actualShipPosition totalResult aDieResult cardsResult|
 	aDieResult := aShip throw: dieCollection .
 	cardsResult := aShip resultOfCards + self resultOfCardsForAll.
 	actualShipPosition := aShip actualPosition currentCell.
@@ -128,22 +136,24 @@ GameBoard >> move: aShip [
 
 { #category : #action }
 GameBoard >> move: aShip with: aTotalResult [ 
+
 	|newPosition auxResult specialEffect|
-	
 	newPosition := positionManager manageCellsOf: aShip actualPosition at: aTotalResult.
 	aShip changePosition: newPosition.
-	auxResult := positionManager updateResult: aTotalResult.
-	specialEffect := self specialEffectAtCell: auxResult.
-	lastEffectUsed:= specialEffect applyTo: self for: aShip . 
+	auxResult := positionManager updateToGameCellsHaving: aTotalResult.
+	specialEffect := self specialEffectAt: auxResult.
+	lastEffectUsed:= specialEffect applyEffectUsing: self for: aShip . 
 ]
 
 { #category : #actions }
 GameBoard >> positionManager [
+
 	^ positionManager
 ]
 
 { #category : #action }
 GameBoard >> resultOfCardsForAll [
+
 	| result |
 	result := 0.
 	collectionOfCardsForAllShips do: [ :each | 
@@ -161,7 +171,8 @@ GameBoard >> shipWith: aNumber [
 ]
 
 { #category : #action }
-GameBoard >> shipsUseToThrow: aCollectionOfDice [
+GameBoard >> shipsCanThrowUsing: aCollectionOfDice [
+
 	self verifyShipsCanThrowWith: aCollectionOfDice.
 	dieCollection := aCollectionOfDice .
 	spaceSheriff := SpaceSheriff with: dieCollection.
@@ -169,21 +180,24 @@ GameBoard >> shipsUseToThrow: aCollectionOfDice [
 
 { #category : #action }
 GameBoard >> spaceSheriff [
+
 	^ spaceSheriff
 ]
 
 { #category : #validation }
-GameBoard >> specialEffectAtCell: aNumberOfCell [
+GameBoard >> specialEffectAt: aNumberOfCell [
 
 	^ aCollectionOfSpecialCells at: aNumberOfCell
 ]
 
 { #category : #action }
-GameBoard >> verifyCellsCanHave: anAmountOfParsecs [ 
+GameBoard >> verifyCellsCanDivideIn: anAmountOfParsecs [ 
+
 	(anAmountOfParsecs < 1) ifTrue:[ Error signal: 'The amount of parsecs cant be negative or zero' ]
 ]
 
 { #category : #action }
 GameBoard >> verifyShipsCanThrowWith: aCollection [ 
+
 	(aCollection isEmpty) ifTrue:[ Error signal: 'The collection of dices cant be empty' ].
 ]

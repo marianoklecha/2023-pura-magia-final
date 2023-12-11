@@ -22,6 +22,7 @@ ProbabilityOfEffects class >> with: aNumber [
 
 { #category : #action }
 ProbabilityOfEffects >> addTotalAmountOfCells [
+
 	|arrayWithTemporalVariables|
 	arrayWithTemporalVariables := OrderedCollection new.
 	arrayWithTemporalVariables add: totalEmptyCells ; add: totalWormHoles
@@ -36,7 +37,7 @@ ProbabilityOfEffects >> amountOf: typeOfSpecialEffect on: aGameBoard [
 	| count |
 	count := 0.
 	1 to: 100 do: [ :aNumberOfCell | 
-		((aGameBoard specialEffectAtCell: aNumberOfCell) isKindOf: typeOfSpecialEffect) ifTrue: [ 
+		((aGameBoard specialEffectAt: aNumberOfCell) isKindOf: typeOfSpecialEffect) ifTrue: [ 
 			count := count + 1 ] ].
 
 	^ count
@@ -48,12 +49,10 @@ ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
 	| finalAverages sizeOfCollection total numberWithDecimals |
 	finalAverages := OrderedCollection new.
 	sizeOfCollection := aCollectionOfTemporalVariables size.
-
 	1 to: sizeOfCollection - 1 do: [ :index | 
 		numberWithDecimals := (aCollectionOfTemporalVariables at: index) / (aCollectionOfTemporalVariables at: sizeOfCollection).
 		total := (numberWithDecimals * 100) asFloat.
 		finalAverages add: total ].
-
 	^ finalAverages
 ]
 
@@ -88,7 +87,6 @@ ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites forH
 	1 to: 5000 do: [ :index | 
 		array add: ((GameBoard with: 100 and: 1) addEffectsUsing: arrayOfEffectsProbabilites
 		andForHyperJump: aCollectionOfDifferentParsecs) ].
-
 	^ array
 ]
 
@@ -101,13 +99,12 @@ ProbabilityOfEffects >> createCollectionFrom: aCollection [
 	2 to: aCollection size do: [ :index | 
 		newCollection add:
 			(newCollection at: index - 1) + (aCollection at: index) ].
-
-
 	^ newCollection
 ]
 
 { #category : #creation }
 ProbabilityOfEffects >> initializeWith: aNumber [ 
+
 	amountOfCells := aNumber.
 	totalWormHoles := 0.
 	totalSpeedUps := 0. 

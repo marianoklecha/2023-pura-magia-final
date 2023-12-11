@@ -21,6 +21,7 @@ Freedom class >> with: aShipsGame [
 
 { #category : #action }
 Freedom >> applyEffectUsing: aGameBoard [
+
 	|aChosenShip shipsJailed|
 	aChosenShip := aGameBoard shipWith: chosenShipNumber .
 	shipsJailed := aGameBoard spaceSheriff shipsJailed.
@@ -33,22 +34,26 @@ Freedom >> applyEffectUsing: aGameBoard [
 
 { #category : #action }
 Freedom >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
+
 	shipsGame verify: self IsInHandOf: aNumberOfShip.
 	chosenShipNumber := aChosenNumberOfShip.
 	self applyEffectUsing: shipsGame gameboard.
 ]
 
 { #category : #initialization }
-Freedom >> initializeWith: aShipsGame [ 
+Freedom >> initializeWith: aShipsGame [
+ 
 	shipsGame:= aShipsGame . 
 ]
 
 { #category : #action }
 Freedom >> permanent [
+
 		^false.
 ]
 
 { #category : #action }
 Freedom >> selected: aShip [ 
+
 	chosenShipNumber := aShip .
 ]
