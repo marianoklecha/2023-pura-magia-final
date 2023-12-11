@@ -41,15 +41,6 @@ TurnsManagerTests >> should: anErrorBlock raise: anExceptionClass withMessage: a
 ]
 
 { #category : #tests }
-TurnsManagerTests >> test061CreateTurnsManager [
-
-	| turnsManager |
-	turnsManager := TurnsManager new.
-
-	self assert: (turnsManager isKindOf: TurnsManager).
-]
-
-{ #category : #tests }
 TurnsManagerTests >> test062TurnsManagerGivesTurnsInOrder [
 
 	| turnsManager shipNumber1 shipNumber2 shipNumber3 shipNumber4|
