@@ -51,7 +51,7 @@ GameTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMe
 ]
 
 { #category : #tests }
-GameTests >> test003GameIsStartedThenWinnerShip [
+GameTests >> test003GameStartsThenThereIsNoWinner [
 | aShip|
 aShip := ShipPosition new.
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
@@ -77,7 +77,7 @@ self deny: (aGame winner) equals: (aGameBoard shipWith: 3) .
 ]
 
 { #category : #tests }
-GameTests >> test019PlayerHasAshipThenPlayerShipHasANumber [
+GameTests >> test019ShipHasANumber [
 |aPlayer|
 aPlayer := Ship with:  1.
 

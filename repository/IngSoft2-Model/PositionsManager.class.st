@@ -1,20 +1,34 @@
 Class {
-	#name : #PositionManager,
+	#name : #PositionsManager,
 	#superclass : #Object,
 	#instVars : [
 		'cells',
-		'parsecs'
+		'parsecs',
+		'laps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #creation }
-PositionManager class >> with: amountOfCells and: amountOfParsecs [ 
-	^(self new) initializeWith: amountOfCells and: amountOfParsecs.
+PositionsManager class >> with: amountOfCells and: numberOfLaps [ 
+	^(self new) initializeWith: amountOfCells and: numberOfLaps.
+]
+
+{ #category : #initialization }
+PositionsManager >> cells [
+	
+	^cells
+]
+
+{ #category : #initialization }
+PositionsManager >> cellsDividedIn: anAmountOfParsecs [
+
+	self verifyCellsCanDivideIn: anAmountOfParsecs.
+	parsecs := anAmountOfParsecs.
 ]
 
 { #category : #'manage move' }
-PositionManager >> change: aShipPosition changingLap: aResult [
+PositionsManager >> change: aShipPosition changingLap: aResult [
 
 	| result newLap newShipPosition |
 	result := aResult.
@@ -26,7 +40,7 @@ PositionManager >> change: aShipPosition changingLap: aResult [
 ]
 
 { #category : #action }
-PositionManager >> change: aShipPosition using: aNewParsec [
+PositionsManager >> change: aShipPosition using: aNewParsec [
 
 	|newShipPosition  position newLap |
 	newLap:=aShipPosition currentLap.
@@ -35,7 +49,7 @@ PositionManager >> change: aShipPosition using: aNewParsec [
 ]
 
 { #category : #action }
-PositionManager >> change: aShipPosition with: newCell [
+PositionsManager >> change: aShipPosition with: newCell [
 
 	|newShipPosition newLap parsec|
 	newLap:= aShipPosition currentLap.
@@ -44,7 +58,7 @@ PositionManager >> change: aShipPosition with: newCell [
 ]
 
 { #category : #'manage action' }
-PositionManager >> change: aShipPosition withNegative: amountOfCells [ 
+PositionsManager >> change: aShipPosition withNegative: amountOfCells [ 
 
 	|newShipPosition newCell newLap |
 	newCell := amountOfCells.
@@ -57,7 +71,7 @@ PositionManager >> change: aShipPosition withNegative: amountOfCells [
 ]
 
 { #category : #'manage action' }
-PositionManager >> change: aShipPosition withNegativeAmountOf: parsecsObtained [
+PositionsManager >> change: aShipPosition withNegativeAmountOf: parsecsObtained [
 
 	| newShipPosition newParsec cell |
 	newParsec := parsecsObtained.
@@ -71,7 +85,7 @@ PositionManager >> change: aShipPosition withNegativeAmountOf: parsecsObtained [
 ]
 
 { #category : #'manage action' }
-PositionManager >> change: aShipPosition withParsecsDivisionLowThan: aParsecsAmount [
+PositionsManager >> change: aShipPosition withParsecsDivisionLowThan: aParsecsAmount [
 
 	| newParsec cell newShipPosition |
 	newParsec := aParsecsAmount.
@@ -85,14 +99,21 @@ PositionManager >> change: aShipPosition withParsecsDivisionLowThan: aParsecsAmo
 ]
 
 { #category : #initialization }
-PositionManager >> initializeWith: anAmountOfCells and: anAmountOfParsecs [ 
+PositionsManager >> initializeWith: anAmountOfCells and: numberOfLaps [ 
 
 	cells := anAmountOfCells .
-	parsecs := anAmountOfParsecs .
+	laps := numberOfLaps .
+	parsecs := 1.
+]
+
+{ #category : #initialization }
+PositionsManager >> lapsToWin [
+
+	^laps
 ]
 
 { #category : #'manage move' }
-PositionManager >> manageCellsOf: aShipPosition at: newCell [
+PositionsManager >> manageCellsOf: aShipPosition at: newCell [
 
 	| newShipPosition |
 	newShipPosition := ShipPosition createNew.
@@ -107,7 +128,7 @@ PositionManager >> manageCellsOf: aShipPosition at: newCell [
 ]
 
 { #category : #'manage move' }
-PositionManager >> manageParsecsOf: aShipPosition at: aNewParsec [
+PositionsManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 
 	| newShipPosition result |
 	newShipPosition := ShipPosition createNew .
@@ -123,10 +144,16 @@ PositionManager >> manageParsecsOf: aShipPosition at: aNewParsec [
 ]
 
 { #category : #action }
-PositionManager >> updateToGameCellsHaving: anAmountOfCells [
+PositionsManager >> updateToGameCellsHaving: anAmountOfCells [
 
 	| auxResult |
 	auxResult := anAmountOfCells.
 	[ auxResult > cells ] whileTrue: [ auxResult := auxResult - cells ].
 	^ auxResult
+]
+
+{ #category : #initialization }
+PositionsManager >> verifyCellsCanDivideIn: anAmountOfParsecs [ 
+
+	(anAmountOfParsecs < 1) ifTrue:[ Error signal: 'The amount of parsecs cant be negative or zero' ]
 ]

@@ -63,7 +63,7 @@ CardsTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorM
 ]
 
 { #category : #tests }
-CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
+CardsTests >> test006ShipHasTwoOverloadCardsAsigned [
 	| overload1  overload2 player |
 	self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
@@ -83,7 +83,7 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 ]
 
 { #category : #tests }
-CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
+CardsTests >> test007ShipAppliesOverloadThenPositionIsLower [
 	| overload1 overload2  player player2 |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
@@ -112,7 +112,7 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 ]
 
 { #category : #tests }
-CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf [
+CardsTests >> test008ShipAppliesSpeedThenPositionIsHigher [
 	| speed1 speed2  player player2 |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
@@ -140,7 +140,7 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 ]
 
 { #category : #tests }
-CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
+CardsTests >> test009ShipAppliesAccelerationThenAllPositionsAreHigher [
 	| acceleration1 acceleration2 player player2 |
 	
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
@@ -250,7 +250,7 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 ]
 
 { #category : #tests }
-CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
+CardsTests >> test013PlayWithRepeatCardAndEffectSpeedUpToHimself [
 	|player player2   repeat speedUp|
 
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.

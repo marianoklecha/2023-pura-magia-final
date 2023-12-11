@@ -205,7 +205,7 @@ self assert: ((aGameBoard shipWith: 1) actualPosition currentCell) equals: 3 .
 ]
 
 { #category : #tests }
-EffectsTests >> test037GamePUsingMoonWalk [
+EffectsTests >> test037GameUsingMoonWalk [
 |aMoonWalk|
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
@@ -226,7 +226,7 @@ self assert: ((aGameBoard specialEffectAt: 2) isKindOf:  MoonWalk) .
 ]
 
 { #category : #tests }
-EffectsTests >> test038GamePlayerFallsInWMoonWalkEffectThenChangePositionOfOtherPlayers [
+EffectsTests >> test038GamePlayerFallsInMoonWalkEffectThenChangePositionOfOtherPlayers [
 
 |aMoonWalk|
 

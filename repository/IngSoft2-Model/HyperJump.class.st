@@ -40,7 +40,7 @@ HyperJump >> applyEffectUsing: aGameBoard for: aChosenShip [
 	round := round + 1.
 	round > anAmountOfParsecsToMove size ifTrue: [ round := 1 ].
 	parsecs := (anAmountOfParsecsToMove at: round) parsecs nominalValue.
-	newPosition := aGameBoard positionManager
+	newPosition := aGameBoard positionsManager
 	 			manageParsecsOf: aChosenShip actualPosition at: parsecs.
 	aChosenShip changePosition: newPosition.
 	^ self

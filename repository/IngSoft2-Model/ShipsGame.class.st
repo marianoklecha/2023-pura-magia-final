@@ -134,6 +134,6 @@ ShipsGame >> winner [
 	winnerNumber := 0.
 	1 to: amountOfShips do: [ :number | 
 		shipLap := (gameboard shipWith: number) actualPosition currentLap.
-		shipLap > gameboard lapsToWin ifTrue: [ winnerNumber := number ] ].
+		shipLap > (gameboard positionsManager) lapsToWin ifTrue: [ winnerNumber := number ] ].
 	^ winnerNumber
 ]

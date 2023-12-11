@@ -21,7 +21,7 @@ Jail >> check: aShip positionOn: aGameBoard [
 	| aShipPosition actualShipPosition |
 	actualShipPosition := aShip actualPosition.
 	actualShipPosition currentCell = numberOfCell ifTrue: [ ^ self ].
-	aShipPosition := aGameBoard positionManager
+	aShipPosition := aGameBoard positionsManager
 		                 manageCellsOf: actualShipPosition at: numberOfCell.
 	aShip changePosition: aShipPosition
 ]
