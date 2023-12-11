@@ -27,7 +27,7 @@ MoonWalk >> applyEffectUsing: aGameBoard for: aChosenShip [
 		(aGameBoard shipWith: number) = aChosenShip ifFalse: [ 
 			newCell := (aGameBoard shipWith: number) actualPosition currentCell + amountOfCells.
 			shipPosition := (aGameBoard shipWith: number) actualPosition.
-			newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
+			newShipPosition := (aGameBoard positionsManager) manageCellsOf: shipPosition at: newCell.
 			(aGameBoard shipWith: number) changePosition: newShipPosition ] ].
 	^self.
 ]

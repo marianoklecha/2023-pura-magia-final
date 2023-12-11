@@ -2,16 +2,13 @@ Class {
 	#name : #GameBoard,
 	#superclass : #Object,
 	#instVars : [
-		'cells',
-		'laps',
 		'aCollectionOfSpecialCells',
-		'parsecsByCell',
 		'dieCollection',
 		'lastEffectUsed',
 		'collectionOfShips',
-		'positionManager',
 		'collectionOfCardsForAllShips',
-		'spaceSheriff'
+		'spaceSheriff',
+		'positionsManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,9 +40,10 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 { #category : #action }
 GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aCollectionOfDifferentParsecs [ 
 
-	|randomNumber probabilities|
+	|randomNumber probabilities amountOfCells|
+	amountOfCells := positionsManager cells.
 	probabilities := (ProbabilityOfEffects new) createCollectionFrom: aCollectionOfProbabilities .
-	1 to: cells do: [ :index | randomNumber:= 100 atRandom.
+	1 to: amountOfCells do: [ :index | randomNumber:= 100 atRandom.
 		( randomNumber >= 0 and: randomNumber < (probabilities at: 1))
 			ifTrue: [ self add: (NullEffect new) at: index. ].
 		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2))
@@ -53,7 +51,7 @@ GameBoard >> addEffectsUsing: aCollectionOfProbabilities andForHyperJump: aColle
 	 	(randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3))
 			ifTrue: [ self add: (SpeedUp new) at: index. ].
 			(randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4))
-		ifTrue: [ self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. ].
+		ifTrue: [ self add: (MoonWalk  with: (amountOfCells atRandom)*(-1)) at: index. ].
 			(randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5))
 		ifTrue: [ self add: (HyperJump  with: aCollectionOfDifferentParsecs) at: index. ].
 			(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) 
@@ -77,10 +75,7 @@ GameBoard >> cardsForAllShips [
 
 { #category : #action }
 GameBoard >> cellsDividedIn: anAmountOfParsecs [
-
-	self verifyCellsCanDivideIn: anAmountOfParsecs.
-	parsecsByCell := anAmountOfParsecs.
-	positionManager := PositionManager with: cells and: anAmountOfParsecs
+	positionsManager cellsDividedIn: anAmountOfParsecs
 ]
 
 { #category : #action }
@@ -99,20 +94,11 @@ GameBoard >> fillWith: ships [
 { #category : #initialization }
 GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 
-	cells := numberOfCells .
-	laps := numberOfLaps.
-	parsecsByCell := 1 .
-	positionManager := PositionManager with: cells and: parsecsByCell .
+	positionsManager := PositionsManager with: numberOfCells and: numberOfLaps .
 	collectionOfShips := OrderedCollection new.
 	collectionOfCardsForAllShips := OrderedCollection new.
 	aCollectionOfSpecialCells := OrderedCollection new.
-	1 to: cells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
-]
-
-{ #category : #action }
-GameBoard >> lapsToWin [
-
-	^laps
+	1 to: numberOfCells do: [ :number | aCollectionOfSpecialCells add: (NullEffect new) ].
 ]
 
 { #category : #action }
@@ -138,17 +124,17 @@ GameBoard >> move: aShip [
 GameBoard >> move: aShip with: aTotalResult [ 
 
 	|newPosition auxResult specialEffect|
-	newPosition := positionManager manageCellsOf: aShip actualPosition at: aTotalResult.
+	newPosition := positionsManager manageCellsOf: aShip actualPosition at: aTotalResult.
 	aShip changePosition: newPosition.
-	auxResult := positionManager updateToGameCellsHaving: aTotalResult.
+	auxResult := positionsManager updateToGameCellsHaving: aTotalResult.
 	specialEffect := self specialEffectAt: auxResult.
 	lastEffectUsed:= specialEffect applyEffectUsing: self for: aShip . 
 ]
 
 { #category : #actions }
-GameBoard >> positionManager [
+GameBoard >> positionsManager [
 
-	^ positionManager
+	^ positionsManager
 ]
 
 { #category : #action }
@@ -188,12 +174,6 @@ GameBoard >> spaceSheriff [
 GameBoard >> specialEffectAt: aNumberOfCell [
 
 	^ aCollectionOfSpecialCells at: aNumberOfCell
-]
-
-{ #category : #action }
-GameBoard >> verifyCellsCanDivideIn: anAmountOfParsecs [ 
-
-	(anAmountOfParsecs < 1) ifTrue:[ Error signal: 'The amount of parsecs cant be negative or zero' ]
 ]
 
 { #category : #action }

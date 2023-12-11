@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-ProbabilityTests >> test001CheckDistributionOfEffectsIn1000GameboardsWithHyperJumpArrays [
+ProbabilityTests >> test001CheckDistributionOfEffectsIn5000GameboardsWithHyperJumpArrays [
 | parsecs aProbability effectsProbabilities amountOfParsecsToMove collection1 parsc1 light1 parsc2 light2 |
 
 parsecs := 4. 
@@ -38,7 +38,7 @@ self assert: ((effectsProbabilities at: 6) >1  and: (effectsProbabilities at: 6)
 ]
 
 { #category : #tests }
-ProbabilityTests >> test002CheckDifferentDistributionOfEffectsIn1000GameboardsWithHyperJumpArrays [
+ProbabilityTests >> test002CheckDifferentDistributionOfEffectsIn5000GameboardsWithHyperJumpArrays [
 | parsecs aProbability effectsProbabilities parsc1 light1 parsc2 light2 amountOfParsecsToMove collection1 |
 
 parsecs := 4. 
@@ -71,7 +71,7 @@ self assert: ((effectsProbabilities at: 6) >(-1)  and: (effectsProbabilities at:
 ]
 
 { #category : #tests }
-ProbabilityTests >> test003CheckDifferentDistributionOfEffectsIn1000GameboardsWithCardAssignationCell [
+ProbabilityTests >> test003CheckDifferentDistributionOfEffectsIn5000GameboardsWithCardAssignationCell [
 | parsecs aProbability effectsProbabilities parsc1 light1 parsc2 light2 amountOfParsecsToMove collection1 |
 
 parsecs := 4. 
@@ -106,7 +106,7 @@ self assert: ((effectsProbabilities at: 7) >9  and: (effectsProbabilities at: 7)
 ]
 
 { #category : #tests }
-ProbabilityTests >> test004CheckDistributionOfCardsIn1000Ships [
+ProbabilityTests >> test004CheckDistributionOfCardsIn5000Ships [
 | aProbability effectsProbabilities min max|
 
 min := 7.8.

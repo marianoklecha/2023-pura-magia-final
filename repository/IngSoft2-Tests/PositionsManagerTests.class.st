@@ -1,5 +1,5 @@
 Class {
-	#name : #PositionManagerTests,
+	#name : #PositionsManagerTests,
 	#superclass : #TestCase,
 	#instVars : [
 		'cells',
@@ -17,7 +17,7 @@ Class {
 }
 
 { #category : #running }
-PositionManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
+PositionsManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
 	amountOfPlayers := anAmountOfPlayers .
@@ -26,7 +26,7 @@ PositionManagerTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAm
 ]
 
 { #category : #running }
-PositionManagerTests >> setUpLoadedDiceWith: array1 and: array2 [
+PositionsManagerTests >> setUpLoadedDiceWith: array1 and: array2 [
 	
 	numbers := array1 .
 	anotherNumbers := array2 .
@@ -39,7 +39,7 @@ PositionManagerTests >> setUpLoadedDiceWith: array1 and: array2 [
 ]
 
 { #category : #tests }
-PositionManagerTests >> test059PositionManagerThatSolvesInconsistentPositionStates [
+PositionsManagerTests >> test059PositionManagerThatSolvesInconsistentPositionStates [
 |newShipPosition shipPosition aChosenShip cellsToSum parsecs parsecsToSum aPositionManager|
 self setUpGameWith: 1 andGameboardWith: 4 and: 4.
 self setUpLoadedDiceWith: #(1 1 ) and: #(5 0).
@@ -48,7 +48,8 @@ cellsToSum := 9.
 parsecsToSum := 6.
 aGameBoard cellsDividedIn: 4.
 aGameBoard shipsCanThrowUsing: arrayOfDie .
-aPositionManager := PositionManager with: 4 and: 4.
+aPositionManager := aGameBoard positionsManager .
+aGameBoard cellsDividedIn: 4.
 aChosenShip:= aGameBoard shipWith: 1 .
 shipPosition := aChosenShip actualPosition .
 
